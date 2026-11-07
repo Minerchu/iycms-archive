@@ -23,6 +23,7 @@
 <div class="toc">
   <b>本页目录</b>
   <ol>
+    <li><a href="#oneclick">一键安装（推荐）</a></li>
     <li><a href="#prepare">环境要求</a></li>
     <li><a href="#upload">上传与解压</a></li>
     <li><a href="#database">创建数据库</a></li>
@@ -34,6 +35,19 @@
     <li><a href="#verify">验收与排错</a></li>
   </ol>
 </div>
+
+<section id="oneclick">
+<h2>0. 一键安装（推荐）</h2>
+<p>适用于全新服务器（Debian / Ubuntu 或 RHEL / CentOS）。脚本会完成：下载归档 → SHA256 校验 → 解压 → 建库建用户 → 写 <code>config.conf</code> → 注册 systemd → 启动并探测端口。</p>
+<pre><code>curl -fsSL https://raw.githubusercontent.com/Minerchu/iycms-archive/main/install.sh -o /tmp/iycms-install.sh
+sudo bash /tmp/iycms-install.sh</code></pre>
+<p>非交互（适合面板 / 自动化），提前提供 MySQL root 密码：</p>
+<pre><code>DB_ROOT_PASS='你的MySQL root密码' sudo -E bash /tmp/iycms-install.sh</code></pre>
+<div class="callout">
+  <p>常用参数：<code>--dir</code> 安装目录、<code>--http-port</code> / <code>--backend-port</code> 端口、<code>--db-name</code> / <code>--db-user</code> / <code>--db-pass</code> 数据库信息、<code>--skip-db</code> 使用已有库、<code>--force</code> 覆盖安装。<code>bash install.sh --help</code> 查看全部。</p>
+</div>
+<p class="small muted">安装完成后脚本会打印前台、后台、安装向导地址和自动生成的数据库密码。下面的 1–9 节是手动安装流程，适合自定义目录、端口或已有环境。</p>
+</section>
 
 <section id="prepare">
 <h2>1. 环境要求</h2>

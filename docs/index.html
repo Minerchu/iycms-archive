@@ -27,12 +27,20 @@
     <span class="badge">主程序 <b>85 MB · Go ELF</b></span>
   </div>
   <p style="margin-top:26px">
-    <a class="btn" href="./install.html">开始安装 →</a>
+    <a class="btn" href="./install.html#oneclick">一键安装 →</a>
     <a class="btn ghost" href="#backup" style="margin-left:10px">查看备份说明</a>
   </p>
 </div></div>
 
 <main><div class="wrap">
+<section>
+  <h2>一键安装</h2>
+  <p>在全新的 Linux 服务器上执行两行命令，即可完成下载、校验、解压、建库、写配置、注册 systemd 并启动：</p>
+  <pre><code>curl -fsSL https://raw.githubusercontent.com/Minerchu/iycms-archive/main/install.sh -o /tmp/iycms-install.sh
+sudo bash /tmp/iycms-install.sh</code></pre>
+  <p class="small muted">脚本会自动生成数据库密码并打印出来；也可以传入 <code>DB_ROOT_PASS=...</code> 实现全自动安装。详见 <a href="./install.html#oneclick">安装教程 · 一键安装</a>。</p>
+</section>
+
 
 <section>
   <h2>这份存档里有什么</h2>
