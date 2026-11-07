@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <script src="./js/vue.min.js"></script>
+    <!-- import CSS -->
+    <link rel="stylesheet" href="./css/elment.min.css">
+    <link rel="stylesheet" href="./css/base.css">
+    <!-- import JavaScript -->
+    <script src="./js/elment.min.js"></script>
+    <title>选择数据库</title>
+</head>
+<script src="./js/axiso.js"></script>
+<link rel="stylesheet" href="./css/index.css">
+
+<style>
+    .container .header {
+        height: 70px;
+        width: 100%;
+    }
+
+    .main .mainp {
+        font-family: PingFangSC-Regular;
+        font-size: 14px;
+        color: #444444;
+        font-weight: 400;
+        text-align: left;
+        margin: 20px 0;
+        display: flex;
+    }
+
+    .main .mainp label {
+        width: 120px;
+    }
+
+    .main .mainp input {
+        border: 1px solid #e5e5e5;
+        border-radius: 2px;
+        margin-left: 20px;
+    }
+
+    .main .mainp input[type="text"],
+    input[type="password"] {
+        width: 320px;
+        height: 32px;
+        padding: 0 10px;
+        outline: none;
+
+    }
+
+    .main p {
+        font-family: PingFangSC-Regular;
+        font-size: 10px;
+        color: #FAAD14;
+        font-weight: 400;
+    }
+
+    .btn {
+        float: right;
+        margin-top: 20px;
+    }
+
+    .btn button {
+        /* width: 80px; */
+        height: 32px;
+        margin: 10px;
+
+    }
+
+    .el-radio-group {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .local,
+    .yuan {
+        width: 240px;
+        height: 260px;
+        background: #F8F9FC;
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .local:hover,
+    .yuan:hover {
+        background-color: #78A2FF;
+    }
+
+
+    .local:hover .pp,
+    .yuan:hover .pp {
+        color: #FFFFFF;
+
+    }
+
+    .local:hover img,
+    .yuan:hover img {
+        filter: brightness(0) invert(1);
+    }
+
+    .el-radio-group img {
+        display: block;
+        width: 46px;
+        height: 46px;
+        margin: 60px auto;
+        margin-bottom: 40px;
+    }
+
+    .el-radio-group .pp {
+        margin: 0 auto;
+        width: 144px;
+        height: 60px;
+        font-family: MicrosoftYaHeiLight;
+        font-size: 12px;
+        color: #666666;
+        letter-spacing: 0;
+        text-align: center;
+        line-height: 20px;
+        font-weight: 200;
+        text-align: center;
+    }
+
+    .radios {
+        width: 80%;
+        margin: 0 auto;
+        margin-top: 20px;
+    }
+
+    .wz {
+        position: absolute;
+        width: 76%;
+    }
+
+    .localb {
+        width: 560px;
+        height: 260px;
+        background: #F8F9FC;
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-radius: 4px;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .localbradio {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+
+    }
+
+    .localbradio .el-radio {
+        width: 260px;
+        height: 76px;
+        background: #FFFFFF;
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-radius: 4px;
+        margin-bottom: 20px;
+
+
+    }
+
+    .localbradio p {
+        font-family: MicrosoftYaHei;
+        font-size: 16px;
+        color: #444444;
+        font-weight: 400;
+    }
+
+    .localbradio .el-radio__label {
+        width: 100%;
+
+
+    }
+
+    .el-radio:last-child {
+        margin-right: 32px;
+    }
+
+    .qiu {
+        display: block;
+        width: 12px;
+        height: 12px;
+        background: greenyellow;
+        background-size: 100% 100%;
+        border-radius: 50%;
+        align-self: center;
+        margin-right: 10px;
+    }
+
+    .error {
+        display: block;
+        width: 12px;
+        height: 12px;
+        background: red;
+        background-size: 100% 100%;
+        border-radius: 50%;
+        align-self: center;
+        margin-right: 10px;
+    }
+
+    .warn {
+        display: block;
+        width: 12px;
+        height: 12px;
+        background: yellow;
+        background-size: 100% 100%;
+        border-radius: 50%;
+        align-self: center;
+        margin-right: 10px;
+    }
+
+    .btns button {
+        /* width: 80px !important; */
+        /* height: 32px !important; */
+        background: #4B82FA;
+        border: solid 1px #4B82FA;
+        border-radius: 4px;
+    }
+
+    .rad .el-radio__input {
+        display: none;
+    }
+
+    #catch1 {
+        display: none;
+    }
+
+    #catch2 {
+        display: none;
+    }
+
+    .redbd {
+        border: 1px solid red !important;
+    }
+
+    /* 弹出框样式 */
+    .pop_box {
+        position: fixed;
+        bottom: 50%;
+        right: -440px;
+        /* right: 16px; */
+        margin-bottom: -330px;
+        width: 420px;
+        height: 90px;
+        background: #FFFBE6;
+        border: 1px solid rgba(255, 229, 143, 1);
+        border-radius: 8px;
+        padding: 24px;
+        box-sizing: border-box;
+        display: flex;
+        transition: .5s all;
+    }
+
+    .pop_box img {
+        width: 14px;
+        height: 14px;
+        margin-right: 6px;
+    }
+
+    .pop_box h2 {
+        margin: 0;
+        height: 14px;
+        font-family: PingFangSC-Regular;
+        font-size: 14px;
+        color: rgba(0, 0, 0, 0.88);
+        letter-spacing: 0;
+        line-height: 14px;
+        font-weight: 400;
+    }
+
+    .pop_box p {
+        margin: 0;
+        margin-top: 16px;
+
+        height: 12px;
+        font-family: PingFangSC-Regular;
+        font-size: 12px;
+        color: rgba(0, 0, 0, 0.88);
+        letter-spacing: 0;
+        line-height: 12px;
+        font-weight: 400;
+    }
+
+    .pop_box p span {
+        color: rgba(255, 77, 79, 0.88);
+    }
+
+    /* 编辑状态图标 */
+    .statu_edit {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        margin-top: -31px;
+        cursor: pointer;
+    }
+
+    .statu_edit_two {
+        top: 75%;
+        margin-top: 0;
+    }
+
+    .statu_edit .statu_edit_icon {
+        margin: 0;
+        height: 14px !important;
+        width: 14px !important;
+
+    }
+
+    .el-notification {
+        width: 420px;
+        height: 90px;
+        background: #FFFBE6;
+        border: 1px solid rgba(255, 229, 143, 1);
+        border-radius: 8px;
+        box-shadow: none;
+        padding: 24px;
+    }
+
+    .el-notification>i,
+    .el-notification svg {
+        height: 16px;
+        width: 16px;
+        margin-top: -1.5px;
+    }
+
+    .el-notification .el-notification__group {
+        margin: 0;
+        margin-left: 6px;
+    }
+
+    .el-notification .el-notification__group i,
+    .el-notification .el-notification__group svg {
+        height: 14px;
+        width: 14px;
+    }
+
+    .el-notification .el-notification__group .el-notification__title {
+        font-family: 'PingFangSC-Regular';
+        height: 14px;
+        font-size: 14px;
+        color: rgba(0, 0, 0, 0.88);
+        line-height: 14px;
+        font-weight: 400;
+    }
+
+    .el-notification .el-notification__group .el-notification__content {
+        font-family: 'PingFangSC-Regular';
+        margin-top: 16px;
+        height: 12px;
+        font-size: 12px;
+        color: rgba(0, 0, 0, 0.88);
+        letter-spacing: 0;
+        line-height: 12px;
+        font-weight: 400;
+    }
+
+    .el-notification .el-notification__group .el-notification__content span {
+        color: rgba(255, 77, 79, 0.88);
+    }
+
+    .el-dialog {
+        border-radius: 6px !important;
+    }
+
+    .el-dialog .el-dialog__header {
+        padding: var(--size-base) var(--size-2xl);
+        border-bottom: 1px solid #d2ddec;
+        margin-right: 0;
+        height: 50px;
+        box-sizing: border-box;
+        padding: 0 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+    }
+
+    .el-dialog .el-dialog__header .el-dialog__headerbtn {
+        width: 27px;
+        height: 27px;
+        position: initial;
+    }
+
+    .el-dialog .el-dialog__headerbtn {
+        top: 0;
+    }
+
+    .el-dialog .el-dialog__body {
+        padding: 0 var(--size-2xl);
+        padding-top: var(--size-base);
+        border-top: 1px solid #ffffff !important;
+        border-bottom: 1px solid #d2ddec;
+        min-height: 50px;
+    }
+
+    .el-dialog .dia-footer {
+        height: 55px;
+        align-items: center;
+        border-top: 1px solid #ffffff;
+    }
+
+    .el-dialog .el-dialog__footer {
+        align-items: center;
+        border-top: 1px solid #ffffff;
+        padding: 16px 24px;
+    }
+
+    .el-icon.el-message-box__close,
+    .el-icon.el-dialog__close,
+    .el-button.popoverBtn {
+        background-image: linear-gradient(180deg, #f8f8fa 0%, #eeeff2 100%);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        box-shadow: 2px 5px 6px 0 rgba(149, 149, 149, 0.1);
+        border-radius: 50%;
+        height: 24px;
+        width: 24px;
+        line-height: 24px;
+        min-width: none;
+        min-width: unset !important;
+        padding: 0;
+    }
+
+    .el-icon.el-message-box__close svg,
+    .el-icon.el-dialog__close svg,
+    .el-button.popoverBtn svg {
+        color: #42464b;
+    }
+
+    .el-message-box__headerbtn {
+        top: 12px !important;
+    }
+
+    .el-dialog {
+        max-height: 80%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .el-dialog .el-dialog__body {
+        flex: 1;
+        overflow: auto;
+    }
+
+    .el-dialog .el-dialog__body>div {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .el-dialog,
+    .el-message-box {
+        background: #f0f4f8 !important;
+        border: 1px solid white !important;
+        box-shadow: 0px 4px 20px 0px rgba(6, 10, 20, 0.1) !important;
+        border-radius: 8px !important;
+    }
+
+    .el-dialog .el-input .el-input__wrapper {
+        background-image: linear-gradient(-51deg, #f4f8fb 0%, #fbfbfb 100%);
+    }
+
+    .el-dialog .el-textarea .el-textarea__inner {
+        background-image: linear-gradient(-45deg, #f4f8fb 0%, #fbfbfb 100%);
+    }
+
+    .el-radio__input .el-radio__inner {
+        background: #f0f4f8;
+        box-shadow: inset 1px 1px 1px 0px #c2c7cc;
+    }
+
+    .is-checked.el-radio__input .el-radio__inner {
+        /* background: #f0f4f8; */
+        box-shadow: none;
+    }
+
+    .is-checked.el-radio__input .el-radio__inner::after {
+        width: 6px;
+        height: 6px;
+        box-shadow: inset 1px 1px 1px 0px #c2c7cc;
+    }
+
+    /* 弹框按钮组 */
+    .dia_content {
+        padding: 0 54px;
+        display: flex;
+        flex-direction: row !important;
+        align-items: center;
+    }
+    .dia_content .ident{
+        color: #DB4646 ;
+        margin-right: 8px;
+        height: 12px;
+        font-size: 16px;
+    }
+    .dia_content .el-radio-group {
+        height: 50px;
+        display: flex;
+        justify-content: flex-start;
+    }
+</style>
+
+<body>
+    <div id="app">
+
+        <div class="container">
+            <div class="header">
+                <div class="headertop">
+                    <div class="titleimg">
+                        <img src="./img/cms.svg" alt="">
+                    </div>
+                    <div class="title">
+                        内容管理系统
+                    </div>
+                    <div class="rightnav">
+
+                    </div>
+                </div>
+                <div class="betton " v-if="show">
+                    请选择您期望使用的数据库
+                </div>
+                <div class="betton " v-else>
+                    请选择您期望使用的数据库类型
+                </div>
+                <div class="main">
+                    <transition name="el-zoom-in-center">
+                        <!-- 表单提交 -->
+                        <el-form ref="ruleFormRef" class="demo-ruleForm" v-show="show">
+                            <el-form-item>
+                                <el-radio-group>
+                                    <div class="yuan " @click="()=>{host='local',show=!show}">
+                                        <img src="./img/local.svg" alt="">
+                                        <div class="pp">
+                                            <div>选择使用本地</div>
+                                            创建时则使用本地的数据库
+                                            若没有将在本地自行创建
+                                        </div>
+                                    </div>
+
+
+                                    <div class="yuan " @click="()=>{host='remote',show=!show}">
+                                        <img src="./img/yuan.svg" alt="">
+                                        <div class="pp">
+                                            <div>选择使用远程</div>
+                                            创建时则使用远程的数据库
+                                            若没有将在远程自行创建
+                                        </div>
+                                    </div>
+                                </el-radio-group>
+                            </el-form-item>
+                            <el-form-item prop="name">
+                                <el-radio-group v-model="host" class="radios">
+                                    <el-radio label="local" @change="()=>{host='local',show=!show}" class="rad">使用本地
+                                        <span>(建议)</span></el-radio>
+                                    <el-radio label="remote" @change="()=>{host='remote',show=!show}"
+                                        class="rad">使用远程</el-radio>
+                                </el-radio-group>
+                            </el-form-item>
+                        </el-form>
+                    </transition>
+
+                    <!--  表单2提交-->
+                    <transition name="el-zoom-in-center">
+                        <el-form ref="ruleFormRef" v-show="!show" class="wz">
+                            <el-form-item>
+                                <el-radio-group>
+                                    <div class="localb" v-if="host=='local'">
+                                        <div style="width: 40%;">
+                                            <img src="./img/local.svg" alt="">
+                                            <div class="pp">您选择了使用本地</div>
+                                        </div>
+
+                                        <div class="localbradio" style="position: relative;">
+                                            <p>数据库类型</p>
+                                            <el-radio-group v-model="type" @change="cupType()">
+                                                <el-radio label="postgresql" size="large" border><span
+                                                        style="float: left;">PostgreSQL</span>
+                                                    <div style="float: right;display: flex;color: #606266;">
+                                                        <span v-loading="loading2" v-if="!immediate"
+                                                            style="transform: translate(-35px,10px);"></span>
+                                                        <div style="display: flex;" v-if="!loading2">
+                                                            <span
+                                                                :class="postgresqldata?'qiu':immediate?'warn':'error'"></span>
+                                                            <span v-if="postgresqldata">运行中</span> <span
+                                                                v-else-if="immediate">未启动</span> <span v-else>未安装</span>
+                                                        </div>
+                                                    </div>
+                                                    <div id="catch1"
+                                                        style="position: absolute;bottom: -30px;color: red;">
+
+                                                    </div>
+                                                </el-radio>
+                                                <p v-if="type==='postgresql'" style="position: absolute;bottom: 80px;left:10px; font-size: 12px;color: #909399;z-index: 6;">Pg版本仅支持11及以上 <span @click="openPgUrl()" style="color: #4B82FA; cursor: pointer;">查看详情</span></p>
+
+                                                <el-radio label="mysql" size="large" border><span
+                                                        style="float: left;">MySQL</span>
+                                                    <div style="float: right; display: flex;color: #606266;">
+                                                        <span v-loading="loading1" v-if="!immediate2"
+                                                            style="transform: translate(-35px,10px);"></span>
+                                                        <div style="display: flex;" v-if="!loading1">
+                                                            <span
+                                                                :class="mysqldata?'qiu':immediate2?'warn':'error'"></span>
+                                                            <span v-if="mysqldata">运行中</span> <span
+                                                                v-else-if="immediate2">未启动</span> <span
+                                                                v-else>未安装</span>
+                                                        </div>
+
+                                                    </div>
+                                                    <div id="catch2"
+                                                        style="position: absolute;bottom: -30px;color: red;">
+
+                                                    </div>
+                                                </el-radio>
+
+                                            </el-radio-group>
+                                            <div v-if="posStatus === 3 && type === 'postgresql'" class="statu_edit">
+                                                <img @click="openCupSql()" class="statu_edit_icon"
+                                                    src="./img/editicon.svg" alt="">
+                                            </div>
+                                            <div v-if="sqlStatus === 3 && type === 'mysql'" class="statu_edit statu_edit_two">
+                                                <img @click="openCupSql()" class="statu_edit_icon"
+                                                    src="./img/editicon.svg" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="localb" v-if="host=='remote'">
+                                        <div style="width: 40%;">
+                                            <img src="./img/yuan.svg" alt="">
+                                            <div class="pp">您选择了使用远程</div>
+                                        </div>
+                                        <div class="localbradio" style="position: relative;">
+                                            <p>数据库类型</p>
+                                            <el-radio-group v-model="type">
+                                                <el-radio label="postgresql" size="large" border><span
+                                                        style="float: left;">PostgreSQL</span></el-radio>
+                                                        <p v-if="type==='postgresql'" style="position: absolute;bottom: 80px;left:10px; font-size: 12px;color: #909399;z-index: 6;">Pg版本仅支持11及以上 <span @click="openPgUrl()" style="color: #4B82FA; cursor: pointer;">查看详情</span></p>
+                                                <el-radio label="mysql" size="large" border><span
+                                                        style="float: left;">MySQL</span></el-radio>
+
+                                            </el-radio-group>
+                                        </div>
+                                    </div>
+                                </el-radio-group>
+                            </el-form-item>
+
+                            <div class="btns">
+                                <el-button type="primary" @click="()=>{show=!show;type=''}" link style="float: left;"
+                                    class="btn">上一步</el-button>
+                                <el-button type="primary" @click="restsql" style="float: right;"
+                                    :loading="restsqlloading"
+                                    v-if="type=='postgresql'&& immediate && host=='local'&& !restsqlloading || type=='mysql'&& immediate2 && host=='local' && !restsqlloading ">启动数据库</el-button>
+                                <el-button type="primary" @click="restsql" style="float: right;"
+                                    :loading="restsqlloading" v-else-if="restsqlloading">启动中</el-button>
+                                <el-button type="primary" @click="go" style="float: right;"
+                                    :disabled="type=='postgresql'&& loading2 && host!='remote ' || type=='mysql'&& loading1 && host!='remote' ||!type"
+                                    :loading="btnloading" v-else>下一步</el-button>
+                            </div>
+                        </el-form>
+                    </transition>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="pop_box"  :style="{right:popHint?'16px':'-440px'}">
+            <img src="./img/hint.svg" alt="">
+            <div>
+
+                <h2>请注意</h2>
+                <p>系统检测到您的Postgresql状态为“<span>未安装</span>”！可点击编辑图标修改</p>
+            </div>
+        </div> -->
+        <el-dialog v-model="dialogVisible" :title="dialogtitle" width="450px" align-center @close="clonedialogVisible">
+            <div class="dia_content">
+                <span class="ident">*</span>
+                <el-radio-group v-model="selectStuta" class="ml-4">
+                    <el-radio label="1" size="large">未安装</el-radio>
+                    <el-radio label="2" size="large">未启动</el-radio>
+                    <el-radio label="3" size="large">运行中</el-radio>
+                </el-radio-group>
+            </div>
+
+            <template #footer>
+                <el-button size="small" class="border-0 bg-orange group-hover:bg-orangeLight"
+                    @click="clonedialogVisible()">
+                    取消
+                </el-button>
+                <el-button size="small" type="primary" class="border-0 bg-orange group-hover:bg-orangeLight"
+                    @click="cupSqlStatus()">
+                    确定
+                </el-button>
+            </template>
+        </el-dialog>
+    </div>
+</body>
+<script>
+    var url = window.location.href;
+    // var url = 'http://192.168.2.80:21007';
+    var arr = url.split('/');
+    var url = arr[0] + '//' + arr[2];
+    Object.assign(window, Vue);
+    const App = {
+        setup() {
+            let ruleForm = reactive(0)
+            let show = ref(true)
+            let host = ref('')
+            // let type = ref('postgresql')
+            // 清除默认选中
+            let type = ref('')
+            let stuts = ref(1)
+            let loading1 = ref(true)
+            let loading2 = ref(true)
+            let mysqldata = ref(true)
+            let postgresqldata = ref(true)
+            let btnloading = ref(false)
+            let immediate = ref(false)
+            let immediate2 = ref(false)
+            let restsqlloading = ref(false)
+            // 状态编辑
+            const dialogVisible = ref(false)
+            const dialogtitle = ref('修改')
+            const selectStuta = ref('1')
+            // 获取数据库状态
+            const posStatus = ref()
+            const sqlStatus = ref()
+            // 弹框
+            const popHint = ref(false)
+            const openDio = (txt) => {
+                this.ElementPlus.ElNotification({
+                    duration: 0,
+                    position: 'bottom-right',
+                    type: 'warning',
+                    title: '请注意',
+                    dangerouslyUseHTMLString: true,
+                    message: `系统检测到您的${txt}状态为“<span>未安装</span> ”！可点击编辑图标修改`,
+                })
+            }
+            // 选择数据库类型
+            const cupType = () => {
+                console.log(type.value)
+                // popHint.value = false
+                this.ElementPlus.ElNotification.closeAll()
+                if (type.value === 'postgresql') {
+                    if (posStatus.value === 3 && !postgresqldata.value && !immediate.value) {
+                        openDio('Postgresql')
+                        // popHint.value = true
+                    }
+                }
+                if (type.value === 'mysql') {
+                    if (sqlStatus.value === 3 && !mysqldata.value && !immediate2.value) {
+                        // popHint.value = true
+                        openDio('Mysql')
+                    }
+                }
+            }
+            // 打开数据库状态弹框
+            const openCupSql = () => {
+                dialogVisible.value = true;
+                if (type.value === 'postgresql') {
+                    dialogtitle.value = '修改PostgreSQL状态'
+                    console.log(postgresqldata.value, immediate.value)
+                    if (postgresqldata.value) {//运行
+                        selectStuta.value = '3'
+                    } else if (immediate.value) {//未启动
+                        selectStuta.value = '2'
+                    } else {//未安装
+                        selectStuta.value = '1'
+                    }
+                } else if (type.value === 'mysql') {
+                    dialogtitle.value = '修改MySql状态'
+                    console.log(mysqldata.value, immediate2.value)
+                    if (mysqldata.value) {
+                        selectStuta.value = '3'
+                    } else if (immediate2.value) {
+                        selectStuta.value = '2'
+                    } else {
+                        selectStuta.value = '1'
+                    }
+                }
+                // selectStuta.value = ''
+            }
+            // 关闭修改框
+            const clonedialogVisible = () => {
+
+                dialogVisible.value = false
+            }
+            // 打开pg地址
+            const openPgUrl = ()=>{
+                window.open('https://www.postgresql.org/support/versioning/');
+            }
+            // 切换数据库状态
+            const cupSqlStatus = () => {
+                // console.log(selectStuta.value)
+                const statu = selectStuta.value
+                if (type.value === 'postgresql') {
+                    if (statu === '1') {
+                        postgresqldata.value = false;
+                        immediate.value = false;
+                    } else if (statu === '2') {
+                        postgresqldata.value = false;
+                        immediate.value = true;
+                    } else {
+                        postgresqldata.value = true;
+                        immediate.value = false;
+                    }
+                } else if (type.value === 'mysql') {
+                    if (statu === '1') {
+                        mysqldata.value = false;
+                        immediate2.value = false;
+                    } else if (statu === '2') {
+                        mysqldata.value = false;
+                        immediate2.value = true;
+                    } else {
+                        mysqldata.value = true;
+                        immediate2.value = false;
+                    }
+                }
+                dialogVisible.value = false
+            }
+            const go = () => {
+                btnloading.value = true
+                let data = reactive({
+                    host: host.value,
+                    type: type.value,
+                })
+                let typedata = reactive({
+                    type: type.value,
+                    value: type.value == 'mysql' ? mysqldata.value : postgresqldata.value
+                })
+                localStorage.setItem('database', JSON.stringify(data))
+                localStorage.setItem('type', JSON.stringify(typedata))
+                let select = "/install/setup_database.html"
+                window.location.href = `${select}`
+                btnloading.value = false
+            }
+            const restsql = () => {
+                restsqlloading.value = true
+                const data = reactive({
+                    driveType: type.value
+                })
+                let catch1 = document.getElementById('catch1')
+                let catch2 = document.getElementById('catch2')
+                let elradio = document.getElementsByClassName('el-radio')
+                console.log(elradio)
+
+                if (type.value == 'mysql') {
+                    axios({
+                        method: 'post',
+                        url: `${url}/install/database/start`,
+                        data: data,
+                    }).then(() => {
+                        loading1.value = false
+                        immediate2.value = false
+                        mysqldata.value = true
+                        catch2.style.display = 'none'
+                        restsqlloading.value = false
+                    }).catch((err) => {
+                        loading1.value = false
+                        immediate2.value = true
+                        catch2.style.display = 'block'
+                        elradio[3].classList.add('redbd')
+                        restsqlloading.value = false
+
+                        catch2.innerHTML = err.response.data.message
+                    })
+                } else {
+                    axios({
+                        method: 'post',
+                        url: `${url}/install/database/start`,
+                        data: data,
+                    }).then(() => {
+                        loading2.value = false
+                        immediate.value = false
+                        postgresqldata.value = true
+                        restsqlloading.value = false
+
+                        catch1.style.display = 'none'
+                    }).catch((err) => {
+                        loading2.value = false
+                        immediate.value = true
+                        catch1.style.display = 'block'
+                        elradio[2].classList.add('redbd')
+                        restsqlloading.value = false
+
+                        catch1.innerHTML = err.response.data.message
+
+                    })
+                }
+
+            }
+            // status状态 1:运行中,2:未启动,3:未安装
+            axios({
+                method: 'post',
+                url: `${url}/install/database/abnormal`,
+                data: {
+                    driveType: 'mysql'
+                },
+            }).then((res) => {
+                // 存储数据库状态
+                sqlStatus.value = res.data.status;
+                loading1.value = false
+                if (res.data.status == 1) {
+                    mysqldata.value = true
+                }
+                if (res.data.status == 3) {
+                    mysqldata.value = false
+                }
+                if (res.data.status == 2) {
+                    mysqldata.value = false
+                    immediate2.value = true
+                }
+
+            }).catch((err) => {
+                alert(err.response.data.message)
+            })
+
+
+
+            axios({
+                method: 'post',
+                url: `${url}/install/database/abnormal`,
+                data: {
+                    driveType: 'postgresql'
+                },
+            }).then((res) => {
+                loading2.value = false
+                // 存储数据库状态
+                posStatus.value = res.data.status;
+                if (res.data.status == 1) {
+                    postgresqldata.value = true
+                }
+                if (res.data.status == 3) {
+                    postgresqldata.value = false
+                }
+                if (res.data.status == 2) {
+                    postgresqldata.value = false
+                    immediate.value = true
+                }
+
+            }).catch((err) => {
+                alert(err.response.data.message)
+            })
+
+            let query = ref(location.search)
+            let querydata = ref(query.value.split('&'))
+            querydata.value = querydata.value.map((item) => {
+                return item.split('=')[1]
+            })
+
+            if (query.value.indexOf('?') == 0) {
+                show.value = false
+                host.value = querydata.value[0]
+                type.value = querydata.value[1]
+            }
+
+            return {
+                ruleForm,
+                show,
+                host,
+                type,
+                popHint,
+                posStatus,
+                sqlStatus,
+                cupType,
+                go,
+                dialogVisible,
+                dialogtitle,
+                clonedialogVisible,
+                openCupSql,
+                cupSqlStatus,
+                selectStuta,
+                mysqldata,
+                postgresqldata,
+                loading1,
+                loading2,
+                btnloading,
+                immediate,
+                immediate2,
+                restsql,
+                openPgUrl,
+                restsqlloading,
+            };
+        },
+    };
+    const app = Vue.createApp(App);
+    app.use(ElementPlus);
+    app.mount("#app");
+</script>
+
+</html>

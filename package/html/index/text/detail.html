@@ -1,0 +1,126 @@
+<import file="/public/header.html" data="'textdetail'" />
+<link rel="stylesheet" href="/static/css/text001.css">
+
+<div class="mo-main-info" data-alert="" data-num="" style="margin-top: 50px;">
+
+    <getArticleDetail name="$info" id="$.U.Id">
+        <div class="mo-cols-case mo-java-waps" data-mob="0" data-wap>
+            <div style="margin-top: 20px;">
+                <import file="../libs/web/ads/index.html" data="topBanner" />
+
+            </div>
+            <!-- 主体 -->
+            <div class="mo-cols-rows mo-java-theia">
+                <div class="mo-cols-info mo-cols-xs12 mo-cols-lg8 mo-java-side">
+                    <div class="mo-cols-lays mo-back-white mo-part-round">
+                        <div class="mo-cols-rows mo-paxs-5px mo-pamd-10px mo-comd-center">
+                            <h1 class="mo-fsxs-18px mo-fsmd-24px" style="text-align: center;">{{$info.Info.Name}}</h1>
+                            <div class="mo-pzxs-5px mo-ptmd-10px mo-text-muted mo-cols-zero">
+                                <span class="mo-fsxs-14px mo-prxs-5px mo-coxs-iblock">
+                                    <showDateTime time="$info.Info.UpdateAt" data="yy-mm-dd hh:ii:ss" />
+                                </span>
+
+                                <span class="mo-fsxs-14px mo-pnxs-5px mo-coxs-iblock">{{$info.Info.Popularity}}阅读</span>
+                            </div>
+                        </div>
+                        <div class="mo-pnxs-5px mo-pamd-10px"><span
+                                class="mo-part-bbsd mo-bord-muted mo-cols-show"></span>
+                        </div>
+                        <div class="mo-word-info mo-cols-rows mo-paxs-5px mo-pamd-10px">
+                            <showHtml html="$info.Info.Content" />
+                            <div class="cms-text-detail-up-box" style="margin-top: 20px;">
+                                <gtIf data="$info.Pre.Id 0">
+                                    <div class="tim-prev" style="float: left;">
+                                        <goLink href="/text/detail.html"
+                                            args="{id:$info.Pre.Id,type_id:$info.Pre.CategoryPid}" title="上一篇">
+
+
+                                            <span class="cor5"
+                                                style="display: flex; padding-bottom: 5px; align-items: center;">
+                                                <div style="width: 18px; height: 18px;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                        <path
+                                                            d="M10.8284 12.0007L15.7782 16.9504L14.364 18.3646L8 12.0007L14.364 5.63672L15.7782 7.05093L10.8284 12.0007Z"
+                                                            fill="currentColor"></path>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    上一篇
+                                                </div>
+                                            </span>
+                                            <div class="tim-page">{{$info.Pre.Name}}</div>
+                                        </goLink>
+                                    </div>
+                                </gtIf>
+                                <gtIf data="$info.Next.Id 0">
+                                    <div class="tim-next" style="float: right;">
+                                        <goLink href="/text/detail.html"
+                                            style="display: flex;align-items: end; flex-direction: column;"
+                                            args="{id:$info.Next.Id,type_id:$info.Next.CategoryPid}" title="下一篇">
+                                            <span class="cor5"
+                                                style="display: flex;padding-bottom: 5px;align-items: center;">
+                                                <div>
+                                                    下一篇
+                                                </div>
+                                                <div style="width: 18px; height: 18px;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                        <path
+                                                            d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"
+                                                            fill="currentColor"></path>
+                                                    </svg>
+                                                </div>
+
+                                            </span>
+                                            <div class="tim-page">{{$info.Next.Name}}</div>
+                                            <!-- <div class="tim-page">下一篇</div> -->
+                                        </goLink>
+                                    </div>
+                                </gtIf>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 二维码 -->
+            </div>
+
+            <import file="../libs/web/ads/index.html" data="bottomBanner" />
+        </div>
+    </getArticleDetail>
+
+</div>
+<import file="/public/footer.html" data="'noHome'" />
+<style>
+       .mo-main-info {
+        margin-top: 0px;
+    }
+
+    @media screen and (max-width: 768px) {
+        .mo-main-info {
+            margin-top: -10px !important;
+        }
+    }
+
+    .tim-page {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: #8f8f8f;
+    }
+
+    .tim-prev,
+    .tim-next {
+        max-width: 20%;
+    }
+
+    .navTopBox {
+        background-color: #191a20 !important;
+    }
+    @media screen and (max-width: 769px) {
+        .cms_util_text {
+            margin-top: -10px !important;
+        }
+    }
+</style>

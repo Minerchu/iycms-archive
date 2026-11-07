@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>名人灰</title>
+    <g id="首页" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(-495.000000, -1234.000000)" id="编组-10">
+            <g transform="translate(64.000000, 1234.000000)">
+                <g id="名人灰" transform="translate(431.000000, 0.000000)">
+                    <polygon id="路径" points="0 0 48 0 48 48 0 48"></polygon>
+                    <path d="M24,45 C12.4017,45 3,35.5983 3,24 C3,12.4017 12.4017,3 24,3 C35.5983,3 45,12.4017 45,24 C45,35.5983 35.5983,45 24,45 Z M24,40.8 C33.2783838,40.8 40.8,33.2783838 40.8,24 C40.8,14.7216162 33.2783838,7.2 24,7.2 C14.7216162,7.2 7.2,14.7216162 7.2,24 C7.2,33.2783838 14.7216162,40.8 24,40.8 Z M15.6,26.1 L32.4,26.1 C32.4,30.7391919 28.6391919,34.5 24,34.5 C19.3608081,34.5 15.6,30.7391919 15.6,26.1 Z" id="形状" fill="#777777" fill-rule="nonzero"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

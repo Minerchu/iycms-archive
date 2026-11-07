@@ -1,0 +1,99 @@
+<link rel="stylesheet" href="/static/css/swiper-bundle.min013.css" type="text/css">
+<script type="text/javascript" src="/static/js/swiper-bundle.min013.js"></script>
+
+<style>
+     .pm-banner {
+          position: relative;
+          border-radius: var(--pm-radius-xl);
+          overflow: hidden;
+          box-shadow: var(--pm-shadow);
+     }
+
+     .pm-banner .dymrslide {
+          border-radius: var(--pm-radius-xl);
+     }
+
+     .pm-banner .txt-info {
+          z-index: 2;
+          max-width: 60%;
+     }
+
+     .pm-banner .txt-info .name {
+          font-size: 42px;
+          font-weight: 800;
+          letter-spacing: -1px;
+          line-height: 1.15;
+     }
+
+     .pm-banner .txt-info .info {
+          font-size: 16px;
+          opacity: 0.85;
+          margin-top: 12px;
+     }
+
+     .pm-banner-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(90deg, rgba(10, 10, 15, 0.85) 0%, rgba(10, 10, 15, 0.3) 50%, transparent 100%);
+          z-index: 1;
+          pointer-events: none;
+     }
+
+     @media (max-width: 767px) {
+          .pm-banner .txt-info .name {
+               font-size: 22px;
+          }
+          .pm-banner .txt-info .info {
+               font-size: 13px;
+          }
+     }
+</style>
+
+<getVideosList name="$List" page="1" limit="10" banner="true" random="true">
+     <div class="swiper-container pm-banner">
+          <div class="swiper-wrapper">
+               <getAdsList name="$List" position="">
+                    <foreach name="$item" index="$index" data="$List.List">
+                         <eqIf data="$item.Position 'banner'">
+                              <div class="swiper-slide cms_ad_banner">
+                                   <a href="{{$item.Link}}" target="_blank">
+                                        <div style="background: url({{$item.Content}})" class="dymrslide banner"></div>
+                                        <div class="pm-banner-overlay"></div>
+                                   </a>
+                              </div>
+                         </eqIf>
+                    </foreach>
+               </getAdsList>
+               <foreach name="$item" index="$index" data=".List">
+                    <div class="swiper-slide">
+                         <if data="$item.CycleImg">
+                              <goLink href="/vod/detail.html"
+                                   args="{id:$item.ID,type_id:$item.CategoryPid,cate_id:$item.CategoryChildId}">
+                                   <div style="background: url({{$item.CycleImg}})" class="dymrslide banner">
+                                        <div class="pm-banner-overlay"></div>
+                                        <div class="txt-info">
+                                             <p class="name">{{$item.Name}}</p>
+                                             <if data="$item.Remarks"><p class="info">{{$item.Remarks}}</p></if>
+                                        </div>
+                                   </div>
+                              </goLink>
+                              <else />
+                              <goLink href="/vod/detail.html"
+                                   args="{id:$item.ID,type_id:$item.CategoryPid,cate_id:$item.CategoryChildId}">
+                                   <div style="background: url({{$item.SurfacePlot}})" class="dymrslide banner">
+                                        <div class="pm-banner-overlay"></div>
+                                        <div class="txt-info">
+                                             <p class="name">{{$item.Name}}</p>
+                                             <if data="$item.Remarks"><p class="info">{{$item.Remarks}}</p></if>
+                                        </div>
+                                   </div>
+                              </goLink>
+                         </if>
+                    </div>
+               </foreach>
+          </div>
+          <div class="swiper-pagination"></div>
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+     </div>
+</getVideosList>

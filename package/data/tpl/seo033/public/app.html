@@ -1,0 +1,72 @@
+<div class="cms-pc-app-download-box">
+    <div class="widget">
+        <h4 class="footer-title">下载 App</h4>
+        <div class="row ">
+            <div class="col-sm-12 cms-footer-download-box">
+                <if data="$.G.App.Ios.Url">
+                    <div style="text-align: center;">
+                        <div class="cms-ios-download-box">
+                            <div id="cms-ios-qrcode">
+
+                            </div>
+                        </div>
+                        <a href="{{$.G.App.Ios.Url}}" target="_blank">苹果APP下载</a>
+                    </div>
+                </if>
+                <if data="$.G.App.Android">
+                    <div style="text-align: center; margin-left: 20px;">
+                        <div class="cms-apk-download-box">
+                            <div id="cms-apk-qrcode">
+
+                            </div>
+                        </div>
+                        <a href="{{$.G.App.Android}}">安卓APP下载</a>
+                    </div>
+                </if>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="cms-h5-app-download-box col-xl-3 col-md-6">
+    <div class="widget">
+        <h4 class="footer-title">下载 App</h4>
+        <div class="row cms-h5-app-download-box">
+            <div class="col-sm-12" style="display: flex; ">
+
+                <if data="$.G.App.Android">
+                    <a href="{{$.G.App.Android}}" target="_blank">
+                        <div class="cms-seo033-app-h5-container">
+                            <div>
+                                <svg style="width:24px;height:24px;fill:#fff;" aria-hidden="true">
+                                    <use xlink:href="#icon-anzhuo1"></use>
+                                </svg>
+                            </div>
+                            <div style="margin-left: 10px;">
+                                App
+                            </div>
+                        </div>
+                        <!-- <img src="/images/asset-35.png" class="gen-playstore-logo" alt="playstore"> -->
+                    </a>
+                </if>
+
+                <if data="$.G.App.Ios.Url">
+                    <a href="/libs/ios/downloads.html">
+                        <!-- <img src="/images/asset-36.png" class="gen-appstore-logo" alt="appstore"> -->
+                        <div class="cms-seo033-app-h5-container">
+                            <div>
+                                <svg style="width:24px;height:24px;fill:#fff;" aria-hidden="true">
+                                    <use xlink:href="#icon-ios"></use>
+                                </svg>
+                            </div>
+                            <div style="margin-left: 10px;margin-top: 2px;">
+                                IOS
+                            </div>
+                        </div>
+                    </a>
+                </if>
+            </div>
+        </div>
+    </div>
+</div>

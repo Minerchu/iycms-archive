@@ -1,0 +1,151 @@
+<import file="/public/header.html" data="'topicindex'" />
+<style>
+    .content {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem 0;
+    }
+
+    .section-box {
+        padding: 1rem 0;
+        width: 1400px;
+        height: auto;
+        overflow: hidden;
+    }
+
+    .section-box .list-items {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .filter {
+        background: #f9f9f9;
+        border-radius: 6px;
+        margin-bottom: 1rem;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+    }
+
+    .scroll-box {
+        overflow: hidden;
+        width: calc(100% - 40px);
+    }
+
+    .scroll-box .swiper-wrapper {
+        overflow-x: auto;
+    }
+
+    .scroll-box .swiper-wrapper::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
+
+    .filter .swiper .swiper-slide {
+        width: auto;
+        height: auto;
+    }
+
+    .item.first {
+        pointer-events: none;
+        width: 80px;
+        min-width: 80px;
+    }
+
+    @media (min-width: 980px) {
+        .filter {
+            width: 1400px;
+        }
+    }
+
+    @media (max-width: 979px) {
+        .filter {
+            width: 100%;
+            background: #fff;
+            padding: 0;
+        }
+    }
+
+    .item-box {
+        display: flex;
+        padding: 0.7rem 0 0.8rem;
+        border-bottom: 1px solid #ececec;
+    }
+
+    .item.swiper-slide-active1 {
+        background: #ffece0;
+        border-radius: 24px;
+    }
+
+    .item.swiper-slide-active1 a {
+        color: #ff6f4b;
+
+    }
+
+    .item {
+        font-size: 12px;
+        color: #333333;
+        font-weight: 400;
+        padding: 0.3rem 1.5rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    .item a:hover {
+        color: #ff6f4b;
+    }
+
+    .cms_swiper_slide {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+</style>
+<section class="content mrgt72">
+    <div class="section-box" style="padding-top: 0px; padding-bottom: 0px;">
+        <import file="../libs/web/ads/index.html" data="topBanner" />
+
+    </div>
+
+    <getAlbumList name="$List" page="$.Q.page" limit="$.Q.limit">
+        <div class="section-box">
+                <import file="/public/topiclist.html" data="$List" />
+        </div>
+    </getAlbumList>
+    <div class="section-box " style="background-color: #fff;margin-bottom: 10px;">
+        <import file="../libs/web/ads/index.html" data="bottomBanner" />
+    </div>
+</section>
+
+<style>
+    .scroll-box,
+    .swiper-wrapper {
+        overflow: visible !important;
+    }
+
+    .item-box {
+        overflow: hidden !important;
+    }
+
+    .item.first {
+        background-color: #f9f9f9;
+        z-index: 999;
+    }
+
+    @media screen and (max-width:768px) {
+        .item.first {
+            background-color: #fff;
+        }
+    }
+
+    .cms-arrow-down {
+        border-top: #000 1px solid !important;
+        border-right: #000 1px solid !important;
+    }
+</style>
+
+<import file="/public/footer.html" data="'nohome'" />

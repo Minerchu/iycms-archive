@@ -1,0 +1,24 @@
+<getAdsList name="$List" position=".">
+    <foreach name="$item" index="$index" data="$List.List">
+        <eqIf data="$item.AdsType 'image'">
+            <div class="ads_{{$item.Position}}" id="{{$item.Position}}{{$index}}">
+                <a href="{{$item.Link}}" target="{{$item.Target}}">
+                    <img src="{{$item.Content}}" alt="">
+                </a>
+                <eqIf data="$item.Close 1">
+                    <div class="ads_close_icon" onclick="cusCloseAds('{{$item.Position}}'+'{{$index}}')">
+                        <img src="/libs/commIcon/close.svg" alt="">
+                    </div>
+                </eqIf>
+            </div>
+        </eqIf>
+        <eqIf data="$item.AdsType 'text'">
+            <a class="ads_{{$item.Position}}" href="{{$item.Link}}" target="{{$item.Target}}">
+                <showHtml html="{{$item.Content}}" />
+            </a>
+        </eqIf>
+        <eqIf data="$item.AdsType 'custom'">
+            <showHtml html="{{$item.Custom}}" />
+        </eqIf>
+    </foreach>
+</getAdsList>

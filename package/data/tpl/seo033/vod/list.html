@@ -1,0 +1,445 @@
+<import file="/public/header.html" data="'vodlist'" />
+<!--========== Header ==============-->
+<style>
+    .cms-seo33-list-swiper{
+        width: 100% !important;
+    }
+</style>
+<!-- breadcrumb -->
+<div class="gen-breadcrumb" style="background-image: url('/static/images/background/asset-25.jpeg');">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+
+                <nav aria-label="breadcrumb">
+
+                    <getVodFilterList name="$List" tid="$.U.TypeId">
+                        <div class="gen-breadcrumb-container"
+                            style="max-width: 100%; overflow: hidden; display: flex; justify-content: start; flex-wrap: wrap;">
+                            <!-- 分类 -->
+                            <if data="$List.Cates">
+                                <div class="cms-seo33-list-swiper">
+                                    <ol class="breadcrumb swiper-wrapper cms-seo33-swiper-wrapper">
+                                        <li class="breadcrumb-item swiper-slide cms-seo33-swiper-slide">
+                                            <a>分类</a>
+                                        </li>
+                                        <li class="breadcrumb-item swiper-slide cms-seo33-swiper-slide">
+                                            <eqIf data="$.U.CateId 0">
+                                                <goLink href="$.U.Path" style="color:#e50916" args="{cate_id:,page:}">
+                                                    全部分类
+                                                </goLink>
+                                                <else />
+                                                <goLink href="$.U.Path" args="{cate_id:,page:}">
+                                                    全部分类
+                                                </goLink>
+                                            </eqIf>
+                                        </li>
+                                        <foreach name="$item" index="$index" data="$List.Cates">
+
+                                            <eqIf data="$.U.CateId $item.ID">
+                                                <li class="breadcrumb-item swiper-slide cms-seo33-swiper-slide"
+                                                    id="cms-seo033-lict-swiper-active">
+                                                    <goLink href="$.U.Path" args="{cate_id:$item.ID,page:}"
+                                                        style="color: #e50916;">
+                                                        {{$item.Name}}
+                                                    </goLink>
+                                                    <else />
+                                                <li class="breadcrumb-item swiper-slide cms-seo33-swiper-slide">
+                                                    <goLink href="$.U.Path" args="{cate_id:$item.ID,page:}">
+                                                        {{$item.Name}}
+                                                    </goLink>
+                                            </eqIf>
+                                            </li>
+                                        </foreach>
+                                    </ol>
+                                </div>
+
+                            </if>
+                            <!-- 地区 -->
+                            <if data="$List.Regions">
+                                <div class="cms-seo33-list-swiper">
+                                    <ol class="breadcrumb swiper-wrapper cms-seo33-swiper-wrapper">
+                                        <li class="breadcrumb-item swiper-slide cms-seo33-swiper-slide">
+                                            <a>地区</a>
+                                        </li>
+                                        <li class="breadcrumb-item swiper-slide cms-seo33-swiper-slide">
+                                            <eqIf data="$.U.AreaId 0">
+                                                <goLink href="$.U.Path" style="color:#e50916" args="{area_id:,page:}">
+                                                    全部地区
+                                                </goLink>
+                                                <else />
+                                                <goLink href="$.U.Path" args="{area_id:,page:}">
+                                                    全部地区
+                                                </goLink>
+                                            </eqIf>
+                                        </li>
+                                        <foreach name="$item" index="$index" data="$List.Regions">
+
+                                            <eqIf data="$.U.AreaId $item.Id">
+                                                <li class="breadcrumb-item swiper-slide cms-seo33-swiper-slide"
+                                                    id="cms-seo033-lict-swiper-active">
+                                                    <goLink href="$.U.Path" args="{area_id:$item.Id,page:}"
+                                                        style="color: #e50916;">
+                                                        {{$item.Name}}
+                                                    </goLink>
+                                                    <else />
+                                                <li class="breadcrumb-item swiper-slide cms-seo33-swiper-slide">
+                                                    <goLink href="$.U.Path" args="{area_id:$item.Id,page:}">
+                                                        {{$item.Name}}
+                                                    </goLink>
+                                            </eqIf>
+                                            </li>
+                                        </foreach>
+                                    </ol>
+                                </div>
+                            </if>
+                            <!-- 语言 -->
+                            <if data="$List.Languages">
+                                <div class="cms-seo33-list-swiper">
+                                    <ol class="breadcrumb swiper-wrapper cms-seo33-swiper-wrapper">
+                                        <li class="breadcrumb-item swiper-slide cms-seo33-swiper-slide">
+                                            <a>语言</a>
+                                        </li>
+                                        <li class="breadcrumb-item swiper-slide cms-seo33-swiper-slide">
+                                            <eqIf data="$.U.LangId 0">
+                                                <goLink href="$.U.Path" style="color:#e50916" args="{lang_id:,page:}">
+                                                    全部语言
+                                                </goLink>
+                                                <else />
+                                                <goLink href="$.U.Path" args="{lang_id:,page:}">
+                                                    全部语言
+                                                </goLink>
+                                            </eqIf>
+                                        </li>
+                                        <foreach name="$item" index="$index" data="$List.Languages">
+                                            <eqIf data="$.U.LangId $item.Id">
+                                                <li class="breadcrumb-item swiper-slide cms-seo33-swiper-slide"
+                                                    id="cms-seo033-lict-swiper-active">
+                                                    <goLink href="$.U.Path" args="{lang_id:$item.Id,page:}"
+                                                        style="color: #e50916;">
+                                                        {{$item.Name}}
+                                                    </goLink>
+                                                    <else />
+                                                <li class="breadcrumb-item swiper-slide cms-seo33-swiper-slide">
+                                                    <goLink href="$.U.Path" args="{lang_id:$item.Id,page:}">
+                                                        {{$item.Name}}
+                                                    </goLink>
+                                            </eqIf>
+                                            </li>
+                                        </foreach>
+                                    </ol>
+                                </div>
+                            </if>
+
+                            <!-- 年份 -->
+                            <if data="$List.Years">
+                                <div class="cms-seo33-list-swiper">
+                                    <ol class="breadcrumb swiper-wrapper cms-seo33-swiper-wrapper">
+                                        <li class="breadcrumb-item swiper-slide cms-seo33-swiper-slide">
+                                            <a>年份</a>
+                                        </li>
+                                        <li class="breadcrumb-item swiper-slide cms-seo33-swiper-slide">
+                                            <eqIf data="$.U.YearId 0">
+                                                <goLink href="$.U.Path" style="color:#e50916" args="{year_id:,page:}">
+                                                    全部年份
+                                                </goLink>
+                                                <else />
+                                                <goLink href="$.U.Path" args="{year_id:,page:}">
+                                                    全部年份
+                                                </goLink>
+                                            </eqIf>
+                                        </li>
+                                        <foreach name="$item" index="$index" data="$List.Years">
+                                            <eqIf data="$.U.YearId $item.Id">
+                                                <li class="breadcrumb-item swiper-slide cms-seo33-swiper-slide"
+                                                    id="cms-seo033-lict-swiper-active">
+                                                    <goLink href="$.U.Path" args="{year_id:$item.Id,page:}"
+                                                        style="color: #e50916;">
+                                                        {{$item.Name}}
+                                                    </goLink>
+                                                    <else />
+                                                <li class="breadcrumb-item swiper-slide cms-seo33-swiper-slide">
+                                                    <goLink href="$.U.Path" args="{year_id:$item.Id,page:}">
+                                                        {{$item.Name}}
+                                                    </goLink>
+                                            </eqIf>
+                                            </li>
+                                        </foreach>
+                                    </ol>
+                                </div>
+                            </if>
+
+                            <!-- 收费 -->
+                            <if data="$List.Charges">
+                                <div class="cms-seo33-list-swiper">
+                                    <ol class="breadcrumb swiper-wrapper cms-seo33-swiper-wrapper">
+                                        <li class="breadcrumb-item swiper-slide cms-seo33-swiper-slide">
+                                            <a>收费</a>
+                                        </li>
+                                        <li class="breadcrumb-item swiper-slide cms-seo33-swiper-slide">
+                                            <eqIf data="$.U.Mode 0">
+                                                <goLink href="$.U.Path" style="color:#e50916" args="{mode:,page:}">
+                                                    全部模式
+                                                </goLink>
+                                                <else />
+                                                <goLink href="$.U.Path" args="{mode:,page:}">
+                                                    全部模式
+                                                </goLink>
+                                            </eqIf>
+                                        </li>
+                                        <foreach name="$item" index="$index" data="$List.Charges">
+                                            <eqIf data="$.U.Mode $item.Id">
+                                                <li class="breadcrumb-item swiper-slide cms-seo33-swiper-slide"
+                                                    id="cms-seo033-lict-swiper-active">
+                                                    <goLink href="$.U.Path" args="{mode:$item.Id,page:}"
+                                                        style="color: #e50916;">
+                                                        {{$item.Name}}
+                                                    </goLink>
+                                                    <else />
+                                                <li class="breadcrumb-item swiper-slide cms-seo33-swiper-slide">
+                                                    <goLink href="$.U.Path" args="{mode:$item.Id,page:}">
+                                                        {{$item.Name}}
+                                                    </goLink>
+                                            </eqIf>
+                                            </li>
+                                        </foreach>
+                                    </ol>
+                                </div>
+                            </if>
+
+                            <!-- 题材 -->
+                            <if data="$List.Labels">
+                                <div class="cms-seo33-list-swiper">
+                                    <ol class="breadcrumb swiper-wrapper cms-seo33-swiper-wrapper">
+                                        <li class="breadcrumb-item swiper-slide cms-seo33-swiper-slide">
+                                            <a>题材</a>
+                                        </li>
+                                        <li class="breadcrumb-item swiper-slide cms-seo33-swiper-slide">
+                                            <eqIf data="$.U.TagId 0">
+                                                <goLink href="$.U.Path" style="color:#e50916" args="{tag_id:,page:}">
+                                                    全部题材
+                                                </goLink>
+                                                <else />
+                                                <goLink href="$.U.Path" args="{tag_id:,page:}">
+                                                    全部题材
+                                                </goLink>
+                                            </eqIf>
+                                        </li>
+                                        <foreach name="$item" index="$index" data="$List.Labels">
+                                            <eqIf data="$.U.TagId $item.Id">
+                                                <li class="breadcrumb-item swiper-slide cms-seo33-swiper-slide"
+                                                    id="cms-seo033-lict-swiper-active">
+                                                    <goLink href="$.U.Path" args="{tag_id:$item.Id,page:}"
+                                                        style="color: #e50916;">
+                                                        {{$item.Name}}
+                                                    </goLink>
+                                                    <else />
+                                                <li class="breadcrumb-item swiper-slide cms-seo33-swiper-slide">
+                                                    <goLink href="$.U.Path" args="{tag_id:$item.Id,page:}">
+                                                        {{$item.Name}}
+                                                    </goLink>
+                                            </eqIf>
+                                            </li>
+                                        </foreach>
+                                    </ol>
+                                </div>
+                            </if>
+                        </div>
+                    </getVodFilterList>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb -->
+<!-- cms_ad -->
+<div class="container" style="margin-top: 10px;">
+    <import file="../libs/web/ads/index.html" data="topBanner" />
+</div>
+<!-- 筛选结果 Start -->
+<getVideosList name="$List3" page="$.U.Page" limit="$.G.Nums.VodListNum" categoryPid="$.U.TypeId"
+    labelFilterId="$.U.TagId" categoryId="$.U.CateId" regionFilterId="$.U.AreaId" languageFilterId="$.U.LangId"
+    yearFilterId="$.U.YearId" chargeFilterId="$.U.Mode">
+
+    <egtIf data="$List3.Total 1">
+        <section class="gen-section-padding-3">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="gen-style-1">
+                            <div class="row">
+                                <foreach name="$item" index="$index" data=".List">
+                                    <div class="col-xl-3 col-lg-4 col-md-6">
+                                        <div class="gen-carousel-movies-style-1 movie-grid style-1">
+                                            <div class="gen-movie-contain">
+                                                <div class="gen-movie-img cms-seo033-list-img"
+                                                    style="max-height: 265px; position: relative;">
+                                                    <if data="$item.SurfacePlot">
+                                                        <img data-original="{{$item.SurfacePlot}}" alt="streamlab-image"
+                                                            src="/static/images/loadingpic.jpg"
+                                                            style="width: 100%; height: 100%; object-fit: cover;"
+                                                            class="cmslazyload">
+                                                        <else />
+                                                        <img data-original="/static/images/no_img.png" alt="streamlab-image"
+                                                            src="/static/images/loadingpic.jpg"
+                                                            style="width: 100%; height: 100%; object-fit: cover;"
+                                                            class="cmslazyload">
+                                                    </if>
+                                                    <div class="gen-movie-add">
+                                                        <div class="wpulike wpulike-heart">
+                                                            <!-- 喜欢 -->
+                                                            <!-- <div class="wp_ulike_general_class wp_ulike_is_not_liked">
+                                                                <button type="button"
+                                                                    class="wp_ulike_btn wp_ulike_put_image"></button>
+                                                            </div> -->
+                                                        </div>
+                                                        <!-- 其他链接 -->
+                                                        <!-- <ul class="menu bottomRight">
+                                                            <li class="share top">
+                                                                <i class="fa fa-share-alt"></i>
+                                                                <ul class="submenu">
+                                                                    <li><a href="#" class="facebook"><i
+                                                                                class="fab fa-facebook-f"></i></a>
+                                                                    </li>
+                                                                    <li><a href="#" class="facebook"><i
+                                                                                class="fab fa-instagram"></i></a>
+                                                                    </li>
+                                                                    <li><a href="#" class="facebook"><i
+                                                                                class="fab fa-twitter"></i></a></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="movie-actions--link_add-to-playlist dropdown">
+                                                            <a class="dropdown-toggle" href="#" data-toggle="dropdown"><i
+                                                                    class="fa fa-plus"></i></a>
+                                                            <div class="dropdown-menu mCustomScrollbar">
+                                                                <div class="mCustomScrollBox">
+                                                                    <div class="mCSB_container">
+                                                                        <a class="login-link" href="#">Sign in to add this
+                                                                            movie to a
+                                                                            playlist.</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div> -->
+                                                    </div>
+                                                    <div class="gen-movie-action">
+                                                        <goLink href="/vod/player.html" class="gen-button"
+                                                            args="{type_id:$item.CategoryPid,cate_id:$item.CategoryChildId,id:$item.ID}">
+                                                            <i class="fa fa-play"></i>
+                                                        </goLink>
+                                                    </div>
+                                                    <eqIf data="$item.BuyMode 1">
+                                                        <eqIf data="$item.ChargingMode 2">
+                                                            <div class="cms_charging_mode_div_vip">
+                                                                VIP
+                                                            </div>
+                                                        </eqIf>
+                                                        <eqIf data="$item.ChargingMode 3">
+                                                            <div class="cms_charging_mode_div_gold">
+                                                                金币点播
+                                                            </div>
+                                                        </eqIf>
+                                                    </eqIf>
+                                                </div>
+                                                <div class="gen-info-contain">
+                                                    <div class="gen-movie-info">
+                                                        <h3>
+                                                            <goLink href="/vod/player.html"
+                                                                args="{type_id:$item.CategoryPid,cate_id:$item.CategoryChildId,id:$item.ID}">
+                                                                {{$item.Name}}</goLink>
+                                                        </h3>
+                                                    </div>
+                                                    <div class="gen-movie-meta-holder">
+                                                        <ul>
+                                                            <li>
+                                                                <if data="$item.Note">
+                                                                    {{$item.Note}}
+                                                                    <else />
+                                                                    <Number expression="$item.Duration / 60" /> mins
+                                                                </if>
+                                                            </li>
+                                                            <li>
+
+                                                                <foreach name="$item1" index="$index1"
+                                                                    data="$item.Category">
+                                                                    <eqIf data="$index1 0">
+                                                                        <else />
+                                                                        <goLink href="/vod/list.html"
+                                                                            args="{type_id:$.U.TypeId,cate_id:$item1.ID}">
+                                                                            <span>
+                                                                                {{$item1.Name}}
+                                                                            </span>
+                                                                        </goLink>
+                                                                    </eqIf>
+                                                                </foreach>
+
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </foreach>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 分页器 -->
+                    <showPage name="$item" page="$.U.Page" total="$List3.Total" limit="$.G.Nums.VodListNum" count="3"
+                        url="$.U.Path">
+                        <div class="col-lg-12">
+                            <div class="gen-pagination">
+                                <nav aria-label="Page navigation">
+                                    <ul class="page-numbers">
+                                        <eqIf data="$.U.Page 1">
+                                            <else />
+                                            <li>
+                                                <goLink class="next page-numbers" href="{{$item.Prev.Href}}">上一页
+                                                </goLink>
+                                            </li>
+
+                                        </eqIf>
+                                        <foreach name="$vo" index="$idx" data="$item.List">
+                                            <eqIf data="$vo.Num $.U.Page">
+                                                <li><span aria-current="page"
+                                                        class="page-numbers current">{{$vo.Num}}</span></li>
+                                                <else />
+                                                <li>
+                                                    <goLink class="page-numbers" href="{{$vo.Href}}">{{$vo.Num}}
+                                                    </goLink>
+                                                </li>
+                                            </eqIf>
+                                        </foreach>
+                                        <if data="$item.Next.Href">
+                                            <li>
+                                                <goLink class="next page-numbers" href="{{$item.Next.Href}}">下一页</a>
+                                            </li>
+                                        </if>
+
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </showPage>
+                </div>
+            </div>
+        </section>
+        <else />
+        <div
+            style="width: 100%; padding: 80px 0; display: flex; justify-content: center; flex-direction: column; align-items: center;">
+            <img src="/static/images/alt05_back.png" alt="">
+            <div style="color: #fff;">暂无数据</div>
+        </div>
+    </egtIf>
+
+
+</getVideosList>
+<!-- cms_ad -->
+<div class="container" style="margin-top: 10px;">
+    <import file="../libs/web/ads/index.html" data="bottomBanner" />
+</div>
+<!-- 筛选结果 End -->
+
+<!-- footer start -->
+<import file="/public/footer.html" data="nohome" />

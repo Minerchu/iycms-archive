@@ -1,0 +1,60 @@
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow" id="navbar">
+
+    <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3 h5Header">
+        <svg width="64px" height="24px" viewBox="0 0 64 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink">
+            <title>cms</title>
+            <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <g id="开发文档3" transform="translate(-40.000000, -18.000000)" fill-rule="nonzero">
+                    <g id="cms" transform="translate(40.000000, 18.000000)">
+                        <path
+                            d="M7.181,17.7648556 L6.67564259,20.8274174 L15.5324357,20.8274174 L17.1187271,19.5716034 L16.4908201,24 L0,24 L0.99,17.7648556 L7.181,17.7648556 Z M18.4075887,10.0538556 L18.0771114,13.2264382 L7.93145655,13.2264382 L7.363,16.6628556 L1.165,16.6628556 L2.21419829,10.0538556 L18.4075887,10.0538556 Z"
+                            id="形状结合" fill="#5E5E5E"></path>
+                        <path
+                            d="M39.6569522,0 L44.0461294,4.40929868 L42.5104039,23.8678091 L36.7931457,23.8678091 L38.0122399,9.10161439 L35.4675643,9.10161439 L34.24847,23.8678091 L29.1921665,23.8678091 L30.8115055,5.42964377 L28.2998776,5.42964377 L26.6474908,23.8678091 L20.9302326,23.8678091 L22.8470012,1.5836461 L21.8188494,0 L39.6569522,0 Z M39.2897551,0.734394125 L38.9411494,5.15049355 L43.6789324,5.1436928 L39.2897551,0.734394125 Z"
+                            id="形状" fill="#4C83FF"></path>
+                        <path
+                            d="M56.4169985,20.6878825 L56.7144281,18.4736842 L47.1966802,18.4736842 L48.4855419,9.91432069 L63.6875003,9.91432069 L63.0595933,14.0122399 L57.5736692,14.0122399 L57.6728124,13.0869033 L53.8723228,13.0869033 L53.5418455,15.3011016 L62.7621637,15.3011016 L62.101209,21.6462668 C61.9469862,22.2851897 61.594477,22.8139535 61.0436814,23.2325581 C60.4928859,23.6511628 59.8980266,23.8604651 59.2591037,23.8604651 L46.5687732,23.8604651 L47.1966802,19.4320685 L48.1550646,20.6878825 L56.4169985,20.6878825 Z"
+                            id="路径" fill="#5E5E5E"></path>
+                    </g>
+                </g>
+            </g>
+        </svg>
+        <div>
+            {{$.Data.Info.Name}}
+        </div>
+        <!-- h5按钮 -->
+        <button class="navbar-toggler position-absolute d-md-none collapsed h5Button" type="button"
+            data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </a>
+
+
+
+    <input class="form-control form-control-dark w-100 search_input1" type="text" placeholder="API搜索"
+        aria-label="Search">
+    <ul class="navbar-nav px-3 display" style="margin-right: 40px;">
+        <li class="nav-item text-nowrap downJsonWeb_btn" style="margin-left: 0px; padding-left: 6px;">
+            <button class="downloadJson">
+                <a class="nav-link" id="downloadJson" title="API文档下载">
+                    <svg t="1715743807980" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                        xmlns="http://www.w3.org/2000/svg" p-id="2362" width="20" height="20" style="margin-left: -1px; margin-top: -7px;">
+                        <path
+                            d="M512.3 959c-10.6 0-20.8-4.2-28.3-11.7l-125-125c-15.6-15.6-15.6-40.9 0-56.6s40.9-15.6 56.6 0l96.7 96.7 96.7-96.7c15.6-15.6 40.9-15.6 56.6 0s15.6 40.9 0 56.6l-125 125c-7.5 7.5-17.7 11.7-28.3 11.7z"
+                            fill="#007bff" p-id="2363"></path>
+                        <path
+                            d="M512.3 815.3c-22.1 0-40-17.9-40-40v-300c0-22.1 17.9-40 40-40s40 17.9 40 40v300c0 22.1-17.9 40-40 40z"
+                            fill="#007bff" p-id="2364"></path>
+                        <path
+                            d="M729.4 699.2h-92.1c-22.1 0-40-17.9-40-40s17.9-40 40-40h92.1c65 0 117.9-52.9 117.9-117.9 0-64.8-52.6-117.6-117.4-117.9h-1.2c-11.3 0-22.1-4.6-29.7-12.9a40.16 40.16 0 0 1-10.4-30.7c0.5-5.8 0.8-11.1 0.8-16.2 0-97.6-79.4-177.1-177.1-177.1s-177 79.5-177 177.2c0 5.1 0.3 10.4 0.8 16.2 1 11.2-2.8 22.4-10.4 30.7-7.6 8.2-18.3 12.9-29.4 12.9h-1.4c-64.8 0.3-117.4 53-117.4 117.9 0 65 52.9 117.9 117.9 117.9h92.1c22.1 0 40 17.9 40 40s-17.9 40-40 40h-92.1c-109.1 0-197.9-88.8-197.9-197.9 0-95.6 68.1-175.6 158.4-193.9C259.8 245 286 186.7 330.7 142c48.6-48.6 113.1-75.3 181.8-75.3S645.7 93.4 694.3 142c44.7 44.7 70.9 102.9 74.8 165.5 90.3 18.4 158.4 98.3 158.4 193.9-0.2 109-89 197.8-198.1 197.8z"
+                            fill="#007bff" p-id="2365"></path>
+                    </svg>
+                </a>
+            </button>
+            <a id="downloadJson" class="nav-link downloadJsonWeb" style="display: none;">导出postman的接口文档</a>
+            <a class="nav-link downloadJsonh5" id="downloadJson">导出postman的接口文档</a>
+        </li>
+    </ul>
+</nav>

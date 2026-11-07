@@ -1,0 +1,28 @@
+<div class="list-items">
+    <foreach name="$item" index="$index" data=".List">
+        <div class="vertical-box cs-itembox" style="position: relative;">
+            <goLink href="/vod/detail.html" args="{id:$item.ID,type_id:$item.CategoryPid,cate_id:$item.CategoryChildId}">
+                <div class="image-box">
+                    <img class="lazyload" data-original="{{$item.SurfacePlot}}" />
+                    <gtIf data="$item.Duration 0">
+                        <span class="unit duration_hint"> {{$item.Duration}} </span>
+                    </gtIf>
+                </div>
+                <div class="title">{{esp $item.Name }}</div>
+                <div class="desc">{{esp $item.Introduce }}</div>
+                <eqIf data="$item.BuyMode 1">
+					<eqIf data="$item.ChargingMode 2">
+						<div class="cms_charging_mode_div_vip">
+							VIP
+						</div>
+					</eqIf>
+					<eqIf data="$item.ChargingMode 3">
+						<div class="cms_charging_mode_div_gold">
+							金币点播
+						</div>
+					</eqIf>
+				</eqIf>
+            </goLink>
+        </div>
+    </foreach>
+</div>

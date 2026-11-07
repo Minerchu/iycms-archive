@@ -1,0 +1,280 @@
+<import file="/public/header.html" data="'vodplayer'" />
+<link rel="stylesheet" href="/static/css/play001.css">
+<!-- <link rel="stylesheet" href="/static/css/aliplayer.css" />
+<script charset="utf-8" type="text/javascript" src="/static/js/aliplayer.js"></script>
+<script charset="utf-8" type="text/javascript" src="/static/js/aliplayer-components.js"></script> -->
+<style>
+	.cmsactive {
+		background-color: #ff6f4b !important;
+		color: #fff !important;
+	}
+
+	.cms_play_container {
+		max-height: 200px;
+		overflow-y: auto;
+	}
+</style>
+
+
+
+<getVideoDetail name="$info" id="$.U.Id">
+	<div class="cu_h5_header">
+		<span class="goBack">
+			<goLink href="/vod/detail.html" args="{id:$info.Info.ID,cate_id:$.U.CateId,type_id:$.U.TypeId}">
+				<img src="/static/image/icons/fanhui.svg" />
+			</goLink>
+		</span>
+		<span class="title">{{esp $info.Info.Name }}</span>
+	</div>
+
+	<div class="my-aliplayer-box mrgt72">
+		<div class="my-aliplayer">
+			<section class="content " style="padding-top: 0px;">
+				<!-- 上方通用横幅 -->
+
+				<import file="../libs/web/ads/index.html" data="topBanner" />
+
+				<!-- 播放器上方 -->
+				<div class="section-box " style="margin-bottom: 10px;">
+					<import file="../libs/web/ads/index.html" data="playerUp" />
+				</div>
+				<div class="my_vodbox" style="position: relative;">
+
+					<showPlayer vid="$.U.Id" lineId="$.U.LineId" />
+				</div>
+
+				<div class="section-box " style="margin-bottom: 10px;">
+					<import file="../libs/web/ads/index.html" data="playerDown" />
+				</div>
+			</section>
+			<div class="detailTitle">
+				<h2 style="color: #fff; margin: 1rem 1rem 1rem 0">
+					{{esp $info.Info.Name}}
+				</h2>
+			</div>
+			<div class="tags">
+				<div class="item-tag" style="cursor: pointer" id="briefRef">
+					{{esp "内容简介"}}
+					<img src="/static/image/icons/xiangshang.svg" style="width: 16px;display: none;">
+					<img src="/static/image/icons/xiangxia.svg" style="width: 16px;">
+				</div>
+				<script>
+					//详情展开
+					$('#briefRef').click(function () {
+						$('#directors').toggle(200)
+						$('#briefRef img').eq(0).toggle(0)
+						$('#briefRef img').eq(1).toggle(0)
+					})
+				</script>
+				<if data="$info.Info.Info.Region">
+					<div class="item-tag">
+						{{esp $info.Info.Info.Region}}
+					</div>
+				</if>
+				<if data="$info.Info.Info.Label">
+					<div class="item-tag">
+						{{esp $info.Info.Info.Label}}
+					</div>
+				</if>
+				<if data="$info.Info.Info.Year">
+					<div class="item-tag">
+						{{esp $info.Info.Info.Year}}
+					</div>
+				</if>
+				<div class="item-tag">
+					{{$info.Info.Info.ScoreFormat }}
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<section class="content ">
+
+		<div class="section-box" style="padding: 0;">
+			<div id="directors" style="padding-bottom: 1.5rem;display: none;">
+				<div class="playInfo">
+					<h2>{{esp $info.Info.Name}}{{esp "简介"}}</h2>
+					<p style="line-height: 1.8">
+						{{esp $info.Info.Introduce}}
+					</p>
+				</div>
+				<if data="$info.Info.Actors">
+					<h2 style="margin-top: 2rem">{{esp $info.Info.Name}}{{esp "主演"}}</h2>
+					<div class="performer">
+						<foreach name="$item" index="$index" data="$info.Info.Actors">
+							<goLink href="/search/index.html" args="{keyword:$item.Name}">
+								<div class="performer-item">
+									<img data-original="{{ $item.Avatar }}" class="avator lazyload" style="object-fit: cover;"/>
+									<span class="nickName">{{esp $item.Name}}</span>
+								</div>
+							</goLink>
+						</foreach>
+					</div>
+				</if>
+			</div>
+
+			<if data="$info.Info.PlayLines">
+				<h2 style="font-weight: 100;">{{esp "播放路线"}}</h2>
+				<div class="layui-tab layui-tab-card">
+					<ul class="layui-tab-title playline-tabs-title">
+						<foreach name="$item" index="$index" data="$info.Info.PlayLines">
+							<li data-play="{{$item.Id}}">{{esp $item.Name}}</li>
+						</foreach>
+					</ul>
+					<div class="layui-tab-content cms_play_container tem_ref_dom">
+						<script type="text/javascript">
+							function doPlayer(vidoePlayUri, tabIdx) {
+								$(`.playline-tabs-title li`).eq(tabIdx).addClass('layui-this')
+								$(`.playline-tab-item`).eq(tabIdx).addClass('layui-show')
+								// .addClass('layui-this')
+								// //播放器
+								// new Aliplayer({
+								// 	id: 'J_prismPlayer',
+								// 	source: vidoePlayUri,
+								// 	"width": "100%",
+								// 	"height": "auto",
+								// 	// "height": "790px",
+								// 	"autoplay": true,
+								// 	"preload": true,
+								// 	"controlBarVisibility": "hover",
+								// 	"useH5Prism": true,
+								// 	'language': 'zh-cn',
+								// 	"components": [{
+								// 		name: 'PreviewVodComponent',
+								// 		type: AliPlayerComponent.PreviewVodComponent,
+								// 		// args: [8, `<div>播放完毕中间显示</div>`, `<div>左下角一直显示</div>`]
+								// 	}]
+								// }, function(player) {
+								// 	console.log('播放器创建成功！')
+								// });
+							}
+						</script>
+						<foreach name="$t1" index="$idx" data="$info.Info.PlayLines">
+							<div class="layui-tab-item playline-tab-item" data-play="{{$t1.Id}}">
+								<foreach name="$t2" index="$idy" data="$t1.Addr">
+									<goLink href="/vod/player.html"
+										args="{type_id:$.U.TypeId,cate_id:$.U.CateId,id:$.U.Id,line_id:$t2.ID}">
+										<eqIf data="$.U.LineId 0">
+											<eqIf data="$idx 0">
+												<eqIf data="$idy 0">
+													<script type="text/javascript">doPlayer("{{$t2.Url}}", 0)</script>
+												</eqIf>
+												</gtIf>
+												<else />
+												<eqIf data="$.U.LineId $t2.ID">
+													<script
+														type="text/javascript">doPlayer("{{$t2.Url}}", '{{ $idx }}')</script>
+												</eqIf>
+											</eqIf>
+											<eqIf data="$.U.LineId $t2.ID">
+												<li class="playBtns cmsactive" style="position: relative;width: auto !important;">
+													{{esp $t2.Name }}
+													<eqIf data="$info.Info.Info.BuyMode 2">
+														<eqIf data="$t2.ChargingMode 2">
+															<div class="cms_charging_lin_div_vip">
+																VIP
+															</div>
+														</eqIf>
+														<eqIf data="$t2.ChargingMode 3">
+															<div class="cms_charging_lin_div_gold">
+																金币
+															</div>
+														</eqIf>
+													</eqIf>
+												</li>
+												<else />
+												<li class="playBtns" style="position: relative; width: auto !important;">
+													{{esp $t2.Name }}
+													<eqIf data="$info.Info.Info.BuyMode 2">
+														<eqIf data="$t2.ChargingMode 2">
+															<div class="cms_charging_lin_div_vip">
+																VIP
+															</div>
+														</eqIf>
+														<eqIf data="$t2.ChargingMode 3">
+															<div class="cms_charging_lin_div_gold">
+																金币
+															</div>
+														</eqIf>
+													</eqIf>
+												</li>
+											</eqIf>
+
+									</goLink>
+								</foreach>
+							</div>
+						</foreach>
+					</div>
+				</div>
+			</if>
+		</div>
+
+	</section>
+</getVideoDetail>
+
+<getVideosList name="$List" page="1" limit="$.G.Nums.VodGuessNum" random="1" categoryPid="$.U.TypeId"
+	categoryId="$.U.CateId">
+	<gtIf data="$List.Count 0">
+		<section class="content" style="padding-top: 0;">
+			<div class="section-box">
+				<h2 style="margin: 1rem 0;font-weight: 100;">{{esp "猜你喜欢"}}</h2>
+				<import file="/public/vodlist.html" data="$List" />
+			</div>
+		</section>
+	</gtIf>
+</getVideosList>
+<!-- 下方通用横幅 -->
+<section class="content ">
+	<import file="../libs/web/ads/index.html" data="bottomBanner" />
+</section>
+<script>
+	/**
+ * 
+ * @param index 当前显示的父容器索引
+ * @param dadClass 父容器类名
+ * @param sonClass 子项类名
+*/
+
+
+	function setScrollTop(index, dadClass, sonClass) {
+		//初始位置
+
+		// const firstTop = $(`.cms_first_top${cmsScrollIndex}`).offset()?.top
+		const itemDom = $(`.${sonClass}`)[0]
+		// console.log(itemDom.offsetTop);
+		const containerDom = $(`.${dadClass}`)[0]
+		// console.log(containerDom);
+
+		//赋值滚动条
+
+		containerDom.scrollTop = itemDom.offsetTop - 130
+		// console.log($('.cms_first_top').last().offset().top)
+	}
+</script>
+<div class="tem_ref_dom">
+	<script>
+		$(document).ready(() => {
+			setScrollTop(Number(0), `cms_play_container`, "cmsactive")
+		})
+	</script>
+</div>
+<style>
+	.cms-arrow-down {
+		border-top: #000 1px solid !important;
+		border-right: #000 1px solid !important;
+	}
+	@media (max-width: 980px) {
+		.layui-this{
+			color: #ff6f4b !important;
+		}
+	}
+</style>
+<!-- 未传线路id默认选中第一个 -->
+<eqIf data="$.U.LineId 0">
+	<script>
+		// $('.playBtns')
+		const firstDom = $('.playBtns')[0]
+		firstDom.classList.add('cmsactive')
+	</script>
+</eqIf>
+<import file="/public/footer.html" data="'noHome'" />

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>分享</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      padding: 0;
+      margin: 0;
+      background: url("./image/backguard.jpg") no-repeat;
+      background-size: 100% 100%;
+    }
+
+    #cms_share_logo {
+      background-color: #ffffff;
+      width: 30vw;
+      /* height: 124px; */
+      aspect-ratio: 1/1;
+      border-radius: 20px;
+      margin-top: 10vh;
+    }
+
+    .cms_share {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .download_button {
+      background-color: #5d9cff;
+      width: 57.5vw;
+      height: 50px;
+      border-radius: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 35px;
+      color: #ffffff;
+    }
+
+    .download_button p {
+      font-family: PingFangSC-Medium;
+    }
+
+    .cms_share a {
+      text-decoration: none;
+    }
+
+    .cms_share img {
+      padding: 5px;
+      width: 16px;
+    }
+
+    .cms-share-back {
+      font-size: 16px;
+      color: #444444;
+      letter-spacing: 1px;
+      margin-top: 5vh;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="cms_share">
+    <div id="cms_share_logo" style="display: flex; justify-content: center; align-items: center">
+      <if data="$.G.Icon">
+        <img src="{{$.G.Icon}}" alt="{{$.G.Name}}" style="
+            height: 100%;
+            width: 100%;
+            border-radius: 20px;
+            object-fit: cover;
+          " />
+        <else />
+        <img style="width: 50%;" src="./image/movie_logo.svg" alt="">
+      </if>
+    </div>
+    <if data="$.G.Share.Title">
+      <h3 style="
+            font-family: PingFang SC;
+            font-size: 21px;
+            color: #333333;
+            font-weight: 600;
+            padding: 3px;
+          ">
+        {{$.G.Share.Title}}
+      </h3>
+    </if>
+    <if data="$.G.Share.Content">
+      <p style="
+            font-family: PingFang SC;
+            font-size: 13px;
+            padding-inline: 50px;
+            text-align: center;
+            margin-top: 0;
+          ">
+        {{$.G.Share.Content}}
+      </p>
+    </if>
+    <a href="{{$.G.App.Android}}" id="cms_android_download" class="download_button" style="margin-top: 10vh"><img
+        src="./image/安卓logo.png" alt="" />
+      <p>安卓版下载</p>
+    </a>
+    <a id="cms_ios_download" class="download_button" href="../ios/downloads.html"><img src="./image/IOS.png" alt="" />
+      <p>IOS版下载</p>
+    </a>
+    <a id="back_index" onclick="changeurl()" class="cms-share-back" href="javascript:void();"
+      style="box-sizing: border-box">
+      访问首页
+    </a>
+  </div>
+  </div>
+  <script type="text/javascript">
+    function getUrlParams(url) {
+      let urlStr = url.split('?')[1]
+      const urlSearchParams = new URLSearchParams(urlStr)
+      const result = Object.fromEntries(urlSearchParams.entries())
+      return result
+    }
+    var url = document.location.toString();
+    var obj = getUrlParams(url)
+    function changeurl() {
+      document.getElementById("back_index").href = "/index.html?r=" + obj.r + "";
+    }
+  </script>
+</body>
+
+</html>

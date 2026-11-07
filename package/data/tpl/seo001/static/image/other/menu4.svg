@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="80px" height="80px" viewBox="0 0 80 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>提成规则</title>
+    <g id="代理模式" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="个人中心-代理模式（2选一）" transform="translate(-571.000000, -676.000000)">
+            <g id="编组-3" transform="translate(563.000000, 676.000000)">
+                <g id="提成规则" transform="translate(8.000000, 0.000000)">
+                    <rect id="矩形" fill="#E0FFFD" x="0" y="0" width="80" height="80" rx="40"></rect>
+                    <g id="编组" transform="translate(16.000000, 16.000000)">
+                        <polygon id="路径" points="0 0 48 0 48 48 0 48"></polygon>
+                        <path d="M14,12 L14,6 C14,4.8954305 14.8954305,4 16,4 L40,4 C41.1045695,4 42,4.8954305 42,6 L42,34 C42,35.1045695 41.1045695,36 40,36 L34,36 L34,42 C34,43.104 33.1,44.000036 31.986,44.000036 L8.014,44.000036 C7.48130692,44.0031933 6.96930639,43.7939541 6.59131726,43.4185925 C6.21332813,43.0432309 6.0005226,42.5327024 6,42 L6.006,14 C6.006,12.896 6.906,12 8.02,12 L14,12 Z M18,12 L34,12 L34,32 L38,32 L38,8 L18,8 L18,12 Z M14,22 L14,26 L26,26 L26,22 L14,22 Z M14,30 L14,34 L26,34 L26,30 L14,30 Z" id="形状" fill="#0FCACD" fill-rule="nonzero"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

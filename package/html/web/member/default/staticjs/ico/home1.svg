@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>首页</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#F58E73" offset="0%"></stop>
+            <stop stop-color="#F94695" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="首页" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(-64.000000, -1234.000000)" id="编组-10">
+            <g transform="translate(64.000000, 1234.000000)" id="首页">
+                <polygon id="路径" points="0 0 48 0 48 48 0 48"></polygon>
+                <path d="M38,38 L38,19.598 L24,8.554 L10,19.598 L10,38 L38,38 Z M41.9999998,40 C41.9999998,41.1045695 41.1045695,42 39.9999998,42 L7.99999984,42 C6.8954305,42 5.99999984,41.1045695 5.99999984,40 L5.99999984,18.628 C5.99999984,18.0159453 6.27978069,17.4374739 6.76,17.058 L22.76,4.436 C23.4868895,3.86160483 24.5131105,3.86160483 25.24,4.436 L41.24,17.056 C41.7207706,17.4359087 42.0008563,18.0152437 41.9999998,18.628 L41.9999998,40 Z M14,24 L18,24 C18,27.3137085 20.6862915,30 24,30 C27.3137085,30 30,27.3137085 30,24 L34,24 C34,29.5228475 29.5228475,34 24,34 C18.4771525,34 14,29.5228475 14,24 L14,24 Z" id="形状" fill="url(#linearGradient-1)" fill-rule="nonzero"></path>
+            </g>
+        </g>
+    </g>
+</svg>

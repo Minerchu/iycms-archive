@@ -1,0 +1,1222 @@
+<link rel="stylesheet" href="{{$.Prefix}}/css/swiper-bundle.min.css">
+<script src="{{$.Prefix}}/js/swiper-bundle.min.js"></script>
+<link rel="stylesheet" href="{{$.Prefix}}/css/root.css">
+<link rel="stylesheet" href="{{$.Prefix}}/css/cmsStyle.css">
+<link rel="stylesheet" href="{{$.Prefix}}/css/layui.min.css" />
+<script src="{{$.Prefix}}/js/layui.min.js"></script>
+<link rel="stylesheet" href="{{$.Prefix}}/css/layuicus.css" />
+<script src="{{$.Prefix}}/js/common.js"></script>
+<link rel="stylesheet" href="{{$.Prefix}}/css/common.css" />
+<script src="{{$.Prefix}}/js/md5.js"></script>
+<script src="{{$.Prefix}}/js/axios.js"></script>
+<script src="{{$.Prefix}}/js/http.js"></script>
+<script src="/libs/aliIconFont/iconfont.js"></script>
+
+<!-- 公共js(获取模板传入数据和修改配色等操作) -->
+<script>
+    //静态资源路径
+    var staticPath = '{{$.Prefix}}'
+    //模板传入数据
+    var str = '{{$.Obj}}'
+    var data = strToObj(str)
+
+    // // 侧边栏配色修改
+    // var utilColor = data.utilColor
+    // if (utilColor != '' && utilColor != undefined && utilColor != null) {
+    //     $(document).ready(() => {
+    //         $(".cms_util_li").css('background-color', utilColor)
+    //     })
+
+    // }
+
+    // //公告栏button颜色修改
+    // $(document).ready(() => {
+    //     var buttonColor = data.buttonColor
+    //     if (buttonColor != '' && buttonColor != undefined && buttonColor != null && $('.cms_notice_up_footer_button')[0]) {
+
+    //         $('.cms_notice_up_footer_button').css('background-color', buttonColor)
+    //     }
+    // })
+
+
+    //字符串处理函数
+    function strToObj(str) {
+        str = str.replace(/{|}/g, '')
+        const obj = {};
+        const pairs = str.split(',');
+        pairs.forEach(pair => {
+            const [key, value] = pair.split(':');
+            obj[key] = value;
+        });
+        return obj;
+    }
+</script>
+
+<!-- 广告dom -->
+<getAdsList name="$List" position="">
+    <foreach name="$item" index="$index" data="$List.List">
+        <a href="{{$item.Link}}" target="_blank" title="{{$item.Link}}" class="cms_ad_{{$item.Position}} cms_ad_a">
+
+            <!-- 图片广告 -->
+            <eqIf data="'image' $item.AdsType">
+                <!-- 是否为首页弹出广告 -->
+                <eqIf data="$item.Position 'homePop'">
+                    <script>
+                        $(document).ready(function () {
+                            var adImgUrl = "{{$item.Content}}"
+                            var domName = "cms_home_ad"
+                            var link = "{{$item.Link}}"
+                            if ($("#cms_home_ad")[0]) {
+                                $("#cms_home_ad")[0].innerHTML = `<a href="${link}" target="_blank"> <img src="${adImgUrl}" alt="" class="cms_ad_home_img" style="position: relative;"> <img src="${staticPath}/icon/cha.png" alt="" style="width: 28px;height: 28px; position: absolute; left: 100%; top:0; transform:translate(-100%, 0%) ;z-index: 1001;" onclick="closeAdHome();"> </a>`
+                            }
+
+                        })
+                    </script>
+                    <else />
+                    <!-- 是否为轮播广告 -->
+                    <eqIf data="$item.Position 'banner'">
+                        <!-- banner文件中处理 -->
+                        <else />
+                        <!-- 是否为上部通用横幅广告 -->
+                        <eqIf data="$item.Position 'topBanner' ">
+                            <script>
+                                // 需要在需要页面添加id为cms_ad_top_banner的div
+                                $(document).ready(function () {
+                                    var adImgUrl = "{{$item.Content}}"
+                                    var link = "{{$item.Link}}"
+                                    var target = "{{$item.Target}}"
+                                    var close = "{{$item.Close}}"
+                                    var className = "cms_ad_top_banner_close" + "{{$item.ID}}"
+                                    if ($("#cms_ad_top_banner")[0]) {
+                                        oldHTML = $("#cms_ad_top_banner")[0].innerHTML
+                                        if (close == "1") {
+                                            $("#cms_ad_top_banner")[0].innerHTML = oldHTML + `<div  class="${className}" style="max-width: 100%; width:100%;position: relative;display: inline-block;"><a href="${link}" target="_blank" style="display:inline-block;width:100%"> <img src="${adImgUrl}" alt="" class="cms_ad_top_and_bootom_img" style="max-width:100%;" ><img src="${staticPath}/icon/cha.png" alt="" style="width: 28px;height: 28px; position: absolute; left: 100%; top:0; transform:translate(-100%, 0) ;" onclick="closeAd('${className}')" class="cms_ads_close_icon"></div>`
+                                        } else {
+                                            $("#cms_ad_top_banner")[0].innerHTML = oldHTML + `<a href="${link}" target="_blank" style="width:100%;"> <img src="${adImgUrl}" alt="" class="cms_ad_top_and_bootom_img" style="position: relative;"> `
+                                        }
+                                    }
+
+
+
+
+
+                                })
+                            </script>
+                            <else />
+                            <!-- 是否为下部通用横幅广告 -->
+                            <eqIf data="$item.Position 'bottomBanner' ">
+                                <script>
+                                    // 需要在需要页面添加id为cms_ad_bottom_banner的div
+                                    $(document).ready(function () {
+                                        var adImgUrl = "{{$item.Content}}"
+                                        var link = "{{$item.Link}}"
+                                        var target = "{{$item.Target}}"
+
+                                        var close = "{{$item.Close}}"
+                                        var className = "cms_ad_bottom_banner_close" + "{{$item.ID}}"
+                                        if ($("#cms_ad_bottom_banner")[0]) {
+                                            oldHTML = $("#cms_ad_bottom_banner")[0].innerHTML
+                                            if (close == "1" && $("#cms_ad_bottom_banner")[0]) {
+                                                $("#cms_ad_bottom_banner")[0].innerHTML = oldHTML + `<div  class="${className}" style="max-width:100%;width:100%;position: relative;display: inline-block;"><a href="${link}" target="_blank" style="width:100%"> <img src="${adImgUrl}" alt="" class="cms_ad_top_and_bootom_img" style="max-width:100%"><img src="${staticPath}/icon/cha.png" alt="" style="width: 28px;height: 28px; position: absolute; left: 100%; top:0; transform:translate(-100%, 0) ;" onclick="closeAd('${className}')"></div> `
+                                            } else {
+                                                $("#cms_ad_bottom_banner")[0].innerHTML = oldHTML + `<a href="${link}"  target="_blank" style="width:100%"> <img src="${adImgUrl}" alt="" class="cms_ad_top_and_bootom_img" style="position: relative;"> `
+                                            }
+                                        }
+
+
+                                    })
+                                </script>
+                                <else />
+                                <eqIf data="$item.Position 'playerUp'">
+                                    <script>
+                                        // 需要在需要页面添加id为cms_ad_play_up的div
+                                        $(document).ready(function () {
+                                            var adImgUrl = "{{$item.Content}}"
+                                            var link = "{{$item.Link}}"
+                                            var target = "{{$item.Target}}"
+
+                                            var close = "{{$item.Close}}"
+                                            var className = "cms_ad_play_up_close" + "{{$item.ID}}"
+                                            if ($("#cms_ad_play_up")[0]) {
+                                                oldHTML = $("#cms_ad_play_up")[0].innerHTML
+                                                if (close == "1" && $("#cms_ad_play_up")[0]) {
+                                                    $("#cms_ad_play_up")[0].innerHTML = oldHTML + `<div  class="${className}" style="width:100%;position: relative;display: inline-block;"><a href="${link}" target="_blank" style="width:100%"> <img src="${adImgUrl}" alt="" class="cms_ad_top_and_bootom_img" style="max-width:100%"><img src="${staticPath}/icon/cha.png" alt="" style="width: 28px;height: 28px; position: absolute; left: 100%; top:0; transform:translate(-100%, 0) ;" onclick="closeAd('${className}')"></div> `
+                                                } else {
+                                                    $("#cms_ad_play_up")[0].innerHTML = oldHTML + `<a href="${link}"  target="_blank" style="width:100%"> <img src="${adImgUrl}" alt="" class="cms_ad_top_and_bootom_img" style="position: relative;"> `
+                                                }
+                                            }
+
+
+                                        })
+                                    </script>
+                                    <else />
+                                    <eqIf data="$item.Position 'playerDown'">
+                                        <script>
+                                            // 需要在需要页面添加id为cms_ad_play_up的div
+                                            $(document).ready(function () {
+                                                var adImgUrl = "{{$item.Content}}"
+                                                var link = "{{$item.Link}}"
+                                                var target = "{{$item.Target}}"
+
+                                                var close = "{{$item.Close}}"
+                                                var className = "cms_ad_play_down_close" + "{{$item.ID}}"
+                                                if ($("#cms_ad_play_down")[0]) {
+                                                    oldHTML = $("#cms_ad_play_down")[0].innerHTML
+                                                    if (close == "1" && $("#cms_ad_play_down")[0]) {
+                                                        $("#cms_ad_play_down")[0].innerHTML = oldHTML + `<div  class="${className}" style="max-width:100%;width:100%;position: relative;display: inline-block;"><a href="${link}" target="_blank" style="width:100%"> <img src="${adImgUrl}" alt="" class="cms_ad_top_and_bootom_img" style="width:100%"><img src="${staticPath}/icon/cha.png" alt="" style="width: 28px;height: 28px; position: absolute; left: 100%; top:0; transform:translate(-100%, 0) ;" onclick="closeAd('${className}')"></div> `
+                                                    } else {
+                                                        $("#cms_ad_play_down")[0].innerHTML = oldHTML + `<a href="${link}"  target="_blank" style="width:100%"> <img src="${adImgUrl}" alt="" class="cms_ad_top_and_bootom_img" style="position: relative;"> `
+                                                    }
+                                                }
+
+
+                                            })
+                                        </script>
+                                        <else />
+                                        <eqIf data="$item.Position 'beforePlay'">
+                                            <!-- 排除播放暂停广告 -->
+                                            <else />
+                                            <eqIf data="$item.Position 'pausePlay'">
+                                                <!-- 排除暂停前广告 -->
+                                                <else />
+                                                <eqIf data="$item.Position 'slogan'">
+                                                    <!-- 排除slogan广告 -->
+                                                    <else />
+                                                    <eqIf data="$item.Position 'boot'">
+                                                        <!-- 排除引导页广告 -->
+                                                        <else />
+                                                        <!-- 普通悬浮广告 -->
+                                                        <img src="{{$item.Content}}" alt="" class="cms_ad_img"
+                                                            style="position: relative;">
+                                                        <!-- 是否可关闭 -->
+                                                        <eqIf data="$item.Close 1">
+
+                                                            <img src="{{$.Prefix}}/icon/cha.png" alt=""
+                                                                style="width: 28px;height: 28px; position: absolute; left: 100%; top:0; transform:translate(-100%, 0%) ;z-index: 1001;"
+                                                                onclick="closeAd('cms_ad_{{$item.Position}}');">
+                                                        </eqIf>
+                                                    </eqIf>
+                                                </eqIf>
+                                            </eqIf>
+                                        </eqIf>
+
+                                    </eqIf>
+                                </eqIf>
+
+                            </eqIf>
+
+                        </eqIf>
+
+                    </eqIf>
+
+                </eqIf>
+
+
+            </eqIf>
+            <!-- 文字广告 -->
+            <eqIf data="'text' $item.AdsType">
+                <!-- 判断是否为播放器上方 -->
+                <eqIf data="$item.Position 'playerUp' ">
+                    <script>
+                        // 需要在需要页面添加id为cms_ad_play_up的div
+                        $(document).ready(function () {
+                            var link = "{{$item.Link}}"
+                            var target = "{{$item.Target}}"
+                            var content = "{{$item.Content}}"
+                            if ($("#cms_ad_play_up")[0]) {
+                                oldHTML = $("#cms_ad_play_up")[0].innerHTML
+                                $("#cms_ad_play_up")[0].innerHTML = oldHTML + `<a href=${link} target="${target}"}>${content}</a>`
+                            }
+
+
+                        })
+                    </script>
+                </eqIf>
+                <!-- 判断是否为通用上方 -->
+                <eqIf data="$item.Position 'topBanner' ">
+                    <script>
+                        // 需要在需要页面添加id为cms_ad_top_banner的div
+                        $(document).ready(function () {
+                            var link = "{{$item.Link}}"
+                            var target = "{{$item.Target}}"
+                            var content = "{{$item.Content}}"
+                            if ($("#cms_ad_top_banner")[0]) {
+                                oldHTML = $("#cms_ad_top_banner")[0].innerHTML
+                                $("#cms_ad_top_banner")[0].innerHTML = oldHTML + `<a href=${link} target="${target}"}>${content}</a>`
+                            }
+
+
+                        })
+                    </script>
+                </eqIf>
+                <!-- 判断是否为播放器下方 -->
+                <eqIf data="$item.Position 'playerDown'">
+                    <script>
+                        // 需要在需要页面添加id为cms_ad_play_down的div
+                        $(document).ready(function () {
+                            var link = "{{$item.Link}}"
+                            var target = "{{$item.Target}}"
+                            var content = "{{$item.Content}}"
+                            if ($("#cms_ad_play_down")[0]) {
+                                oldHTML = $("#cms_ad_play_down")[0].innerHTML
+                                $("#cms_ad_play_down")[0].innerHTML = oldHTML + `<a href=${link} target="${target}"}>${content}</a>`
+                            }
+
+
+                        })
+                    </script>
+                </eqIf>
+                <!-- 判断是否为下方通用 -->
+                <eqIf data="$item.Position 'bottomBanner' ">
+                    <script>
+                        // 需要在需要页面添加id为cms_ad_top_banner的div
+                        $(document).ready(function () {
+                            var link = "{{$item.Link}}"
+                            var target = "{{$item.Target}}"
+                            var content = "{{$item.Content}}"
+                            if ($("#cms_ad_bottom_banner")[0]) {
+                                oldHTML = $("#cms_ad_bottom_banner")[0].innerHTML
+                                $("#cms_ad_bottom_banner")[0].innerHTML = oldHTML + `<a href=${link} target="${target}"} >${content}</a>`
+                            }
+
+                        })
+                    </script>
+                </eqIf>
+
+            </eqIf>
+            <!-- 自定义广告 -->
+            <eqIf data="$item.AdsType 'custom'">
+                <!-- 上方通用横幅 -->
+                <eqIf data="$item.Position 'topBanner' ">
+                    <script>
+                        // 需要在需要页面添加id为cms_ad_top_banner的div
+                        $(document).ready(function () {
+                            var link = "{{$item.Link}}"
+                            var target = "{{$item.Target}}"
+                            var content = "{{$item.Custom}}"
+                            if ($("#cms_ad_top_banner")[0]) {
+                                oldHTML = $("#cms_ad_top_banner")[0].innerHTML
+                                $("#cms_ad_top_banner")[0].innerHTML = oldHTML + content
+                                const scriptElement = $("#cms_ad_top_banner")[0].querySelector('script');
+                                eval(scriptElement?.innerHTML);
+                            }
+                        })
+                    </script>
+                </eqIf>
+                <!-- 播放器上 -->
+                <eqIf data="$item.Position 'playerUp' ">
+                    <script>
+                        // 需要在需要页面添加id为cms_ad_play_up的div
+                        $(document).ready(function () {
+                            var link = "{{$item.Link}}"
+                            var target = "{{$item.Target}}"
+                            var content = "{{$item.Custom}}"
+                            if ($("#cms_ad_play_up")[0]) {
+                                oldHTML = $("#cms_ad_play_up")[0].innerHTML
+                                $("#cms_ad_play_up")[0].innerHTML = oldHTML + content
+                                const scriptElement = $("#cms_ad_play_up")[0].querySelector('script');
+                                eval(scriptElement?.innerHTML);
+                            }
+
+
+                        })
+                    </script>
+                </eqIf>
+                <!-- 下方通用横幅 -->
+                <eqIf data="$item.Position 'bottomBanner' ">
+                    <script>
+                        // 需要在需要页面添加id为cms_ad_top_banner的div
+                        $(document).ready(function () {
+                            var link = "{{$item.Link}}"
+                            var target = "{{$item.Target}}"
+                            var content = "{{$item.Custom}}"
+                            if ($("#cms_ad_bottom_banner")[0]) {
+                                oldHTML = $("#cms_ad_bottom_banner")[0].innerHTML
+                                $("#cms_ad_bottom_banner")[0].innerHTML = oldHTML + content
+                                const scriptElement = $("#cms_ad_bottom_banner")[0].querySelector('script');
+                                eval(scriptElement?.innerHTML);
+                            }
+                        })
+                    </script>
+                </eqIf>
+                <!-- 判断是否为播放器下方 -->
+                <eqIf data="$item.Position 'playerDown'">
+                    <script>
+                        // 需要在需要页面添加id为cms_ad_play_down的div
+                        $(document).ready(function () {
+                            var link = "{{$item.Link}}"
+                            var target = "{{$item.Target}}"
+                            var content = "{{$item.Custom}}"
+                            if ($("#cms_ad_play_down")[0]) {
+                                oldHTML = $("#cms_ad_play_down")[0].innerHTML
+                                $("#cms_ad_play_down")[0].innerHTML = oldHTML + content
+                                const scriptElement = $("#cms_ad_play_down")[0].querySelector('script');
+                                eval(scriptElement?.innerHTML);
+                            }
+
+
+                        })
+                    </script>
+                </eqIf>
+
+            </eqIf>
+        </a>
+    </foreach>
+</getAdsList>
+<!-- 全部通用自定义 -->
+<getAdsList name="$List" position="generalCustom">
+    <foreach name="$item" index="$index" data="$List.List">
+        <eqIf data="$item.AdsType 'custom'">
+            <showHtml html="$item.Custom" />
+        </eqIf>
+    </foreach>
+</getAdsList>
+<!-- 广告 -->
+<script>
+    // 广告关闭
+    function closeAd(domName) {
+
+        event.stopPropagation()
+        event.preventDefault()
+        $(`.${domName}`).hide()
+    }
+    // 首页广告关闭
+    function closeAdHome() {
+        event.stopPropagation()
+        event.preventDefault()
+        $('#cms_home_ad').hide()
+    }
+</script>
+
+<!-- 弹出公告dom -->
+<div id="cms_notice_popUp_box">
+    <!-- 头部 -->
+    <div id="cms_notice_up_header">
+        <div style="font-size: 20px;color: #222; letter-spacing: 1px;font-weight: 700;">公告</div>
+        <p style="width: 24px; height: 24px; border-radius: 99px; border: 2px solid #fff; display: flex; justify-content: center; align-items: center; position: absolute;;"
+            class="cms_notice_close">
+            <img src="{{$.Prefix}}/icon/quxiao.svg" alt="" srcset="" style="width: 10px; height: 10px;">
+        </p>
+    </div>
+    <!-- 主体 -->
+    <div id="cms_notice_Up_content_box">
+        <!-- 内容部分 -->
+        <div class="cms_notice_up_text_box">
+            <!-- 公告名称 -->
+            <div class="cms_notice_Up_content_box_name" style="max-height: 58px !important;">
+
+            </div>
+            <!-- 公告内容 -->
+            <div class="cms_notice_Up_content_box_main">
+
+            </div>
+        </div>
+        <!-- 查看详情链接 -->
+        <div class="cms_notice_Up_content_box_a"
+            style="display: flex; justify-content: space-between; padding: 10px; background-color: #F8f8f8; align-items: center; border-radius: 0 0 5px 5px;">
+
+        </div>
+    </div>
+    <!-- 底部 -->
+    <div id="cms_notice_up_footer" style="display: flex; justify-content:center;">
+        <div class="cms_notice_up_footer_button cms_notice_up_footer_button_up">
+            上一条
+        </div>
+        <div class="cms_notice_up_footer_button cms_notice_up_footer_button_down">
+            下一条
+        </div>
+    </div>
+</div>
+
+<!-- 弹出公告遮罩层dom -->
+<div id="cms_notice_notification">
+</div>
+
+
+
+
+<!-- 公告js -->
+<script>
+    // 是否弹出公告
+    var morpop = false;
+
+    //弹窗公告数组
+    var noticeUpDomArr = []
+
+    //普通公告数组
+    var noticeDomArr = []
+
+    //是否存在弹窗类公告
+    var cmsNoticeUpExist = false
+
+    //是否显示弹窗(模板传入)
+    var cmsNoticeState = data.noticeState
+
+    //索引，初始为0，下一页+1，上一页-1,普通公告中用于获取点击的是第几条公告
+    var index = 0
+
+    //点击类型,当点击普通轮播公告是修改为true，用于替换dom内容
+    var clickType = false
+
+    // 初始化 
+    $(document).ready(() => {
+        //判断是否存在弹窗公告和是否已经阅读过公告
+        if (morpop && cmsNoticeUpExist) {
+            $("#cms_notice_popUp_box").show()
+            $("#cms_notice_notification").show()
+        } else {
+            $("#cms_notice_popUp_box").hide()
+            $("#cms_notice_notification").hide()
+        }
+
+        //判断是否为只有一条
+        if (index + 1 == noticeUpDomArr.length) {
+            $(".cms_notice_up_footer_button_down")[0].innerHTML = '关闭'
+        }
+    })
+
+
+
+
+    // 渲染函数 
+    function renderNoticeDom(noticeDomArr) {
+        // 判断当前是否为第一条和节点是否存在 第一条不显示上一条按钮
+        if (index === 0 && $(".cms_notice_up_footer_button_up")[0]) {
+            $(".cms_notice_up_footer_button_up").hide()
+        } else {
+            $(".cms_notice_up_footer_button_up").show()
+        }
+        //判断当前是否为最后一条
+        if (index < noticeDomArr.length - 1 && $('.cms_notice_up_footer_button_down')[0]) {
+            $('.cms_notice_up_footer_button_down')[0].innerHTML = '下一条'
+        } else {
+            $('.cms_notice_up_footer_button_down')[0].innerHTML = '关闭'
+
+        }
+        // 判断当前数组数据是否存在
+        if (noticeDomArr[index]) {
+            //判断当前公告有无url控制显示是否拥有查看详情按钮
+            if (noticeDomArr[index].url != '' && noticeDomArr[index].url != undefined) {
+                $(".cms_notice_Up_content_box_a").show()
+                cmsNoticeUrlDom = `<a href="${noticeDomArr[index].url}" target="_blank" class='cms_notice_more_a' style="width:100%"> 查看详情 </a><img src='${staticPath}/icon/right.svg' class="cms_notice_more_icon">`
+            } else {
+                //无url情况innerHTML避免切换导致的残留
+                $(".cms_notice_Up_content_box_a")[0].innerHTML = ''
+                $(".cms_notice_Up_content_box_a").hide()
+            }
+            //判断当前节点是否存在,存在修改内容，不存在不操作避免报错
+            if ($("#cms_notice_Up_content_box")[0]) {
+                $(".cms_notice_Up_content_box_name")[0].innerHTML = noticeDomArr[index].name
+                $(".cms_notice_Up_content_box_main")[0].innerHTML = noticeDomArr[index].content
+
+                if ($(".cms_notice_Up_content_box_a")[0] && noticeDomArr[index].url != '' && noticeDomArr[index].url != undefined) {
+                    $(".cms_notice_Up_content_box_a")[0].innerHTML = cmsNoticeUrlDom
+                }
+
+            }
+        }
+
+    }
+
+
+
+    //下一条点击事件
+    $(".cms_notice_up_footer_button_down").click(function () {
+        // 判断当前下标修改显示内容
+        if ($(".cms_notice_up_footer_button_down")[0].innerHTML == '关闭') {
+            $("#cms_notice_popUp_box").hide()
+            $("#cms_notice_notification").hide()
+            index = 0
+            var oneArr = JSON.parse(sessionStorage.getItem('cms_notic_oneArr')) || []
+            noticeUpDomArr.forEach(item => {
+                if (item.state == "2") {
+                    oneArr.push(item.id)
+                }
+            })
+
+            sessionStorage.setItem('cms_notic_oneArr', JSON.stringify(oneArr))
+            sessionStorage.setItem('cms_notic', 1)
+
+            return
+        }
+
+        if (!clickType) {
+            if (index < noticeUpDomArr.length - 1) {
+                index++
+                renderNoticeDom(noticeUpDomArr)
+            }
+        } else {
+            if (index < noticeDomArr.length - 1) {
+                index++
+                renderNoticeDom(noticeDomArr)
+            }
+
+        }
+
+
+        if ($(".cms_notice_up_footer_button_down")[0]) {
+            if (!clickType) {
+                if (index + 1 == noticeUpDomArr.length) {
+                    $(".cms_notice_up_footer_button_down")[0].innerHTML = '关闭'
+                }
+            } else {
+                if (index + 1 == noticeDomArr.length) {
+                    $(".cms_notice_up_footer_button_down")[0].innerHTML = '关闭'
+                }
+            }
+
+        }
+    })
+
+    // 上一条点击事件
+    $(".cms_notice_up_footer_button_up").click(function () {
+        if (index - 1 >= 0) {
+            index--
+            if (!clickType) {
+                renderNoticeDom(noticeUpDomArr)
+            } else {
+                renderNoticeDom(noticeDomArr)
+            }
+        }
+        if (index + 1 < noticeUpDomArr.length) {
+            $(".cms_notice_up_footer_button_down")[0].innerHTML = '下一条'
+
+        }
+    })
+
+    //点击关闭公告栏
+    $(".cms_notice_close").click(function () {
+        $("#cms_notice_popUp_box").hide()
+        $("#cms_notice_notification").hide()
+        index = 0
+        var oneArr = JSON.parse(sessionStorage.getItem('cms_notic_oneArr')) || []
+        noticeUpDomArr.forEach(item => {
+            if (item.state == "2") {
+                oneArr.push(item.id)
+            }
+        })
+
+        sessionStorage.setItem('cms_notic_oneArr', JSON.stringify(oneArr))
+        sessionStorage.setItem('cms_notic', 1)
+
+    })
+
+    $(document).ready(function () {
+        // 初始化渲染
+        renderNoticeDom(noticeUpDomArr)
+    })
+
+
+    //轮播类公告
+    var cmsNoticeOrdinaryState = data.noticeOrdinaryState
+    var cmsNoticeExist = false
+
+    $(document).ready(() => {
+        // 判断是否需要公告和是否有公告
+        if (cmsNoticeExist) {
+            $("#cms_notice_ordinary_box").show()
+            if ($(".cms_notice_ordinary_icon")[0]) {
+                $(".cms_notice_ordinary_icon")[0].innerHTML = `<img src="${staticPath}/icon/gonggao.svg" alt="" >`
+            }
+
+        } else {
+            $("#cms_notice_ordinary_box").hide()
+        }
+
+    })
+
+
+    // 是否为首页
+    var isHome = data.popnot
+    $(document).ready(() => {
+        if (!isHome) {
+            $("#cms_notice_popUp_box").hide()
+            $("#cms_notice_notification").hide()
+        }
+    })
+
+    //生成轮播
+
+    $(document).ready(() => {
+        if (cmsNoticeExist) {
+            var cmsNoticeSwiper = new Swiper(".cms_swiper_notice_box", {
+                loop: true,
+                direction: 'vertical',
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false
+                }
+            });
+        }
+    })
+
+    //普通公告点击事件
+    function noticeClick(clickIndex) {
+        index = clickIndex
+        clickType = true
+        $("#cms_notice_popUp_box").show()
+        $("#cms_notice_notification").show()
+        renderNoticeDom(noticeDomArr)
+    }
+
+</script>
+
+<!-- 公告dom -->
+<getNoticeList name="$List">
+    <foreach name="$item" index="$index" data="$List.List">
+        <!-- 普通滚动公告 -->
+        <eqIf data="$item.NoticeType 2">
+            <script>
+                // 是否存在滚动公告，默认false，false不显示dom
+                cmsNoticeExist = true
+
+                var noticeNameOrdinary = '{{$item.Name}}'
+                var item = {
+                    name: '{{$item.Name}}',
+                    content: '{{$item.Content}}',
+                    url: '{{$item.Link}}',
+                    state: "{{$item.PopupTrigger}}",
+                    id: '{{$item.ID}}',
+                    sort: '{{$item.Sort}}'
+                }
+
+                noticeDomArr.unshift(item)
+
+            </script>
+        </eqIf>
+        <!-- 弹窗公告 -->
+        <eqIf data="$item.NoticeType 1">
+            <script>
+                // 是否存在弹出公告，默认false，false不显示dom
+                cmsNoticeUpExist = true;
+                var item = {
+                    name: '{{$item.Name}}',
+                    content: '{{$item.Content}}',
+                    url: '{{$item.Link}}',
+                    state: "{{$item.PopupTrigger}}",
+                    id: '{{$item.ID}}',
+                    sort: '{{$item.Sort}}'
+                }
+
+                if (sessionStorage.getItem('cms_notic')) {
+                    var oneArr = sessionStorage.getItem('cms_notic_oneArr')
+                    if (oneArr) {
+
+                        if (!oneArr.includes(item.id)) {
+                            morpop = true;
+                            noticeUpDomArr.unshift(item)
+
+                        }
+                    }
+                    // if (item.state == '1') {
+                    //     morpop = true;
+                    //     noticeUpDomArr.unshift(item)
+                    // }
+
+                } else {
+                    morpop = true
+                    noticeUpDomArr.unshift(item)
+                }
+
+                // noticeUpDomArr.unshift(item)
+
+            </script>
+
+        </eqIf>
+    </foreach>
+    <!-- 弹出公告 -->
+    <style>
+
+    </style>
+
+</getNoticeList>
+
+<!-- 公告js（轮播） -->
+<script>
+    if ($('.cms_notice_swiper')[0]) {
+        noticeDomArr.forEach((item, index) => {
+            var oldNoticeHTML = $('.cms_notice_swiper')[0].innerHTML
+            $('.cms_notice_swiper')[0].innerHTML = oldNoticeHTML + `<div  class="swiper-slide cms_swiper_slide_notice " onclick="noticeClick(${index})" >${item.name}</div>`
+
+        })
+    }
+</script>
+
+<!-- 侧边栏（app下载） -->
+<ul class="stui-extra clearfix" id="cms_app_downloads">
+
+    <if data="$.G.App.Android">
+        <li class="cms_util_li cms_app_hover">
+            <a class="cms_apk_download">
+
+                <svg style="width: 18px;height: 18px;" class="tem_side_svg tem_anzuo_svg" aria-hidden="true">
+                    <use xlink:href="#icon-anzhuologo"></use>
+                </svg>
+                <div class="cms_sideslip">
+
+                    <p id="cms_qrcode_apk" style="margin: 0;"></p>
+
+
+                </div>
+                <p class="cms_util_text">&nbsp;APK</p>
+            </a>
+        </li>
+    </if>
+
+    <if data="$.G.App.Ios.Url">
+        <li class="cms_util_li cms_app_hover">
+            <a class="cms_ios_download">
+                <svg style="width: 18px;height: 18px;" class="tem_side_svg tem_ios_svg" aria-hidden="true">
+                    <use xlink:href="#icon-ios"></use>
+                </svg>
+                <div class="cms_sideslip">
+
+                    <p id="cms_qrcode_ios" style="margin: 0;"></p>
+
+                </div>
+                <p class="cms_util_text">&nbsp;IOS</p>
+            </a>
+
+        </li>
+    </if>
+
+    <if data="$.State.OpenCustomer">
+        <li class="cms_util_li" id="cms_service_ku">
+            <a class="">
+                <!-- <div>
+                    <svg width="22px" height="22px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <title>客服</title>
+                        <g id="个人中心" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="编组-4" transform="translate(-120.000000, -30.000000)" fill="#999999"
+                                fill-rule="nonzero">
+                                <g id="编组-46" transform="translate(120.000000, 28.000000)">
+                                    <g id="客服" transform="translate(0.000000, 2.000000)">
+                                        <rect id="矩形" opacity="0" x="0" y="0" width="22" height="22"></rect>
+                                        <path
+                                            d="M21.1476562,31.5902344 C23.1328125,31.5902344 24.8923828,30.3064453 25.5035156,28.415625 C25.5445313,28.2884766 25.4871094,28.153125 25.3640625,28.0957031 C25.2410156,28.0423828 25.0974609,28.0875 25.0318359,28.2023437 C25.0236328,28.2146484 24.3263672,29.3425781 21.5988281,29.7117187 C21.2091797,29.7650391 20.8113281,29.79375 20.4175781,29.79375 C18.5103516,29.79375 17.6572266,29.071875 17.6490234,29.0677734 C17.5505859,28.9816406 17.4070312,28.9816406 17.3044922,29.0636719 C17.2060547,29.1457031 17.1814453,29.2933594 17.2511719,29.4041016 C18.0878906,30.7494141 19.5767578,31.5861328 21.1476562,31.5902344 L21.1476562,31.5902344 Z"
+                                            id="路径"></path>
+                                        <path
+                                            d="M33.1529297,16.3611328 C31.2785156,11.2875 26.4263672,7.66171875 20.7169922,7.66171875 C15.0322266,7.66171875 10.1923828,11.2546875 8.30566406,16.2955078 C8.20722656,16.1847656 8.1046875,16.078125 7.99394531,15.9837891 C9.06445312,9.83964844 14.3513672,5.16796875 20.7251953,5.16796875 C27.0703125,5.16796875 32.3408203,9.79453125 33.4482422,15.8935547 C33.3333984,16.0412109 33.2349609,16.1970703 33.1529297,16.3611328 Z M35.8025391,14.7 C35.7779297,14.7 35.7574219,14.7041016 35.7328125,14.7041016 C34.1373047,7.79296875 28.0341797,2.63730469 20.7210937,2.63730469 C13.2070312,2.63730469 6.96445312,8.08007812 5.58222656,15.2783203 C4.20820312,15.5326172 3.20742187,16.734375 3.21557494,18.1330078 L3.21557494,23.8546875 C3.21557494,25.4583984 4.50351562,26.7585937 6.09082031,26.7585937 C6.98496094,26.7585937 7.7765625,26.3361328 8.3015625,25.6880859 C9.57304687,29.0390625 12.140625,31.7460938 15.4300781,33.1816406 C15.4710937,33.0996094 15.5203125,33.0216797 15.5736328,32.9478516 C15.6269531,32.8822266 15.684375,32.8248047 15.7335937,32.8248047 C15.7828125,32.8248047 15.8320312,32.8412109 15.8730469,32.8699219 C15.1142578,32.3039063 12.3785156,29.4082031 11.7837891,25.3599609 C11.5253906,23.5798828 12.8583984,21.8285156 14.4128906,21.5414062 C16.9066406,21.0779297 19.3880859,20.5488281 21.8818359,20.0935547 C23.4691406,19.8064453 24.5519531,18.9328125 25.2123047,17.4849609 C25.3681641,17.1445312 25.59375,16.4595703 25.6962891,15.4751953 C25.7208984,15.3275391 25.8480469,15.2167969 25.9998047,15.2167969 C26.0982422,15.2167969 26.1884766,15.2660156 26.2458984,15.3439453 L26.315625,15.3029297 C27.3,16.7302734 29.2482422,19.8925781 29.5271484,23.2230469 C29.8470703,27.0333984 29.6707031,29.6419922 26.7544922,32.3121094 L26.7421875,32.3244141 C26.7011719,32.3695313 26.6765625,32.4269531 26.6765625,32.4884766 C26.6765625,32.5664062 26.7175781,32.6402344 26.7832031,32.68125 C26.8078125,32.6894531 26.8324219,32.7058594 26.8570312,32.7140625 C26.8775391,32.7181641 26.8939453,32.7222656 26.9144531,32.7263672 C26.9349609,32.7263672 26.9513672,32.7222656 26.9677734,32.7140625 C27.0087891,32.6935547 27.0498047,32.6689453 27.0908203,32.6443359 C30.0685547,30.9996094 32.3080078,28.2802734 33.3457031,25.0400391 C33.778981,25.6784038 34.444021,26.1227447 35.1996094,26.2787109 C33.9691406,31.89375 28.9570312,35.4128906 22.7513672,35.9419922 C22.3576172,34.9822266 21.4224609,34.3587891 20.3888672,34.3628906 C18.9861328,34.3628906 17.8458984,35.4744141 17.8458984,36.8443359 C17.8458984,38.2142578 18.9861328,39.3257992 20.3888672,39.3257992 C21.4798828,39.3298828 22.4519531,38.6326172 22.7964844,37.5990234 C29.9783203,37.0166016 35.7369141,32.746875 36.9386719,26.1146484 C38.0337891,25.6634766 38.7474989,24.5970703 38.7474989,23.4117187 L38.7474989,17.6326172 C38.7556641,16.0125 37.4349609,14.7 35.8025391,14.7 Z"
+                                            id="形状"></path>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+                </div> -->
+                <svg style="width: 18px;height: 18px;" class="tem_side_svg tem_kefu_svg" aria-hidden="true">
+                    <use xlink:href="#icon-kefu-mianxing"></use>
+                </svg>
+
+                <p class="cms_util_text">客服</p>
+            </a>
+
+        </li>
+    </if>
+    <if data="$.State.OpenLeaveMsg">
+        <li class="cms_util_li" id="cms_contact_ku" onclick="openContact()">
+            <a class="">
+                <svg style="width: 18px;height: 18px;" class="tem_side_svg tem_liuyan_svg" aria-hidden="true">
+                    <use xlink:href="#icon-liuyan-fill"></use>
+                </svg>
+                <p class="cms_util_text">留言</p>
+            </a>
+
+        </li>
+    </if>
+
+    <div id="cms_go_top" style="display: none;">
+        <li class="cms_util_li">
+            <a class="" href="javascript:;">
+                <svg style="width: 18px;height: 18px;" class="tem_side_svg tem_jiantou_svg" aria-hidden="true">
+                    <use xlink:href="#icon-arrow-up"></use>
+                </svg>
+            </a>
+
+        </li>
+    </div>
+</ul>
+
+<!-- 侧边栏（app下载） -->
+<script src="{{$.Prefix}}/js/jquery.qrcode.min.js"></script>
+<script>
+    $(document).ready(function () {
+        let apkUrl = '';
+        const temAppAndr = "{{$.G.App.Android}}";
+        if (temAppAndr.startsWith("http")) {
+            apkUrl = temAppAndr
+        } else {
+            apkUrl = location.origin + temAppAndr;
+        }
+        const iosUrl = location.origin + "/libs/ios/downloads.html"
+        if ($("#cms_qrcode_apk").length > 0) {
+            $("#cms_qrcode_apk").qrcode({
+                render: "canvas", // 渲染方式有table方式（IE兼容）和canvas方式
+                width: 160, //宽度 
+                height: 160, //高度 
+                text: temUtf16to8(apkUrl), //内容 
+                typeNumber: -1,//计算模式
+                correctLevel: 2,//二维码纠错级别
+                background: "#ffffff",//背景颜色
+                foreground: "#000000"  //二维码颜色
+
+            });
+        }
+        if ($("#cms_qrcode_ios").length > 0) {
+            $("#cms_qrcode_ios").qrcode({
+                render: "canvas", // 渲染方式有table方式（IE兼容）和canvas方式
+                width: 160, //宽度 
+                height: 160, //高度 
+                text: iosUrl, //内容 
+                typeNumber: -1,//计算模式
+                correctLevel: 2,//二维码纠错级别
+                background: "#ffffff",//背景颜色
+                foreground: "#000000"  //二维码颜色
+
+            });
+        }
+
+
+        //判断当前浏览器环境
+        function isH5() {
+            var ua = navigator.userAgent;
+            if (ua.indexOf("Mobile") > -1 || ua.indexOf("Android") > -1 || ua.indexOf("iPhone") > -1 || ua.indexOf("iPad") > -1) {
+
+                return true;
+
+            } else {
+                return false;
+            }
+        }
+        const pcState = isH5()
+        $(".cms_apk_download").click(() => {
+            if (isH5()) {
+
+                window.location.href = "{{$.G.App.Android}}"
+            } else {
+
+            }
+        })
+        $(".cms_ios_download").click(() => {
+            if (isH5()) {
+                window.location.href = "/libs/ios/downloads.html"
+            } else {
+
+            }
+        })
+
+        //回到顶部
+        $(window).scroll(function () {
+            if ($(window).scrollTop() >= 500) {
+                $('#cms_go_top').css('display', 'block');
+            } else {
+                $('#cms_go_top').css('display', 'none');
+            }
+        });
+
+        $('#cms_go_top').click(function () {
+
+            $('html,body').animate({ 'scrollTop': 0 });
+        })
+
+        //触摸显示
+        $(".cms_app_hover").mousemove(function () {
+            const index = $(".cms_app_hover").index(this)
+            if (!pcState) {
+                $(".cms_sideslip").eq(index).show()
+            }
+
+        })
+        //离开隐藏
+        $(".cms_app_hover").mouseleave(function () {
+            const index = $(".cms_app_hover").index(this)
+            if (!pcState) {
+                $(".cms_sideslip").eq(index).hide()
+            }
+        })
+    })
+    $(document).ready(() => {
+        $('#cms_go_top').hide()
+    })
+
+</script>
+
+<!-- 是否开启会员 -->
+
+
+<getUserInfo name="$Info">
+    <if data="$Info.Open">
+        <if data="$Info.IsLogin">
+            <script>
+                temUserInfo = {{ $Info }};
+                sessionStorage.removeItem('tem_mem_no_log')
+            </script>
+            <else />
+            <script>
+                if (sessionStorage.getItem('tem_mem_no_log') === '1') {
+                    temRemoveToken()
+                    sessionStorage.removeItem('tem_mem_no_log')
+                } else if (temGetCookie("Token")) {
+                    sessionStorage.setItem('tem_mem_no_log', 1)
+                }
+            </script>
+        </if>
+        <style>
+            .cms_charging_mode_div_vip,
+            .cms_charging_mode_div_gold,
+            .cms_charging_lin_div_vip,
+            .cms_charging_lin_div_gold {
+                display: block;
+            }
+        </style>
+        <else />
+        <script>
+            temRemoveToken()
+        </script>
+    </if>
+</getUserInfo>
+
+<!-- 客服 -->
+<if data="$.State.OpenCustomer">
+    <script>
+        var scriptElement1 = document.createElement("script");
+        let sym1 = location.origin
+        scriptElement1.src = (sym1) + "/api/v1/assets/layer/ai_service_diy_1.js";
+        scriptElement1.id = "service_js";
+        scriptElement1.charset = "UTF-8";
+        if (temUserInfo.info?.id) {
+            scriptElement1.setAttribute('data-source', '2')
+            $('#cms_service_ku').click(function (params) {
+                serCtr.open(temUserInfo.info.id);
+            })
+        } else {
+            scriptElement1.setAttribute('data-source', '3')
+            scriptElement1.setAttribute('data-eventid', 'cms_service_ku')
+        }
+        scriptElement1.setAttribute('data-title', '在线客服')
+        scriptElement1.setAttribute('data-adicon', '')
+        document.head.appendChild(scriptElement1);
+    </script>
+</if>
+
+<!-- 留言 -->
+<if data="$.State.OpenLeaveMsg">
+    <script>
+        var scriptElement = document.createElement("script");
+        let sym = location.origin
+        scriptElement.src = (sym) + "/api/v1/assets/js/leaveMsg.js?v=1696989092";
+        scriptElement.id = "leave_js";
+        scriptElement.charset = "UTF-8";
+        document.head.appendChild(scriptElement);
+    </script>
+    <script>
+        // $(document).ready(function () {
+        //     scriptElement.onload = function () {
+        //         // leaveMag.open('', 'white')
+        //     }
+        // })
+        function openContact() {
+            leaveMag.open('', 'white')
+        }
+    </script>
+</if>
+
+
+<!-- {{/*<if data="$.G.MemberOpen">
+    <style>
+        .cms_charging_mode_div_vip,
+        .cms_charging_mode_div_gold,
+        .cms_charging_lin_div_vip,
+        .cms_charging_lin_div_gold {
+            display: block ;
+        }
+    </style>
+    <else />
+    <script>
+        temRemoveToken()
+    </script>
+</if>*/}} -->
+
+<!-- 登录 -->
+<div id="cmstem_login">
+    <img onclick="closeTemLogin()" class="cmstem_log_close_img" src="/iyplayer/default/images/layui/close.svg">
+    <div class="layuicms-tab layuicms-tab-brief" lay-filter="docDemoTabBrief">
+        <ul class="layuicms-tab-title" id="tem_log_res_tit">
+            <if data="$.G.SmsOpen">
+                <li>短信<span class="cmstem_acc_log">登录</span><span class="cmstem_acc_res">注册</span>
+                </li>
+            </if>
+            <if data="$.G.EmailOpen">
+                <li>邮箱<span class="cmstem_acc_log">登录</span><span class="cmstem_acc_res">注册</span>
+                </li>
+            </if>
+            <li>账号<span class="cmstem_acc_log">登录</span><span class="cmstem_acc_res">注册</span>
+            </li>
+        </ul>
+        <div class="layuicms-tab-content" id="tem_log_res_cont">
+            <if data="$.G.SmsOpen">
+                <div class="layuicms-tab-item ">
+                    <form class="layuicms-form" lay-filter="formIphBox">
+                        <div class="layuicms-form-item">
+                            <div class="layuicms-input-block">
+                                <input id="temMemIphone" type="number" name="phone" required placeholder="请输入手机号"
+                                    lay-verify="required|phone" lay-verType="tips" autocomplete="off"
+                                    class="layuicms-input">
+                                <i class="cmstem_inp_requ">*</i>
+                                <img class="tem_inp_icon" src="{{$.Prefix}}/icon/account.svg" alt="">
+                            </div>
+                        </div>
+                        <div class="layuicms-form-item cmstem_vali_code">
+                            <div class="layuicms-input-block">
+                                <input type="number" name="code" required placeholder="请输入验证码"
+                                    lay-verify="required|number" lay-verType="tips" autocomplete="off"
+                                    class="layuicms-input">
+                                <i class="cmstem_inp_requ">*</i>
+                                <img class="tem_inp_icon" src="{{$.Prefix}}/icon/code.svg" alt="">
+                            </div>
+                            <button disabled="true" onclick="memberBoxOpt.sendIphoneCode()" id="temMemIphoneCode"
+                                type="button" class="layuicms-btn layuicms-btn-radius layuicms-btn-disabled"><i
+                                    class="layuicms-icon layuicms-anim layuicms-anim-rotate layuicms-anim-loop layuicms-icon-loading"
+                                    style="display: none;"></i>
+                                <span>发送验证码</span></button>
+                            <button disabled="true" id="temMemIphoneCodeSend" type="button"
+                                class="layuicms-btn layuicms-btn-radius layuicms-btn-disabled"><span
+                                    id="temMemIphoneCodeSec"></span>s后失效</button>
+                        </div>
+                        <if data="$.G.Info.Agent">
+                            <div class="layuicms-form-item tem_res_agent_code">
+                                <div class="layuicms-input-block">
+                                    <input type="text" name="inviteCode" required placeholder="邀请码" autocomplete="off"
+                                        class="layuicms-input">
+                                    <img class="tem_inp_icon" src="/iyads/icon/code.svg" alt="">
+                                </div>
+                            </div>
+                        </if>
+                        <button class="tem_login_btn layuicms-btn" lay-submit lay-filter="temLoginformIph">
+                            <i class="layuicms-icon layuicms-anim layuicms-anim-rotate layuicms-anim-loop layuicms-icon-loading"
+                                style="display: none;"></i><span class="cmstem_acc_log">登录</span><span
+                                class="cmstem_acc_res">注册</span></button>
+
+                        <div class="layuicms-form-item cmstem_user_agreement">
+                            <div class="layuicms-input-block ">
+                                <input lay-filter="temCheckAgree" type="radio" name="agreement" value="true"
+                                    title="同意《个人信息保护政策》《服务政策》">
+                            </div>
+                        </div>
+
+                        <p class="cmstem_login_noacc">
+                            还没有账号？去 <span class="cmstem_go_fra cmstem_acc_log" onclick="temGoRes()">注册</span> <span
+                                class="cmstem_go_fra cmstem_acc_res" onclick="temGoLog()">登录</span>
+                        </p>
+                    </form>
+                </div>
+            </if>
+            <if data="$.G.EmailOpen">
+                <div class="layuicms-tab-item ">
+                    <form class="layuicms-form" lay-filter="formEmaBox">
+                        <div class="layuicms-form-item">
+                            <div class="layuicms-input-block">
+                                <input id="temMemEmail" type="text" name="email" required placeholder="请输入邮箱"
+                                    lay-verify="required|email" lay-verType="tips" autocomplete="off"
+                                    class="layuicms-input">
+                                <i class="cmstem_inp_requ">*</i>
+                                <img class="tem_inp_icon" src="{{$.Prefix}}/icon/account.svg" alt="">
+                            </div>
+                        </div>
+                        <div class="layuicms-form-item cmstem_vali_code">
+                            <div class="layuicms-input-block">
+                                <input type="number" name="code" required placeholder="请输入验证码"
+                                    lay-verify="required|number" lay-verType="tips" autocomplete="off"
+                                    class="layuicms-input">
+                                <i class="cmstem_inp_requ">*</i>
+                                <img class="tem_inp_icon" src="{{$.Prefix}}/icon/code.svg" alt="">
+                            </div>
+                            <button disabled="true" onclick="memberBoxOpt.sendEmailCode()" id="temMemEmailCode"
+                                type="button" class="layuicms-btn layuicms-btn-radius layuicms-btn-disabled">
+                                <i class="layuicms-icon layuicms-anim layuicms-anim-rotate layuicms-anim-loop layuicms-icon-loading"
+                                    style="display: none;"></i>
+                                <span>发送验证码</span></button>
+                            <button disabled="true" id="temMemEmailCodeSend" type="button"
+                                class="layuicms-btn layuicms-btn-radius layuicms-btn-disabled"><span
+                                    id="temMemEmailCodeSec"></span>s后失效</button>
+                        </div>
+                        <if data="$.G.Info.Agent">
+                            <div class="layuicms-form-item tem_res_agent_code">
+                                <div class="layuicms-input-block">
+                                    <input type="text" name="inviteCode" required placeholder="邀请码" autocomplete="off"
+                                        class="layuicms-input">
+                                    <img class="tem_inp_icon" src="/iyads/icon/code.svg" alt="">
+                                </div>
+                            </div>
+                        </if>
+                        <button class="tem_login_btn layuicms-btn" lay-submit lay-filter="temLoginformEma">
+                            <i class="layuicms-icon layuicms-anim layuicms-anim-rotate layuicms-anim-loop layuicms-icon-loading"
+                                style="display: none;"></i><span class="cmstem_acc_log">登录</span><span
+                                class="cmstem_acc_res">注册</span></button>
+
+                        <div class="layuicms-form-item cmstem_user_agreement">
+                            <div class="layuicms-input-block ">
+                                <input lay-filter="temCheckAgree" type="radio" name="agreement" value="true"
+                                    title="同意《个人信息保护政策》《服务政策》">
+                            </div>
+                        </div>
+
+                        <p class="cmstem_login_noacc">
+                            还没有账号？去 <span class="cmstem_go_fra cmstem_acc_log" onclick="temGoRes()">注册</span> <span
+                                class="cmstem_go_fra cmstem_acc_res" onclick="temGoLog()">登录</span>
+                        </p>
+                    </form>
+                </div>
+            </if>
+            <div class="layuicms-tab-item">
+                <form class="layuicms-form" lay-filter="formAccBox">
+                    <div class="layuicms-form-item">
+                        <div class="layuicms-input-block">
+                            <input type="text" name="userName" required placeholder="请输入账号" lay-verify="username"
+                                lay-verType="tips" autocomplete="off" class="layuicms-input">
+                            <i class="cmstem_inp_requ">*</i>
+                            <img class="tem_inp_icon" src="{{$.Prefix}}/icon/account.svg" alt="">
+                        </div>
+                    </div>
+                    <div class="layuicms-form-item">
+                        <div class="layuicms-input-block">
+                            <input type="password" name="password" required placeholder="请输入密码" lay-verify="password"
+                                lay-verType="tips" autocomplete="off" class="layuicms-input">
+                            <i class="cmstem_inp_requ">*</i>
+                            <img class="tem_inp_icon" src="{{$.Prefix}}/icon/pass.svg" alt="">
+                        </div>
+                    </div>
+                    <div class="cmstem_acc_res_firpass">
+
+                    </div>
+                    <if data="$.G.Info.Agent">
+                        <div class="layuicms-form-item tem_res_agent_code">
+                            <div class="layuicms-input-block">
+                                <input type="text" name="inviteCode" required placeholder="邀请码" autocomplete="off"
+                                    class="layuicms-input">
+                                <img class="tem_inp_icon" src="/iyads/icon/code.svg" alt="">
+                            </div>
+                        </div>
+                    </if>
+                    <button class="tem_login_btn layuicms-btn" lay-submit lay-filter="temLoginformAcc">
+                        <i class="layuicms-icon layuicms-anim layuicms-anim-rotate layuicms-anim-loop layuicms-icon-loading"
+                            style="display: none;"></i><span class="cmstem_acc_log">登录</span><span
+                            class="cmstem_acc_res">注册</span></button>
+
+                    <div class="layuicms-form-item cmstem_user_agreement">
+                        <div class="layuicms-input-block ">
+                            <input lay-filter="temCheckAgree" type="radio" name="agreement" value="true"
+                                title="同意《个人信息保护政策》《服务政策》">
+                        </div>
+                    </div>
+
+                    <p class="cmstem_login_noacc">
+                        还没有账号？去 <span class="cmstem_go_fra cmstem_acc_log" onclick="temGoRes()">注册</span> <span
+                            class="cmstem_go_fra cmstem_acc_res" onclick="temGoLog()">登录</span>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

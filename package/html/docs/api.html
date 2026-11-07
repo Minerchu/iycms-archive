@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{$.Data.Info.Name}}</title>
+    <link href="{{$.Static }}/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{$.Static }}/css/dashboard.css" rel="stylesheet">
+    <link href="{{$.Static }}/css/index.css" rel="stylesheet">
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <import file="/public/header.html" />
+    <!-- 主体内容 -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- 侧边栏 -->
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse"
+                style="overflow: auto;">
+                <div class="cms_api_input">
+                    <input type="text" placeholder="API搜索" class="search_input">
+                    <button class="search buttonSearch">搜索</button>
+                </div>
+                <div class="sidebar-sticky" style="margin-top: 12px;">
+                    <import file="/public/left_menu.html" data=".Data.Item" />
+                    <div class="">
+                        <ul class="nav flex-column menu searchMenu">
+                        </ul>
+                    </div>
+                    <div style="width: 1px; height: 80px;">
+
+                    </div>
+                </div>
+            </nav>
+            <!-- 主体内容 -->
+            <import file="/public/main.html" />
+        </div>
+    </div>
+
+    <div class="h5-menu">
+        <div style="width: 100%;display: flex;justify-content: end; padding: 20px;">
+            <div class="closeMenu">
+                <svg t="1715237934698" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" p-id="4276" width="20" height="20">
+                    <path
+                        d="M560.7 512l389.2-389.2c13.5-13.5 13.5-35.3 0-48.7-13.5-13.5-35.3-13.5-48.7 0L512 463.3 122.8 74.1c-13.5-13.5-35.3-13.5-48.7 0-13.5 13.5-13.5 35.3 0 48.7L463.3 512 74.1 901.2c-13.5 13.5-13.5 35.3 0 48.7 6.7 6.7 15.5 10.1 24.4 10.1 8.8 0 17.6-3.4 24.4-10.1L512 560.7l389.2 389.2c6.7 6.7 15.5 10.1 24.4 10.1 8.8 0 17.6-3.4 24.4-10.1 13.5-13.5 13.5-35.3 0-48.7L560.7 512z"
+                        p-id="4277" fill="#000000"></path>
+                </svg>
+            </div>
+        </div>
+        <import file="/public/left_menu.html" data=".Data.Item" />
+        <div class="">
+            <ul class="nav flex-column menu searchMenu">
+            </ul>
+        </div>
+    </div>
+
+</body>
+
+<script src="{{$.Static }}/js/jquery-1.11.3.min.js"></script>
+<script src="{{$.Static }}/js/clipboard.min.js"></script>
+<script src="{{$.Static }}/js/index.js"></script>
+
+<script>
+    //面包屑
+    $(document).ready(function () {
+        let data = {{ $.Data.Item }}
+        let key = {{ $.Key }}
+        let crumbDataDom = getCrumbDataDom(data, key)
+        $('.crumb').html(crumbDataDom)
+
+        //搜索
+        $('.search').click(function () {
+            let keyWord = $(".search_input").val();
+            keyWord = keyWord.toLowerCase()
+            let keyWord1 = keyWord.toUpperCase()
+            getSearchDomDebounce(data,keyWord,keyWord1)
+            searchHighlightDebounce(keyWord,keyWord1)
+        })
+
+        $('.search_input').keyup(() => {
+            let keyWord = $(".search_input").val();
+            keyWord = keyWord.toLowerCase()
+            let keyWord1 = keyWord.toUpperCase()
+            getSearchDomDebounce(data,keyWord,keyWord1)
+            searchHighlightDebounce(keyWord,keyWord1)
+            // searchDebounce(data,keyWord)
+
+        })
+        //h5搜索
+        $('.search_input1').keyup(() => {
+            let keyWord1 = $(".search_input1").val();
+            keyWord1 = keyWord1.toLowerCase()
+            let keyWord2 = keyWord.toUpperCase()
+            getSearchH5DomDebounce(data,keyWord1,keyWord2)
+            searchHighlightDebounce(keyWord,keyWord2)
+
+        })
+    })
+
+    //打开菜单
+    $(document).ready(function () {
+        openMenu() //打开侧边栏菜单
+        countApi() //计算API数量
+        replaceDash() //替换-
+        replaceTab() //替换tab
+    })
+
+    //复制
+    var clipboard = new ClipboardJS('.copy');
+    clipboard.on('success', function (e) {
+        e.clearSelection();
+        alert("复制成功")
+    });
+    clipboard.on('error', function (e) {
+        alert("复制失败")
+    });
+    // 下载
+    $(document).ready(() => {
+        $('#downloadJson').click(() => {
+        const url = location.origin + {{ $.Postman }}
+        download(url,'api.json')
+    })
+    })
+     // 下载
+     $(document).ready(() => {
+        $('.downJsonWeb_btn').click(() => {
+        const url = location.origin + {{ $.Postman }}
+        download(url,'api.json')
+    })
+    })
+
+</script>
+
+</html>

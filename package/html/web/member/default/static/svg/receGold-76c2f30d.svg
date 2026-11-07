@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="80px" height="80px" viewBox="0 0 80 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>签到领金币</title>
+    <defs>
+        <linearGradient x1="50%" y1="0.803103147%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#26DB8B" offset="0%"></stop>
+            <stop stop-color="#16C67F" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="83.9966003%" y1="87.4087789%" x2="8.70633431%" y2="4.56495277%" id="linearGradient-2">
+            <stop stop-color="#5BEEB0" offset="0%"></stop>
+            <stop stop-color="#70EEB8" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="60.2457977%" y1="72.4899305%" x2="50.2720295%" y2="47.7756726%" id="linearGradient-3">
+            <stop stop-color="#E7FFF5" offset="0%"></stop>
+            <stop stop-color="#C2FFE5" offset="15.44%"></stop>
+            <stop stop-color="#4AECA6" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="49.9986659%" y1="92.8587744%" x2="49.9986659%" y2="0.00045153522%" id="linearGradient-4">
+            <stop stop-color="#6BEEB6" offset="0%"></stop>
+            <stop stop-color="#7DF1BE" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50.0005767%" y1="-7225.99259%" x2="50.0005767%" y2="-7325.98015%" id="linearGradient-5">
+            <stop stop-color="#8FFFCE" offset="0%"></stop>
+            <stop stop-color="#F4FFFA" offset="52.47%"></stop>
+            <stop stop-color="#8FFFCE" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="49.9992331%" y1="92.5403766%" x2="49.9992331%" y2="0.00173806848%" id="linearGradient-6">
+            <stop stop-color="#35E89B" offset="0%"></stop>
+            <stop stop-color="#CAFFE8" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="10.2208119%" y1="49.9999266%" x2="44.466901%" y2="49.9999266%" id="linearGradient-7">
+            <stop stop-color="#D8FFEF" offset="0%"></stop>
+            <stop stop-color="#B3FFDE" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="85.0062359%" y1="49.9927414%" x2="-0.00169683258%" y2="49.9927414%" id="linearGradient-8">
+            <stop stop-color="#29F69D" offset="0%"></stop>
+            <stop stop-color="#A6FFD6" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="85.0062359%" y1="49.9927414%" x2="-0.00169683258%" y2="49.9927414%" id="linearGradient-9">
+            <stop stop-color="#29F69D" offset="0%"></stop>
+            <stop stop-color="#A6FFD6" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="会员" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="会员中心" transform="translate(-51.000000, -544.000000)">
+            <g id="签到领金币" transform="translate(51.000000, 544.000000)">
+                <circle id="椭圆形" fill="url(#linearGradient-1)" cx="40" cy="40" r="40"></circle>
+                <g id="编组-26" transform="translate(12.690965, 20.000000)" fill-rule="nonzero">
+                    <path d="M39.6640079,40 L14.3422529,40 C10.8415365,40 8.00359981,36.7656342 8.00359981,32.7759054 L8.00359981,10.5365645 C8.00359981,6.54683571 10.8415365,3.31246991 14.3422529,3.31246991 L39.6649467,3.31246991 C43.1656632,3.31246991 46.0035998,6.54683571 46.0035998,10.5365645 L46.0035998,32.7748355 C46.0035998,36.7656342 43.1647244,40 39.6640079,40 Z" id="路径" fill="url(#linearGradient-2)"></path>
+                    <path d="M40.059235,36.5356016 L14.0512306,36.5356016 C12.2421986,36.5356016 10.774883,34.8643877 10.774883,32.8015835 L10.774883,17.5670037 L43.3346438,17.5670037 L43.3346438,32.8015835 C43.3346438,34.8643877 41.868267,36.5356016 40.059235,36.5356016 Z" id="路径" fill="url(#linearGradient-3)"></path>
+                    <path d="M40.1812766,3.31246991 L13.8249843,3.31246991 C10.6096574,3.31246991 8.00359981,6.38206815 8.00359981,10.1685123 L8.00359981,17.5295565 L46.0035998,17.5295565 L46.0035998,10.1685123 C46.0035998,6.38206815 43.3966034,3.31246991 40.1812766,3.31246991 Z" id="路径" fill="url(#linearGradient-4)"></path>
+                    <path d="M40.059235,6.26544696 L14.0512306,6.26544696 C12.2421986,6.26544696 10.774883,7.93666078 10.774883,9.99946504 L10.774883,14.3497566 L43.3346438,14.3497566 L43.3346438,9.99946504 C43.3346438,7.9377307 41.868267,6.26544696 40.059235,6.26544696 Z" id="路径" fill="url(#linearGradient-5)"></path>
+                    <path d="M10.4133032,29.5351201 C10.4133032,29.5351201 25.6537509,32.3500776 33.1578086,28.3346707 C40.6618663,24.3192639 43,17.5670037 43,17.5670037 L29.4876978,21.4764885 L10.4133032,29.5351201 Z" id="路径" fill="url(#linearGradient-6)"></path>
+                    <path d="M10.8640835,17.5670037 C10.8640835,17.5670037 9.05355721,25.6791312 0,25.8214305 C9.36734474,31.987375 28.2908621,31.4267373 29.8403616,22.5774354 C39.0022172,25.1003049 42.9990744,17.5670037 42.9990744,17.5670037 L10.8640835,17.5670037 Z" id="路径" fill="url(#linearGradient-7)"></path>
+                    <path d="M35.4428659,8.91777671 C34.3978099,8.91777671 33.5517104,8.07361044 33.5517104,7.03257904 L33.5517104,1.95902209 C33.5517104,0.917990692 34.3988796,0.0738244263 35.4428659,0.0738244263 C36.4868521,0.0738244263 37.3340213,0.917990692 37.3340213,1.95902209 L37.3340213,7.03257904 C37.3340213,8.07361044 36.4879218,8.91777671 35.4428659,8.91777671 Z" id="路径" fill="url(#linearGradient-8)"></path>
+                    <path d="M18.3429214,8.89744824 C17.2572185,8.89744824 16.3768899,8.04793238 16.3768899,7.00048146 L16.3768899,1.89696678 C16.3768899,0.849515862 17.2572185,0 18.3429214,0 C19.4286243,0 20.3089529,0.849515862 20.3089529,1.89696678 L20.3089529,7.00048146 C20.3089529,8.04793238 19.4286243,8.89744824 18.3429214,8.89744824 Z" id="路径" fill="url(#linearGradient-9)"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

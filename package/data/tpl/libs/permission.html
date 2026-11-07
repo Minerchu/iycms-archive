@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>无法访问</title>
+</head>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .conent {
+        position: fixed;
+        width: 476px;
+        top: 40vh;
+        left: 50%;
+        margin-left: -238px;
+    }
+
+    .conent_title {
+        font-family: MicrosoftYaHei-Bold;
+        font-size: 32px;
+        color: #333333;
+        letter-spacing: 2px;
+        font-weight: 700;
+        line-height: 42px;
+        margin-bottom: 16px;
+    }
+
+    .conent_hint {
+        font-family: MicrosoftYaHei;
+        font-size: 16px;
+        color: #333333;
+        line-height: 21px;
+    }
+
+    .goback {
+        margin-top: 32px;
+        display: flex;
+        align-items: center;
+    }
+
+    .goback .goback_btn {
+        box-sizing: border-box;
+        text-align: center;
+        font-size: 14px;
+        cursor: pointer;
+        background-image: linear-gradient(90deg, #fea875 0%, #ff704c 100%);
+        border-radius: 16px;
+        width: 88px;
+        line-height: 32px;
+    }
+
+    .goback .goback_btn span {
+        user-select: none;
+        color: #ffffff;
+    }
+
+    .goback .goback_btn:hover span {
+        opacity: 0.7;
+    }
+
+    .goback .goback_btn:active span {
+        opacity: 1;
+    }
+
+    .goback p {
+        font-size: 16px;
+        color: #333333;
+        margin-left: 16px;
+    }
+
+    @media (max-width: 780px) {
+        .conent {
+            width: 80vw;
+            margin-left: -40vw;
+            top: 35vh;
+        }
+
+        .conent .conent_title {
+            font-size: 20px;
+        }
+
+        .conent .conent_hint {
+            font-size: 14px;
+        }
+
+        .conent .goback .goback_btn {
+            font-size: 14px;
+        }
+
+        .conent .goback p {
+            line-height: 14px;
+        }
+    }
+</style>
+
+<body>
+    <div class="conent">
+        <p class="conent_title">{{$.Permission_Tit}}</p>
+        <p class="conent_hint">{{$.Permission_Hint}}</p>
+        <div class="goback">
+            <a href="/">
+                <div class="goback_btn"><span>返回首页</span></div>
+            </a>
+            <p><span id="back_time">5</span>秒后自动返回</p>
+        </div>
+    </div>
+    <script>
+        var time = 5
+        function goIndex(params) {
+            if (time <= 1) {
+                location.replace('/')
+                return
+            }
+            time--;
+            const timeEle = document.getElementById('back_time');
+            timeEle.innerText = time
+            setTimeout(() => {
+                goIndex()
+            }, 1000);
+        }
+        setTimeout(() => {
+            goIndex()
+        }, 1000);
+    </script>
+</body>
+
+</html>

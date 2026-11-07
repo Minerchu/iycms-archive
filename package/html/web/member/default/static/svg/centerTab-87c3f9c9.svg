@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="184px" height="68px" viewBox="0 0 184 68" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>中</title>
+    <defs>
+        <path d="M1278.72418,506 L1401.27008,506 C1407.37534,505.999162 1412.50802,510.582461 1413.19526,516.648914 C1416.66452,547.232236 1418.93254,564.336295 1419.99933,567.961091 C1421.18417,571.98703 1425.19005,574 1432.01695,574 L1248,574 C1254.82338,573.984333 1258.82316,571.977191 1259.99933,567.978573 C1261.05845,564.37789 1263.32616,547.267407 1266.80248,516.647125 C1267.49048,510.582734 1272.62089,506.000865 1278.72418,506 Z" id="path-1"></path>
+        <filter x="-2.2%" y="-5.9%" width="104.3%" height="111.8%" filterUnits="objectBoundingBox" id="filter-2">
+            <feGaussianBlur stdDeviation="2" in="SourceAlpha" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="4" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.5 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="会员中心" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="中" transform="translate(-1248.000000, -506.000000)">
+            <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+            <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+        </g>
+    </g>
+</svg>

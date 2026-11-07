@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title></title>
+    <meta description="" />
+    <meta keyword="" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+</head>
+<body style="margin:0;padding:0;height:100vh;overflow:hidden;">
+<!-- <if data="$.channelId">-->
+    <script type="text/javascript">
+        document.cookie = "X-Host-Code={{$.channelId}}; domain={{$.host}}; path=/";
+    </script>
+<!-- </if>-->
+<iframe name="iosiframe" width="100%%" height="100%%" src="{{$.domain}}" frameborder="0" allowfullscreen></iframe>
+</body>
+</html>

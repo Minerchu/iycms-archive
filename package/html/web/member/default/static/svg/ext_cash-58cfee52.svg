@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="140px" height="140px" viewBox="0 0 140 140" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>提现</title>
+    <defs>
+        <filter x="-129.2%" y="-129.2%" width="358.3%" height="358.3%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="8" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="12" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 0.501960784   0 0 0 0 0.31372549  0 0 0 0.4 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="会员" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="个人中心-代理模式" transform="translate(-63.000000, -640.000000)">
+            <g id="提现" transform="translate(85.000000, 662.000000)">
+                <rect id="矩形" stroke="#FFFFFF" stroke-width="2" fill="#FFFFFF" x="1" y="1" width="94" height="94" rx="40"></rect>
+                <g id="编组" filter="url(#filter-1)" transform="translate(24.000000, 24.000000)">
+                    <polygon id="路径" points="0 0 48 0 48 48 0 48"></polygon>
+                    <path d="M44,12 L30,12 C23.372583,12 18,17.372583 18,24 C18,30.627417 23.372583,36 30,36 L44,36 L44,40 C44,41.1045695 43.1045695,42 42,42 L6,42 C4.8954305,42 4,41.1045695 4,40 L4,8 C4,6.8954305 4.8954305,6 6,6 L42,6 C43.1045695,6 44,6.8954305 44,8 L44,12 Z M30,16 L46,16 L46,32 L30,32 C25.581722,32 22,28.418278 22,24 C22,19.581722 25.581722,16 30,16 Z M30,22 L30,26 L36,26 L36,22 L30,22 Z" id="形状" fill="#FF8050" fill-rule="nonzero"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

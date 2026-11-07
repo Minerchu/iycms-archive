@@ -1,0 +1,57 @@
+<foreach name="$item" index="$index" data=".List">
+     <div class="module-item">
+          <div class="module-item-cover">
+               <div class="module-item-pic">
+                    <goLink href="/vod/detail.html"
+                         args="{id:$item.ID,type_id:$item.CategoryPid,cate_id:$item.CategoryChildId}"
+                         title="{{$item.Name}}">
+                    </goLink>
+                    <if data="$item.SurfacePlot">
+                         <img class="lazy lazyloaded" data-src="{{$item.SurfacePlot}}" src="{{$item.SurfacePlot}}" >
+                         <else />
+                         <img class="lazy lazyloaded" >
+                    </if>
+
+                    <div class="loading"></div>
+                    <eqIf data="$item.BuyMode 1">
+                         <eqIf data="$item.ChargingMode 2">
+                              <div class="cms_charging_mode_div_vip">
+                                   VIP
+                              </div>
+                         </eqIf>
+                         <eqIf data="$item.ChargingMode 3">
+                              <div class="cms_charging_mode_div_gold">
+                                   金币点播
+                              </div>
+                         </eqIf>
+                    </eqIf>
+               </div>
+               <div class="module-item-caption">
+                    <span>{{$item.Year}}</span>
+                    <span class="video-class">
+                         <foreach name="$j" index="$k" data="$item.Tag">
+                              {{$j.Name}}&nbsp;
+                         </foreach>
+                    </span>
+                    <span>
+                         <foreach name="$j" index="$k" data="$item.Areas">
+                              {{$j.Name}}&nbsp;
+                         </foreach>
+                    </span>
+               </div>
+
+          </div>
+          <ins class="adsbygoogle" style="display:block" data-ad-format="fluid" data-ad-layout-key="+1x+rx+1+2-3"
+               data-ad-client="ca-pub-9202557493139444" data-ad-slot="3565359158"></ins>
+          <script>
+               (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
+          <div class="module-item-titlebox">
+               <goLink href="/vod/detail.html" args="{id:$item.ID,type_id:$item.CategoryPid}" class="module-item-title"
+                    title="{{$item.Name}}">
+                    {{$item.Name}}
+               </goLink>
+          </div>
+     </div>
+
+</foreach>

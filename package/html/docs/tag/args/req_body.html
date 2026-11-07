@@ -1,0 +1,29 @@
+<if data=".Tpl.Request">
+	<li class="step" id="req-body">标签参数</li>
+	<table class="tb-parameter" style="margin-top: 24px;">
+		<thead>
+			<tr>
+				<th class="parameter-line" colspan="5" align="left" bgcolor="EFF0F1" height="32px">
+					参数说明
+				</th>
+			</tr>
+		</thead>
+		<tr height="32px" align="left">
+			<th class="parameter-line">字段名</th>
+			<th class="parameter-line" width="70px">字段类型</th>
+			<th class="parameter-line">字段说明</th>
+			<th class="parameter-line" width="70px">必填项</th>
+			<th class="parameter-line" width="60px">默认值</th>
+		</tr>
+		<foreach name="$requestboditem" index="$reqindex" data=".Tpl.Request">
+			<tr height="32px" align="left" class="tr-param">
+				<td class="parameter-line depth{{$requestboditem.Depth}}">{{$requestboditem.Key}}</td>
+				<td class="parameter-line">{{$requestboditem.FileType}}</td>
+				<td class="parameter-line">{{$requestboditem.Description}}</td>
+				<td class="parameter-line">{{$requestboditem.Disabled}}</td>
+				<td class="parameter-line">{{$requestboditem.Value}}</td>
+			</tr>
+		</foreach>
+	</table>
+</if>
+

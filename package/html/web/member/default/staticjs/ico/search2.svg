@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>搜索2</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#F93A9B" offset="0%"></stop>
+            <stop stop-color="#F48D72" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="播放页" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="播放页1" transform="translate(-615.000000, -68.000000)" fill-rule="nonzero">
+            <g id="搜索2" transform="translate(615.000000, 68.000000)">
+                <rect id="矩形" fill="#FFFFFF" opacity="0" x="0" y="0" width="48" height="48"></rect>
+                <path d="M21.4458599,35.8917198 C13.3974522,35.8917198 7.00000002,29.4942675 7.00000002,21.4458599 C7.00000002,13.3974522 13.3974523,7.00000002 21.4458599,7.00000002 C29.4942675,7.00000002 35.8917198,13.3974523 35.8917198,21.4458599 C35.8917198,29.4942675 29.4942675,35.8917198 21.4458599,35.8917198 Z M21.4458599,31.7643313 C27.2242038,31.7643313 31.7643313,27.2242038 31.7643313,21.4458599 C31.7643313,15.6675159 27.2242038,11.1273885 21.4458599,11.1273885 C15.6675159,11.1273885 11.1273885,15.6675159 11.1273885,21.4458599 C11.1273885,27.2242038 15.6675159,31.7643313 21.4458599,31.7643313 Z M33.6216561,31.7643313 L39.4,37.5426752 L36.5108281,40.4318472 L30.7324841,34.6535032 L33.6216561,31.7643313 Z" id="形状" fill="url(#linearGradient-2)"></path>
+            </g>
+        </g>
+    </g>
+</svg>

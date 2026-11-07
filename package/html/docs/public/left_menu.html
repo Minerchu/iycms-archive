@@ -1,0 +1,24 @@
+<ul class="nav flex-column pcMenu">
+	<foreach data="." name="$item" index="$index">
+		<li class="nav-item h40 nva-bcd">
+			<eqIf data="$.Key $item.Index">
+				<a href="?key={{$item.Index}}" class="nav-link active click-menu active1 scroll-active">
+					<div style="font-size: 16px;">
+						<!-- <span class="icon-abc">▲</span> -->
+						{{$item.Name}} 
+					</div>
+				</a>
+				<else />
+				<a href="?key={{$item.Index}}" class="nav-link ">
+					<div style="font-size: 16px;">
+						<!-- <span  class="icon-abc">▲</span> -->
+						{{$item.Name}}
+					</div>
+				</a>
+			</eqIf>
+			<if data="$item.Child">
+				<import file="/public/left_menu1.html" data="$item.Child" />
+			</if>
+		</li>
+	</foreach>
+</ul>

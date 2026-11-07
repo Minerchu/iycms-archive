@@ -1,0 +1,116 @@
+﻿<import file="/public/header.html" data="'index'" />
+<!--========== Header ==============-->
+
+<!--  Banner Start -->
+<getVideosList name="$List" page="1" limit="10" banner="true">
+   <!-- 无轮播最小高度处理，防止高度坍塌 -->
+   <div class="cms-seo033-home-banner-null-minHight">
+      <import file='/public/banner.html' data="$List" />
+   </div>
+</getVideosList>
+<!--  Banner End -->
+<import file="../libs/web/notice/index.html" />
+
+<!-- cms_ad -->
+<div class="container" style="margin-top: 10px;">
+   <import file="../libs/web/ads/index.html" data="topBanner" />
+</div>
+
+
+
+<!-- 首页各分类 Start -->
+<!-- new -->
+<getVideoGroupList name="$List" limit="$.G.Nums.HomeNUm">
+   <foreach name="$item" index="$index" data="$List.List">
+      <gtIf data="$item.VideoList.Total 0">
+         <section class="gen-section-padding-2" style="padding: 0px; padding-top: 20px;">
+            <div class="container">
+               <div class="row">
+                  <div class="col-xl-6 col-lg-6 col-md-6">
+                     <h4 class="gen-heading-title">{{$item.CateInfo.Name}}推荐</h4>
+                  </div>
+                  <div class="col-xl-6 col-lg-6 col-md-6 d-none d-md-inline-block">
+                     <div class="gen-movie-action">
+                        <div class="gen-btn-container text-right">
+                           <goLink href="/vod/list.html" class="gen-button gen-button-flat"
+                              args="{type_id:$item.CateInfo.ID}">
+                              <span class="text">More {{$item.CateInfo.Name}}</span>
+                           </goLink>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="row mt-3">
+                  <div class="col-12">
+                     <div class="gen-style-2">
+                        <div class="owl-carousel owl-loaded owl-drag" data-dots="false" data-nav="true"
+                           data-desk_num="5" data-lap_num="3" data-tab_num="2" data-mob_num="1" data-mob_sm="1"
+                           data-autoplay="false" data-loop="false" data-margin="30">
+                           <import file="/public/swiperVodList.html" data="$item.VideoList" />
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </section>
+      </gtIf>
+   </foreach>
+</getVideoGroupList>
+<!-- old -->
+<!-- {{/*<getVideoCategoryList name="$CateList">
+   <foreach name="$vo" index="$idx" data="$CateList.List">
+      <gtIf data="$vo.ReferCount 0">
+         <section class="gen-section-padding-2" style="padding: 0px; padding-top: 20px;">
+            <div class="container">
+               <div class="row">
+                  <div class="col-xl-6 col-lg-6 col-md-6">
+                     <h4 class="gen-heading-title">{{$vo.Name}}推荐</h4>
+                  </div>
+                  <div class="col-xl-6 col-lg-6 col-md-6 d-none d-md-inline-block">
+                     <div class="gen-movie-action">
+                        <div class="gen-btn-container text-right">
+                           <goLink href="/vod/list.html" class="gen-button gen-button-flat" args="{type_id:$vo.ID}">
+                              <span class="text">More {{$vo.Name}}</span>
+                           </goLink>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="row mt-3">
+                  <div class="col-12">
+                     <div class="gen-style-2">
+                        <div class="owl-carousel owl-loaded owl-drag" data-dots="false" data-nav="true"
+                           data-desk_num="5" data-lap_num="3" data-tab_num="2" data-mob_num="1" data-mob_sm="1"
+                           data-autoplay="false" data-loop="false" data-margin="30">
+                           <getVideosList name="$List3" page="1" limit="$.G.Nums.HomeNUm" categoryPid="$vo.ID">
+                              <import file="/public/swiperVodList.html" data="$List3" />
+                           </getVideosList>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </section>
+      </gtIf>
+   </foreach>
+</getVideoCategoryList>*/}} -->
+
+<!-- 首页各分类 End -->
+
+
+<!-- 热门推荐 start -->
+<getVideosList name="$List3" page="1" limit="$.G.Nums.VodHotNum" random="true" hots="1">
+   <gtIf data="$List3.Count 0">
+      <import file="public/hotBanner.html" data="$List3" />
+   </gtIf>
+</getVideosList>
+<!-- 热门推荐 End -->
+<!-- cms_ad -->
+<div class="container" style="margin-top: 10px;">
+   <import file="../libs/web/ads/index.html" data="bottomBanner" />
+</div>
+<!-- 首页弹出广告 -->
+<import file="../libs/web/ads/index.html" data="homePop" />
+<!-- footer start -->
+<import file="/public/footer.html" data="'home'" />
+<!-- footer End -->

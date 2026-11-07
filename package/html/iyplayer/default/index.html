@@ -1,0 +1,292 @@
+<!-- <link rel="stylesheet" href="/iyplayer/default/css/layui.min.css" />
+<script src="/iyplayer/default/js/layui.min.js"></script> -->
+<div id="tem_vod_box">
+    <link rel="stylesheet" href="/iyplayer/default/css/aliplayer.css" />
+    <link rel="stylesheet" href="/iyplayer/default/css/play_comm.css">
+    <script charset="utf-8" type="text/javascript" src="/iyplayer/default/js/aliplayer.js"></script>
+    <!-- <script charset="utf-8" type="text/javascript" src="/iyplayer/default/js/aliplayer2202.js"></script> -->
+    <script charset="utf-8" type="text/javascript" src="/iyplayer/default/js/aliplayer-components.js"></script>
+    <script src="/iyads/js/axios.js"></script>
+    <script src="/iyads/js/http.js"></script>
+    <script>
+        /*     Id           int64  `structs:"id"`
+            VideoID      int64  ` structs:"videoID"`
+            Name         string `comment:"名称" structs:"name"`
+            Sort         int    `comment:"序号" structs:"sort"`
+            File         string `comment:"文件地址" structs:"file"`
+            ChargingMode int    `comment:"收费模式 1免费 2vip免费 3金币点播" validate:"required"`
+            Currency     int    `comment:"金币数量" structs:"currency"`
+            SubTitle     string `comment:"副标题" structs:"subTitle"`
+            Status       int    `structs:"status"`
+            Tag          string `comment:标识" structs:"tag"` */
+        var adTime = 0;//广告时间
+        var player = null;
+        var vodLongTime = 0;//视频时长
+        var noTarLongTime = 0;
+        var vodCurrent = 0;//当前播放时长
+        var lineId = Number('{{Iyplayer.id}}');
+        var vodId = Number('{{Iyplayer.videoID}}')
+        var chargingMode = '{{Iyplayer.chargingMode}}'
+        var temUserIsLogin = false;//是否登录
+        var temUserObj = {
+            Group: 1,//1普通,2vip
+            GoldTag: 2,//1是,不是
+        };
+        var temAliAutoVod = true;//阿里视频自动播放
+        var toMemberHref = '{{$.G.MemberPath}}';
+        var temNextVod = '{{Iyplayer.nextLineId}}';
+        var temLineList = {{ Iyplayer.LineList }};
+        var temMemSysStatus = {{ $.G.MemberOpen }};
+        var temCurVodFile = "{{Iyplayer.file}}";
+        var temTryAndSee = {{ $.G.TryWatchConfig }}; //试看
+        var temIsJsonPa = {{ Iyplayer.IsJsonParse }};//是否是Json解析
+        var temJsonPlayAddr = {{ Iyplayer.jsonPlayAddress }};//Json播放地址
+        var temJsonVodPath = {{ Iyplayer.ParseAddress }};
+        var temPlayRenderCode = {{ Iyplayer.renderCode }};//自定义播放器渲染后代码
+        var temPlayParseMode = {{ Iyplayer.parseMode }};//播放器渲染模式 0-默认, 1-解析模式，2-高级模式，3-json解析模式
+        var temAlipVodIsFull = false;
+        var temViewPortIsPc = $(window).width() > 599;
+        var temVodPlayerConfig = {{ Iyplayer.PlayerConfig }};//播放图片配置
+        var temLiveSource = 0;//是否为直播源
+        var temBrowseInfo = {{ Iyplayer.BrowseInfo }};//视频进度
+        // console.log('图片配置',temVodPlayerConfig)
+        // var stopFollowVodClick = true;
+        var temVideoAdClose = function (manyVideoAd) {
+            // manyVideoAd.pauseManyVideoAd();
+            let result = false;
+            if (!temMemSysStatus) {
+                if (temUserIsLogin) {
+                    if (temUserObj.Group == 2) {
+                        result = true;
+                    } else {
+                        layer.msg('非vip无法跳过视频', { icon: 7, offset: '50px', time: 1000 });
+                    }
+                } else {
+                    layer.msg('请先登录', { icon: 7, offset: '50px', time: 1000 });
+                }
+                if (result) {
+                    manyVideoAd.closeManyVideoAd()
+                } else {
+                    // manyVideoAd.playManyVideoAd()
+                }
+            } else {
+                manyVideoAd.closeManyVideoAd()
+            }
+        };
+        temLineList.forEach(item => {
+            const file = item.file.substring(3)
+            const file2 = atob(file);
+            item.source = decodeURIComponent(file2)
+        })
+        var temAlipComponents = [];
+        if (!temIsJsonPa) {
+            temAlipComponents.push({
+                name: 'PlaylistComponent',
+                type: AliPlayerComponent.PlaylistComponent,
+                args: [temLineList]
+            })
+        }
+        var temAlipComAdOpt = {
+            startAd: {
+                target: '_self',
+                close: '2',
+            },
+            puseAd: {
+                target: '_self',
+                close: '1',
+            },
+        }
+
+        var temRefreshTemDom = undefined;//刷新节点方法
+        var temCurDanmuComp = null;//弹幕组件;
+        var temDanmuTimer = null; //弹幕计时器;
+        var temDanmuInterval = 60;//弹幕请求间隔时长 s
+        var temBarrage = {{ Iyplayer.BarrageConfig }};//弹幕参数 open:1、0,needLogin:1、0;
+    </script>
+    <div class="aliplayer-box">
+        <foreach name="$item" index="$index" data="Iyplayer.LineList">
+            <goLink style="display: none;" class="tem_item_eps" href="$.U.Path" args="{line_id:$item.id}">
+            </goLink>
+        </foreach>
+        <div class="aliplayer" style="position: relative;">
+            <getAdsList name="$List" position="beforePlay">
+                <foreach name="$item" index="$index" data="$List.List">
+                    <eqIf data="$index 0">
+                        <eqIf data="$item.AdsType 'video'">
+                            <script>
+                                // temAlipComponents.push({
+                                //     name: 'VideoADComponent',
+                                //     type: AliPlayerComponent.VideoADComponent,
+                                //     args: ['{{$item.Content}}', '{{$item.Link}}', temVideoAdClose, 'VIP关闭广告']
+                                // })
+                                temAlipComponents.push({
+                                    name: 'ManyVideoADComponent',
+                                    type: AliPlayerComponent.ManyVideoADComponent,
+
+                                    args: [[
+                                        { adVideo: '{{$item.Content}}', adVideoLink: '{{$item.Link}}' },
+                                    ], temVideoAdClose, temMemSysStatus == 'true' ? 'VIP关闭广告' : '关闭广告']
+                                })
+                                temAliAutoVod = false;
+                            </script>
+                            <else />
+                            <eqIf data="$item.AdsType 'image'">
+                                <script>
+                                    adTime = '{{$item.AdTimer}}';
+                                    temAlipComAdOpt.startAd.target = "{{$item.Target}}";
+                                    temAlipComAdOpt.startAd.close = "{{$item.Close}}";
+                                    if (adTime && adTime != '0') {
+                                        temAlipComponents.push({
+                                            name: 'StartADComponent',
+                                            type: AliPlayerComponent.StartADComponent,
+                                            args: ['{{$item.Content}}', '{{$item.Link}}', '{{$item.AdTimer}}']
+                                        })
+                                    }
+                                </script>
+                            </eqIf>
+                            <!-- <div id="play_fir_img"
+                                style="width: 100%;height: 100%;position: absolute;z-index: 1001;display: none;">
+                                <a style="background-color: black;display: block;height: 100%;width: 100%;object-fit: cover; display: flex; align-items: center;justify-content: center;"
+                                    href="{{$item.Link}}" target="{{$item.Target}}">
+                                    <img src="{{$item.Content}}" alt="">
+    
+                                </a>
+                                <if data="$item.AdTimer">
+                                    <div class="adtime_box"
+                                        style="cursor: pointer; position: absolute; right: 8px; top:8px;z-index: 1001;padding: 4px 8px;background-color: #333333;">
+                                        <span style="font-size: 12px;margin-right: 6px; color: white;"
+                                            class="adtime_box_sec"></span>
+                                        <eqIf data="$item.Close 1">
+                                            <span onclick="jumpAd()" style="font-size: 12px;color: white;">跳过</span>
+                                        </eqIf>
+                                    </div>
+                                    <div onclick="$('#play_fir_img').hide()" class="adtime_box_close"
+                                        style="text-align: center;display: none;cursor: pointer; width: 44px;height: 24px; position: absolute; right:0;top:0;z-index: 1001;padding: 4px 8px;background-color: rgba(0, 0, 0, 0.5);">
+                                        <span style="font-size: 12px;color: white;">关闭</span>
+                                    </div>
+                                    <else />
+                                    <eqIf data="$item.Close 1">
+                                        <div style="cursor: pointer; width: 24px;height: 24px; position: absolute; left: 100%; top:0;transform:translate(-100%, 0%) ;z-index: 1001;padding: 4px;background-color: rgba(0, 0, 0, 0.5);"
+                                            onclick="$('#play_fir_img').hide()">
+                                            <img style="width: 100%;height: 100%;"
+                                                src="/iyplayer/default/images/aliplay/close.svg" alt="">
+                                        </div>
+                                    </eqIf>
+                                </if>
+                                <script>
+                                    adTime = "{{$item.AdTimer}}";
+                                    var timEle = $('.adtime_box_sec');
+                                    function minus(params) {
+                                        timEle.text(adTime + 's')
+                                        if (adTime < 0) {
+                                            $('.adtime_box').hide()
+                                            $('.adtime_box_close').show()
+                                            if (player) {
+                                                player.play()
+                                            } else {
+                                                $('#play_fir_img').hide()
+                                            }
+                                        } else {
+                                            setTimeout(() => {
+                                                adTime--;
+                                                minus()
+                                            }, 1000);
+                                        }
+                                    }
+                                        // $(document).ready(function () {
+                                        //     minus()
+                                        // })
+                                </script>
+                            </div> -->
+                        </eqIf>
+                        <else />
+                    </eqIf>
+                </foreach>
+
+            </getAdsList>
+            <getAdsList name="$List" position="pausePlay">
+                <foreach name="$item" index="$index" data="$List.List">
+                    <eqIf data="$index 0">
+                        <!-- <div id="play_stop_img"
+                            style="width: 100%;height: 70%;position: absolute;top:15%;z-index: 1001; display: none;align-items: center;justify-content: center;">
+                            <a href="{{$item.Link}}" target="{{$item.Target}}"
+                                style="position: relative;display: flex;max-width: 80%;max-height: 80%;background-color: black;">
+                                <img style="max-width: 100%;max-height: 100%;object-fit:contain" src="{{$item.Content}}"
+                                    alt="">
+                                <eqIf data="$item.Close 1">
+                                    <div style="cursor: pointer; width: 24px;height: 24px; position: absolute; right: 5px; top:5px;z-index: 1001;padding:2px 4px 4px;background-color: #333;"
+                                        onclick="$('#play_stop_img').hide();return false">
+                                        <img style="width: 100%;height: 100%;"
+                                            src="/iyplayer/default/images/aliplay/close.svg" alt="">
+                                    </div>
+                                </eqIf>
+                            </a>
+                        </div> -->
+                        <script>
+                            temAlipComAdOpt.puseAd.target = "{{$item.Target}}";
+                            temAlipComAdOpt.puseAd.close = "{{$item.Close}}";
+                            temAlipComponents.push({
+                                name: 'PauseADComponent',
+                                type: AliPlayerComponent.PauseADComponent,
+                                args: ['{{$item.Content}}', '{{$item.Link}}']
+                            })
+                        </script>
+                        <else />
+                    </eqIf>
+
+                </foreach>
+            </getAdsList>
+            <getUserInfo name="$Info">
+                <script>
+                    temUserObj.Group = '{{$Info.Info.Group}}';
+                    temUserObj.GoldTag = '{{$Info.Info.GoldTag}}'
+                </script>
+                <if data="$Info.Open">
+                    <if data="$Info.IsLogin">
+                        <script>temUserIsLogin = true</script>
+                        <else />
+                        <script>temUserIsLogin = false</script>
+                    </if>
+                </if>
+            </getUserInfo>
+            <div id="cms_no_shop" style="z-index: 97; display: none;">
+                <eqIf data="Iyplayer.chargingMode 3">
+                    <p class="cms_no_shop_title">该影片暂未购买</p>
+                    <p class="cms_no_shop_btn tem_vip_pc" onclick="goShopVod()">购买本片</p>
+                    <p class="cms_no_shop_btn tem_vip_h5" onclick="goShopVod(true)">购买本片</p>
+                    <else />
+                    <eqIf data="Iyplayer.chargingMode 2">
+                        <p class="cms_no_shop_title">该影片需要VIP</p>
+                        <p class="cms_no_shop_btn tem_vip_pc" onclick="goShopVod()">开通VIP</p>
+                        <p onclick="goShopVod(true)" class="cms_no_shop_btn tem_vip_h5">开通VIP</p>
+                        <else />
+                        <p class="cms_no_shop_other_title"></p>
+                    </eqIf>
+                </eqIf>
+            </div>
+            <div class="cms_tem_mask"></div>
+            <div class="cms_tem_pop">
+                <div class="cms_tem_pop_box">
+                    <div class="cms_tem_pop_top">
+                        <p>确认</p><img onclick="$('.cms_tem_mask').hide();$('.cms_tem_pop').hide()"
+                            style="width: 16px; height: 16px;cursor: pointer;"
+                            src="/iyplayer/default/images/aliplay/closeba.svg" alt="">
+                    </div>
+                    <div class="cms_tem_pop_cont">
+                        <p>购买本片需要支付<span style="color: #FF8E61;">{{Iyplayer.currency }}金币</span>,确定要购买吗？</p>
+                    </div>
+                    <div class="cms_tem_pop_bot">
+                        <p class="cms_clo" onclick="$('.cms_tem_mask').hide();$('.cms_tem_pop').hide()">取消</p>
+                        <p class="cms_sub" onclick="sureShopVod()">确定</p>
+                    </div>
+                </div>
+            </div>
+            <div class="tem_no_playfile"></div>
+            <div class="unVideo" id="J_prismPlayer" style="z-index:1"></div>
+            <div style="width: 100%;height: 100%;display: none;" id="custom_player_box"></div>
+            <goLink id="tem_next_vod" href="$.U.Path" args="{line_id:Iyplayer.nextLineId}">
+            </goLink>
+        </div>
+        <script src="/iyplayer/default/js/player.js"></script>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+<div class="list-items" style="gap: 45px;">
+    <foreach name="$item" index="$index" data="$List">
+        <div class="vertical-box cs-itembox" style="position: relative;width: calc((100% - 100px) / 3);">
+            <goLink href="/topic/detail.html" args="{id:$item.ID}">
+                <div class="image-box" style="width: 100%;">
+                    <img class="lazyload" data-original="{{$item.Cover}}" style="object-fit: cover;" />
+                </div>
+                <div class="title">{{esp $item.Name }}</div>
+            </goLink>
+        </div>
+    </foreach>
+</div>

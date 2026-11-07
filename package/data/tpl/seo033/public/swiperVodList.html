@@ -1,0 +1,70 @@
+<foreach name="$item" index="$index" data=".List">
+    <div class="item">
+        <div
+            class="movie type-movie status-publish has-post-thumbnail hentry movie_genre-action movie_genre-adventure movie_genre-drama">
+            <div class="gen-carousel-movies-style-2 movie-grid style-2">
+                <div class="gen-movie-contain">
+                    <div class="gen-movie-img" style="position: relative;">
+                        <if data="$item.SurfacePlot">
+                            <img data-original="{{$item.SurfacePlot}}" src="/static/images/loadingpic.jpg" alt="owl-carousel-video-image" class="cms-seo033-list-img cmslazyload"
+                                style="max-height: 224px; object-fit: cover;">
+
+                            <else />
+
+                            <img src="/static/images/no_img.png" alt="owl-carousel-video-image">
+                        </if>
+
+                        <div class="gen-movie-action">
+                            <goLink href="/vod/player.html"
+                                args="{type_id:$item.CategoryPid,cate_id:$item.CategoryChildId,id:$item.ID}"
+                                class="gen-button">
+                                <i class="fa fa-play"></i>
+                            </goLink>
+                        </div>
+                        <eqIf data="$item.BuyMode 1">
+                            <eqIf data="$item.ChargingMode 2">
+                                <div class="cms_charging_mode_div_vip">
+                                    VIP
+                                </div>
+                            </eqIf>
+                            <eqIf data="$item.ChargingMode 3">
+                                <div class="cms_charging_mode_div_gold">
+                                    金币点播
+                                </div>
+                            </eqIf>
+                        </eqIf>
+                    </div>
+                    <div class="gen-info-contain">
+                        <div class="gen-movie-info">
+                            <h3>
+                                <goLink href="/vod/player.html"
+                                    args="{type_id:$item.CategoryPid,cate_id:$item.CategoryChildId,id:$item.ID}">
+                                    {{$item.Name}}</goLink>
+                            </h3>
+                        </div>
+                        <div class="gen-movie-meta-holder">
+                            <ul>
+                                <li>
+                                    <Number expression="$item.Duration / 60" /> mins
+                                </li>
+                                <li>
+                                    <foreach name="$item1" index="$index1" data="$item.Category">
+                                        <eqIf data="$index1 0">
+                                            <else />
+                                            <goLink href="/vod/list.html"
+                                                args="{type_id:$item.CategoryPid,cate_id:$item.CategoryChildId}">
+                                                <span>
+                                                    {{$item1.Name}}
+                                                </span>
+                                            </goLink>
+                                        </eqIf>
+                                    </foreach>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</foreach>

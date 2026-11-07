@@ -1,0 +1,15 @@
+<foreach name="$item" index="$index" data=".">
+    <eqIf data="$item.Index $.Key">
+        <if data="$item.Dir">
+        	<if data="$item.Item">
+	            <import file="/public/right_menu.html" data="$item.Item"></import>
+			<else />
+		        <p style="padding:20px;">此项不支持展示</p>
+			</if>
+        <else />
+            <import file="/api/desc.html" data="$item"></import>
+        </if>
+    <else />
+        <import file="/api/index.html" data="$item.Item"></import>
+    </eqIf>
+</foreach>

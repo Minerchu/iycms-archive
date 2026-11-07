@@ -1,0 +1,250 @@
+/*公告*/
+/* 弹出公告盒子 */
+#cms_notice_popUp_box {
+  width: 420px;
+  min-height: 220px;
+  max-width: 420px;
+  max-height: 720px;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  /* z-index: 10001; */
+  background-color: #fff;
+  box-sizing: border-box;
+  padding: 0 24px 24px;
+  border-radius: 10px;
+  display: none;
+  z-index: 999999999;
+}
+
+/* 弹出公告头部 */
+#cms_notice_up_header {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-top: 12px;
+}
+
+/* 弹出公告内容盒子 */
+#cms_notice_Up_content_box {
+  width: 100%;
+  height: calc(95% - 60px);
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+/* 弹出遮罩层 */
+#cms_notice_notification {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100000;
+  width: 100vw;
+  height: 100vh;
+  display: none;
+}
+
+.cms_notice_up_footer_button {
+  font-weight: 400;
+  margin: 5px;
+  padding: 8px 20px;
+  font-size: 14px;
+  border: 2px solid #eee;
+  border-radius: 999px;
+  color: #eee;
+  background-color: var(--cms--notice--button);
+  margin-top: 20px;
+  line-height: 100%;
+}
+
+.cms_notice_up_footer_button:hover {
+  color: #ffffff !important;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.cms_notice_up_footer_button:hover {
+  color: #fff;
+}
+
+.cms_notice_Up_content_box_name {
+  padding: 10px;
+  font-size: 16px;
+  color: #222222;
+  white-space: normal;
+  word-wrap: break-word;
+  line-height: 24px;
+  font-weight: 700;
+  max-height: 58px !important;
+  overflow: hidden;
+}
+
+.cms_notice_Up_content_box_main {
+  padding: 10px;
+  font-size: 14px;
+  color: #000000ab;
+  line-height: 20px;
+  max-height: 450px;
+  overflow-y: auto;
+}
+
+.cms_notice_Up_content_box_main p {
+  white-space: normal;
+  word-wrap: break-word;
+  line-height: 28px;
+}
+
+/* 滚动条 */
+.cms_notice_Up_content_box_main::-webkit-scrollbar {
+  background-color: transparent !important;
+  width: 8px !important;
+}
+
+.cms_notice_Up_content_box_main::-webkit-scrollbar-thumb {
+  background-color: #d8d8d8 !important;
+  height: 50% !important;
+  border-radius: 999px !important;
+}
+
+/* 轮播公告盒子 */
+#cms_notice_ordinary_box {
+  height: 45px;
+  border-radius: 5px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+/* 轮播公告图标 */
+.cms_notice_ordinary_icon img {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+/* 轮播公告图标盒子 */
+.cms_notice_ordinary_icon {
+  padding-left: 10px;
+  flex-shrink: 0;
+}
+
+/* 轮播公告主盒子 */
+.cms_notice_ordinary_main {
+  width: 100%;
+  padding: 10px 10px;
+  font-size: 16px;
+}
+
+.cms_swiper_notice_box,
+.cms_notice_swiper {
+  width: 100% !important;
+  margin-top: 1px !important;
+  height: 22px !important;
+}
+
+.cms_swiper_slide_notice > p {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.cms_notice_Up_content_box_main > p > a {
+  color: #000000ab;
+}
+
+.cms_swiper_slide_notice {
+  display: inline-block !important;
+  line-height: 22px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.cms_notice_close {
+  right: 0;
+  top: 5;
+}
+
+.cms_swiper_slide_notice:hover,
+.cms_notice_close:hover {
+  cursor: pointer;
+}
+
+.cms_notice_more_a {
+  color: #000000ab !important;
+}
+
+.cms_notice_more_a:hover {
+  opacity: 0.7;
+}
+
+.cms_notice_up_text_box {
+  background-color: #ededed;
+  border-radius: 5px 5px 0 0;
+}
+
+.cms_notice_more_icon {
+  width: 14px;
+  height: 14px;
+}
+.cms_notice_Up_content_box_main a {
+  color: #551a8b !important;
+}
+
+/* H5端样式 */
+@media screen and (max-width: 760px) {
+  #cms_notice_popUp_box {
+    width: 312px;
+    min-height: 220px;
+    max-width: 312px;
+    max-height: 430px;
+    display: none;
+  }
+
+  #cms_notice_ordinary_box {
+    height: 35px !important;
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+
+  .cms_notice_ordinary_main {
+    padding: 10px 5px;
+  }
+
+  .cms_swiper_notice_box {
+    width: 100% !important;
+    font-size: 12px !important;
+    height: 22px !important;
+  }
+
+  .cms_swiper_slide_notice > p > span,
+  .cms_swiper_slide_notice {
+    overflow: hidden !important;
+  }
+
+  .cms_notice_ordinary_icon {
+    padding-left: 0px !important;
+    margin-left: 5px;
+  }
+
+  .cms_swiper_slide_notice {
+    line-height: 20px !important;
+  }
+
+  .cms_notice_Up_content_box_main {
+    max-height: 220px;
+    overflow-y: auto;
+  }
+
+  .cms_notice_up_footer_button:hover {
+    color: #fff !important;
+  }
+
+  .cms_swiper_notice_box {
+    margin-bottom: 0px !important;
+  }
+}

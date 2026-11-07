@@ -1,0 +1,20 @@
+<getUserInfo name="$Info">
+    <if data="$Info.Open">
+        <if data="$Info.IsLogin">
+            <if data="$Info.Info.HeadImg">
+                <a href="/memberUser"
+                    style="display: inline-block;border-radius: 50%; margin-right: 24px; overflow: hidden;"><img
+                        style="width: 40px;height: 40px;object-fit:cover" src="{{$Info.Info.HeadImg}}"></a>
+                <else />
+                <a href="/memberUser"
+                    style="display: inline-block;border-radius: 50%; margin-right: 24px; overflow: hidden;"><img
+                        style="width: 40px;height: 40px;object-fit:cover" src="/static/icon/avator_def.svg"></a>
+            </if>
+
+            <else />
+            <a class="meme_pc" id="meme_pc_login"
+                style="display: inline-block;border-radius: 50%; margin-right: 24px; overflow: hidden;"><img
+                    style="width: 40px;height: 40px;object-fit:cover" src="/static/icon/avator.svg"></a>
+        </if>
+    </if>
+</getUserInfo>

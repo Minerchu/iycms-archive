@@ -1,0 +1,218 @@
+<!-- footer start -->
+<footer id="gen-footer">
+    <div class="gen-footer-style-1">
+        <div class="gen-footer-top">
+            <div class="container">
+                <div class="row" style="justify-content: space-between;">
+                    <div class="col-xl-3 col-md-6">
+                        <div class="widget">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <if data="$.G.Logo">
+                                        <img src="{{$.G.Logo}}" class="gen-footer-logo" alt="gen-footer-logo">
+                                        <else />
+                                        <img  class="gen-footer-logo" >
+                                    </if>
+                                    <p>本站内容均从互联网收集而来，仅供交流学习使用，版权归原创者所有如有侵犯了您的权益，尽请通知我们，本站将及时删除侵权内容。</p>
+                                    <ul class="social-link">
+                                        <li style="color: #fff;">
+                                            <if data="$.G.Info.ICP">
+                                                备案号：{{$.G.Info.ICP}}
+                                            </if>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="widget">
+                            <h4 class="footer-title">站内导航</h4>
+                            <div class="menu-explore-container">
+                                <ul class="menu" style="display: flex; flex-wrap: wrap;">
+                                    <li class="menu-item">
+                                        <eqIf data=". 'home'">
+                                            <a href="/index.html" aria-current="page"
+                                                class="cms-footer-nav-active">首页</a>
+                                            <else />
+                                            <a href="/index.html" aria-current="page">首页</a>
+                                        </eqIf>
+
+                                    </li>
+                                    <getVideoCategoryList name="$Cate" parentId="0">
+                                        <foreach name="$item" index="$index" data="$Cate.List">
+
+                                            <li class="menu-item">
+                                                <eqIf data="$.U.TypeId $item.ID">
+                                                    <goLink href="/vod/index.html" aria-current="page"
+                                                        class="cms-footer-nav-active" args="{type_id:$item.ID}">
+                                                        {{$item.Name}}
+                                                    </goLink>
+                                                    <else />
+                                                    <goLink href="/vod/index.html" aria-current="page"
+                                                        args="{type_id:$item.ID}">{{$item.Name}}
+                                                    </goLink>
+                                                </eqIf>
+                                            </li>
+                                        </foreach>
+                                    </getVideoCategoryList>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 友情链接 -->
+                    <getLinkList name="$List" page="1" limit="10" order="'id asc'" type="link">
+                        <!-- 底部菜单友情链接 -->
+                        <getLinkList name="$List1" page="1" limit="10" order="'id asc'" type="footer">
+                            <div class="col-xl-3 col-md-6">
+                                <div class="widget">
+                                    <h4 class="footer-title">友情链接</h4>
+                                    <div class="menu-about-container">
+                                        <ul class="menu">
+                                            <foreach name="$item" index="$index" data="$List.List">
+                                                <li class="menu-item">
+                                                    <a href="{{$item.Link}}" target="_blank">{{$item.Name}}</a>
+                                                </li>
+                                            </foreach>
+                                            <foreach name="$item" index="$index" data="$List1.List">
+                                                <li class="menu-item">
+                                                    <a href="{{$item.Link}}" target="_blank">{{$item.Name}}</a>
+                                                </li>
+                                            </foreach>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </getLinkList>
+                    </getLinkList>
+                    <if data="$.G.App.Android">
+                        <import file="/public/app.html" />
+                        <else />
+                        <if data="$.G.App.Ios.Url">
+                            <import file="/public/app.html" />
+                        </if>
+                    </if>
+                </div>
+            </div>
+        </div>
+        <div class="gen-copyright-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 align-self-center">
+                        <span class="gen-copyright" style="color: #fff;"> Copyright @ 2023 {{$.G.Info.Name}} 版权所有
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div id="back-to-top">
+        <a class="top" id="top" href="#top"> <i class="ion-ios-arrow-up"></i></a>
+
+        <a class="cms_service_ku1" id="cms_service_ku1"> <i class="ion-ios-arrow-up"></i></a>
+
+        <a class="cms_contact_ku" id="cms_contact_ku" onclick="openContact()"> <i class="ion-ios-arrow-up"></i></a>
+
+    </div> -->
+</footer>
+
+
+
+<!-- footer End -->
+
+
+<!-- js-min -->
+
+
+<script src="/static/js/asyncloader.min.js"></script>
+<!-- JS bootstrap -->
+<script src="/static/js/bootstrap.min.js"></script>
+<!-- owl-carousel -->
+<script src="/static/js/owl.carousel.min.js"></script>
+<!-- counter-js -->
+<script src="/static/js/jquery.waypoints.min.js"></script>
+<script src="/static/js/jquery.counterup.min.js"></script>
+<!-- popper-js -->
+<script src="/static/js/popper.min.js"></script>
+<script src="/static/js/swiper-bundle.min.js"></script>
+<!-- Iscotop -->
+<script src="/static/js/isotope.pkgd.min.js"></script>
+
+<script src="/static/js/jquery.magnific-popup.min.js"></script>
+
+<script src="/static/js/slick.min.js"></script>
+
+<script src="/static/js/streamlab-core.js"></script>
+
+<script src="/static/js/script.js"></script>
+
+<script src="/static/js/swiper.min.js"></script>
+
+<script src="/static/js/LazyLoad.js"></script>
+<script src="/static/js/cmsCommon.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // 二维码生成
+    let apkUrl033 = '';
+    const temAppAndr033 = "{{$.G.App.Android}}";
+    if (temAppAndr033.startsWith("http")) {
+        apkUrl033 = temAppAndr033
+    } else {
+        apkUrl033 = location.origin + temAppAndr033;
+    }
+    const iosUrl = location.origin + "/libs/ios/downloads.html"
+    if ($("#cms-apk-qrcode").length > 0) {
+        $("#cms-apk-qrcode").qrcode({
+            render: "canvas", // 渲染方式有table方式（IE兼容）和canvas方式
+            width: 160, //宽度 
+            height: 160, //高度 
+            text: temUtf16to8(apkUrl033), //内容 (使用为公共库中的方法)
+            typeNumber: -1,//计算模式
+            correctLevel: 2,//二维码纠错级别
+            background: "#ffffff",//背景颜色
+            foreground: "#000000"  //二维码颜色
+
+        });
+    }
+    if ($("#cms-ios-qrcode").length > 0) {
+        $("#cms-ios-qrcode").qrcode({
+            render: "canvas", // 渲染方式有table方式（IE兼容）和canvas方式
+            width: 160, //宽度 
+            height: 160, //高度 
+            text: iosUrl, //内容 
+            typeNumber: -1,//计算模式
+            correctLevel: 2,//二维码纠错级别
+            background: "#ffffff",//背景颜色
+            foreground: "#000000"  //二维码颜色
+
+        });
+    }
+    })
+</script>
+
+<!-- 公共文件 -->
+<import file="../libs/web/ads/index.html" data="floatLeftTop" />
+<import file="../libs/web/ads/index.html" data="floatLeft" />
+<import file="../libs/web/ads/index.html" data="floatLeftBottom" />
+<import file="../libs/web/ads/index.html" data="floatTop" />
+<import file="../libs/web/ads/index.html" data="floatCenter" />
+<import file="../libs/web/ads/index.html" data="floatBottom" />
+<import file="../libs/web/ads/index.html" data="floatRightTop" />
+<import file="../libs/web/ads/index.html" data="floatRightCenter" />
+<import file="../libs/web/ads/index.html" data="floatRightBottom" />
+<import file="../libs/web/member/index.html" />
+<import file="../libs/web/plugins/index.html" />
+
+<style>
+    :root {
+        --tem--base--color: #e50916;
+        --tem--base--conf--color: #f10313;
+        --cms--notice--button: #e50916;
+        --cms--util--bgColor: #000;
+    }
+</style>
+</body>
+
+</html>

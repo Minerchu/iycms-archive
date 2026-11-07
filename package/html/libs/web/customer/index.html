@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- <script src="/lib/main.ts" data-eventid="cartid" data-title="CMS在线客服" data-adicon="" data-source="2" id="service_js" charset="UTF-8"></script> -->
+    <!-- <script src="/lib/main.ts" data-title="CMS在线客服" data-adicon="" data-source="2" id="service_js" charset="UTF-8"></script> -->
+    <!-- <script src="http://192.168.2.166:89/api/v1/assets/layer/ai_service_diy_1.js" data-title="CMS在线客服" data-source="2"
+        id="service_js" charset="UTF-8"></script> -->
+
+</head>
+
+<body>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+
+        // 获取特定参数的值
+        const token = params.get('token');
+        if (token) {
+            // 请求
+            const xhr = new XMLHttpRequest();
+            const xhrRequset = (api, type = "GET", params = {}) => {
+                const url = api;
+                const cuReq = new Promise((resolve, reject) => {
+                    xhr.timeout = 6000;
+                    xhr.open(type, url, true);
+                    xhr.setRequestHeader("Authorization", token);
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    //3.发送
+                    if (type === "POST" || type === "PUT") {
+                        xhr.send(JSON.stringify(params));
+                    } else {
+                        xhr.send();
+                    }
+                    //4.事件绑定 处理服务端返回的结果
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4) {
+                            //判断响应状态码
+                            if (xhr.status >= 200 && xhr.status <= 300) {
+                                try {
+                                    resolve(JSON.parse(xhr.response || "{}"));
+                                } catch (e) {
+                                    reject({ code: xhr.status, msg: e.message });
+                                }
+                            } else {
+                                reject({ code: xhr.status, msg: xhr.statusText });
+                            }
+                        }
+                    };
+                });
+                return cuReq;
+            };
+            // 客服
+            var scriptElement1 = document.createElement("script");
+            let sym1 = location.origin
+            scriptElement1.src = (sym1) + "/api/v1/assets/layer/ai_service_diy_1.js";
+            scriptElement1.id = "service_js";
+            scriptElement1.charset = "UTF-8";
+            scriptElement1.setAttribute('data-source', '2')
+            scriptElement1.setAttribute('data-title', 'CMS在线客服')
+            scriptElement1.setAttribute('data-adicon', '')
+            document.head.appendChild(scriptElement1);
+            scriptElement1.onload = function (params) {
+                xhrRequset(`/openapi/member/info`)
+                    .then((data) => {
+                        serCtr.open(data.id);
+                    })
+                    .catch((err) => {
+                    });
+            }
+
+
+        }
+
+    </script>
+</body>
+
+</html>

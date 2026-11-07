@@ -1,0 +1,89 @@
+<import file="../libs/web/ads/index.html" data="generalCustom" />
+<footer id="footer" class="wrapper " style="padding: 0 10px; ">
+    <div style="display: flex;justify-content: center; flex-wrap: wrap; ">
+        <p>本站内容均从互联网收集而来，仅供交流学习使用，版权归原创者所有如有侵犯了您的权益，尽请通知我们，本站将及时删除侵权内容。</p>
+    </div>
+    <div style="display: flex;align-items: center;flex-direction: column; ">
+        <p>Copyright @ 2023 {{$.G.Info.Name}} 版权所有</p>
+
+        <if data="$.G.Info.ICP">
+            <p>备案号：{{$.G.Info.ICP}}</p>
+        </if>
+    </div>
+    <div style="display: flex;justify-content: center; color:#999; padding-bottom: 20px;">
+        <getLinkList name="$List" page="1" limit="10" order="'id asc'" type="link">
+            <gtIf data="$List.Total 0">
+                <div class="desc desc_link">
+                    <span>友情链接：</span>
+                    <foreach name="$item" index="$index" data="$List.List">
+                        <a style="margin-right: 10px; color: #646cff;" target="_blank" href="{{$item.Link}}"
+                            index="{{$index}}">{{$item.Name}}</a>
+                    </foreach>
+                </div>
+            </gtIf>
+        </getLinkList>
+
+
+    </div>
+
+    <getLinkList name="$List" page="1" limit="10" order="'id asc'" type="footer">
+        <gtIf data="$List.Total 0">
+            <div style="display: flex;justify-content: center; color:#999; padding-bottom: 20px;">
+                <div class="desc desc_link">
+                    <foreach name="$item" index="$index" data="$List.List">
+                        <a style="margin-right: 10px; color: #646cff;" target="_blank" href="{{$item.Link}}"
+                            index="{{$index}}">{{$item.Name}}</a>
+                    </foreach>
+                </div>
+            </div>
+        </gtIf>
+    </getLinkList>
+
+</footer>
+<style>
+    #footer {
+        height: 80px;
+    }
+</style>
+
+<!-- 公共文件 -->
+<import file="../libs/web/ads/index.html" data="floatLeftTop" />
+<import file="../libs/web/ads/index.html" data="floatLeft" />
+<import file="../libs/web/ads/index.html" data="floatLeftBottom" />
+<import file="../libs/web/ads/index.html" data="floatTop" />
+<import file="../libs/web/ads/index.html" data="floatCenter" />
+<import file="../libs/web/ads/index.html" data="floatBottom" />
+<import file="../libs/web/ads/index.html" data="floatRightTop" />
+<import file="../libs/web/ads/index.html" data="floatRightCenter" />
+<import file="../libs/web/ads/index.html" data="floatRightBottom" />
+<import file="../libs/web/member/index.html" />
+<import file="../libs/web/plugins/index.html" />
+
+
+</body>
+<style>
+    .cms-page-number {
+        padding: 0 20px !important;
+        background-color: #25252b !important;
+        border-radius: 50px !important;
+        color: hsla(0, 0%, 100%, .6) !important;
+        line-height: 40px !important;
+        border: 0px solid #000;
+    }
+
+    .page-current {
+        background-color: red !important;
+    }
+
+    :root {
+        --tem--base--color: #ff2a14;
+        --tem--base--conf--color: #f84935;
+        --cms--util--bgColor: #000;
+        --cms--notice--button: #ff2a14
+    }
+    .cms_ad_floatTop{
+        z-index: 99999;
+    }
+</style>
+
+</html>

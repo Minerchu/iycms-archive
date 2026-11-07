@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <script src="./js/vue.min.js"></script>
+  <!-- import CSS -->
+  <link rel="stylesheet" href="./css/elment.min.css">
+  <link rel="stylesheet" href="./css/base.css">
+  <!-- import JavaScript -->
+  <script src="./js/elment.min.js"></script>
+  <link rel="stylesheet" href="./css/xterm.css" />
+  <script src="./js/xterm.js"></script>
+  <title>安装数据库</title>
+</head>
+<script src="./js/axiso.js"></script>
+<link rel="stylesheet" href="./css/index.css">
+
+<style>
+  .container .header {
+    height: 70px;
+    width: 100%;
+  }
+
+  .main .mainp {
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #444444;
+    font-weight: 400;
+    text-align: left;
+    margin: 20px 0;
+    display: flex;
+  }
+
+  .main .mainp label {
+    width: 120px;
+  }
+
+  .main .mainp input {
+    border: 1px solid #e5e5e5;
+    border-radius: 2px;
+    margin-left: 20px;
+  }
+
+  .main .mainp input[type="text"],
+  input[type="password"] {
+    /* width: 320px; */
+    height: 32px;
+    /* padding: 0 10px; */
+    outline: none;
+
+  }
+
+  .btn {
+    float: right;
+    margin-top: 20px;
+  }
+
+  .btn button {
+    width: 80px;
+    height: 32px;
+    margin: 10px;
+
+  }
+
+  .el-form-item {
+    margin-bottom: 20px !important;
+  }
+
+  .el-form-item p {
+    font-family: PingFangSC-Regular;
+    font-size: 12px;
+    color: #FAAD14;
+    font-weight: 400;
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+
+  .main button {
+    /* width: 80px; */
+    height: 32px;
+    margin: 10px 0px;
+    font-size: 14px;
+  }
+
+  .frombg {
+    background: #F8F9FC;
+    border: 1px solid rgba(233, 233, 233, 1);
+    border-radius: 4px;
+    padding: 20px;
+    padding-bottom: 0px;
+
+  }
+
+  .qiu {
+    display: block;
+    width: 12px;
+    height: 12px;
+    background: url(./img/yes.svg) no-repeat center;
+    background-size: 100% 100%;
+    border-radius: 50%;
+    align-self: center;
+    margin-right: 10px;
+    margin-left: 18px;
+  }
+
+  .error {
+    display: block;
+    width: 12px;
+    height: 12px;
+    background: url(./img/error.svg) no-repeat center;
+    background-size: 100% 100%;
+    border-radius: 50%;
+    align-self: center;
+    margin-right: 10px;
+    margin-left: 18px;
+  }
+
+
+  #terminal {
+    border: 1px solid #e5e5e5;
+    border-radius: 2px;
+    position: fixed;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    display: none;
+    border-radius: 4px;
+
+  }
+
+  #terminal #terminal .xterm-screen {
+    animation: identifier 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+
+  }
+
+  .xterm-viewport {
+    border-radius: 0px 0px 4px 4px;
+  }
+
+  .xterm-screen {
+    border: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+    /* Chrome Safari */
+  }
+
+  #terminal h5 {
+    height: 73px;
+    background: #474747;
+    font-family: MicrosoftYaHei;
+    font-size: 18px;
+    color: #4E8FFC;
+    letter-spacing: 1.6px;
+    font-weight: 400;
+    line-height: 73px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    border: 0px;
+    padding-left: 20px;
+    border-radius: 4px 4px 0px 0px;
+  }
+
+  @keyframes identifier {
+    0% {
+      width: 0;
+      height: 0;
+      opacity: 0;
+    }
+
+    100% {
+      width: 720px;
+      height: 572px;
+      opacity: 1;
+    }
+  }
+
+  .el-message-box {
+    width: 450px;
+    height: 187px;
+  }
+
+  .el-message-box__content {
+    border-top: solid 1px #F5F5F5;
+    border-bottom: solid 1px #F5F5F5;
+  }
+
+  .el-message-box__message p {
+    line-height: 79px;
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #444444;
+    font-weight: 400;
+  }
+
+  .el-message-box__btns .el-button--primary {
+    background-color: #4b82fa !important;
+    color: #fff;
+  }
+</style>
+
+<body>
+  <div id="app">
+    <div class="container">
+      <div class="header">
+        <div class="headertop">
+          <div class="titleimg">
+            <img src="./img/cms.svg" alt="">
+          </div>
+          <div class="title">
+            欢迎使用
+          </div>
+          <div class="rightnav">
+
+          </div>
+        </div>
+        <div class="betton " style="margin-bottom: 0px;">
+          <div id="bettontitle" ref="bettontitle"> 请填写数据库信息</div>
+          <div class="main">
+            <transition name="el-zoom-in-center">
+              <!-- 表单提交 -->
+              <el-form :model="form" ref="formRef" label-position="left" label-width="135px" :rules="rules">
+                <div class="frombg">
+                  <el-form-item label="数据库地址" prop="host">
+                    <el-input v-model="form.host" :disabled="form.host=='localhost'"></el-input>
+                  </el-form-item>
+                  <el-form-item label="数据库端口" prop="port">
+                    <el-input :placeholder="db_place" v-model="form.port"></el-input>
+                  </el-form-item>
+                  <el-form-item label="数据库账号" prop="user">
+                    <el-input :placeholder="account_place" v-model="form.user"></el-input>
+                    <p v-if="ismysql=='postgresql' && form.host=='localhost'">若已安装只能使用超管账号，未安装使用postgres账号</p>
+                    <p v-if="ismysql =='mysql'&& form.host=='localhost'">若已安装只能使用超管账号，未安装使用root账号</p>
+                  </el-form-item>
+                  <el-form-item label="数据库密码" prop="password" style="width: 100%;">
+                    <el-input placeholder="建议设置6-18位密码" v-model="form.password" type="password" show-password />
+                  </el-form-item>
+                  <el-form-item label="数据库名称" prop="database">
+                    <el-input placeholder="cms" v-model="form.database"></el-input>
+                    <div style="display: flex;">
+                      <el-button link v-if="istype && !ConfirmLoading && !available && !availableerr" @click="test"
+                        style="font-size: 12px;" :loading="ConfirmLoading" :disabled="istest">测试连接</el-button>
+                      <el-button link v-else-if="ConfirmLoading && !available && !availableerr" @click="test"
+                        style="font-size: 12px;" :loading="ConfirmLoading">测试中</el-button>
+                      <el-button link v-else-if="available||availableerr" @click="test('rest')" style="font-size: 12px;"
+                        :loading="ConfirmLoading" :disabled="goInSite">重新测试</el-button>
+                      <div v-if="available" style="display: flex; font-size: 12px;   line-height: 40px;color:green ;">
+                        <span class="qiu"></span>连接成功
+                      </div>
+                      <div v-else-if="availableerr" style="display: flex;font-size: 12px;    line-height: 40px;color:red ;">
+                        <span class="error"></span>连接失败
+                      </div>
+                    </div>
+
+                  </el-form-item>
+                </div>
+                <div class="btns" style="margin-top: 10px;">
+                  <el-button type="primary" link style="float: left;" @click="exit" class="btn"> 上一步</el-button>
+                  <el-button type="primary" style="float: right;" v-if="goInSite" :loading="true">进入系统</el-button>
+                  <el-button type="primary" @click="go" style="float: right;" v-else-if="istype" :loading="btnloading"
+                    :disabled="availableerr || ConfirmLoading">进入系统</el-button>
+                  <el-button type="primary" @click="submitForm" style="float: right;" v-else-if="!istype && !btnloading"
+                    :loading="btnloading">安装数据库</el-button>
+                  <el-button type="primary" @click="submitForm" style="float: right;" v-else-if="!istype && btnloading"
+                    :loading="btnloading">数据库安装中……</el-button>
+                </div>
+              </el-form>
+            </transition>
+          </div>
+
+        </div>
+      </div>
+
+
+    </div>
+    <div id="terminal" class="flex flex-col justify-center items-center">
+      <div style="    border-bottom: solid 1px #f5f5f5;" v-if="errorshow">
+        <el-carousel indicator-position="none" direction="vertical" height="72px" :interval="3000" :loop="true"
+          arrow="always" class="w-full" style="    background: #474747;">
+          <el-carousel-item>
+            <h5>
+              预计耗时3分钟……
+            </h5>
+          </el-carousel-item>
+          <el-carousel-item>
+            <h5>
+              数据库安装中……
+            </h5>
+          </el-carousel-item>
+          <el-carousel-item>
+            <h5>
+              预计耗时3分钟……
+            </h5>
+          </el-carousel-item>
+          <el-carousel-item>
+            <h5>
+              数据库安装中……
+            </h5>
+          </el-carousel-item>
+        </el-carousel>
+
+      </div>
+      <div style="    border-bottom: solid 1px #f5f5f5;" v-else>
+        <el-carousel indicator-position="none" direction="vertical" height="72px" :interval="3000" :loop="true"
+          arrow="always" class="w-full" style="    background: #474747;">
+          <el-carousel-item>
+            <h5>
+              数据库安装失败
+            </h5>
+          </el-carousel-item>
+          <el-carousel-item>
+            <h5>
+              请检查相关数据库信息
+            </h5>
+          </el-carousel-item>
+          <el-carousel-item>
+            <h5>
+              数据库安装失败
+            </h5>
+          </el-carousel-item>
+          <el-carousel-item>
+            <h5>
+              请检查相关数据库信息
+            </h5>
+          </el-carousel-item>
+        </el-carousel>
+      </div>
+      <div style="position: absolute;top: 25px;right: 25px;" @click="exittrem">
+        <el-button type="primary" link v-if="!errorshow">点击关闭</el-button>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  var url = window.location.href;
+  // var url = 'http://192.168.2.133:21007';
+  var arr = url.split('/');
+  var url = arr[0] + '//' + arr[2];
+  let CreateSite = "/install/create_site.html"
+  // let InstallSuccess = "{{.InstallSuccess}}"
+  let error = {}
+  Object.assign(window, Vue);
+  const App = {
+    components: {
+      ElMessageBox: ElementPlus.ElMessageBox,
+    },
+    setup() {
+      let form = ref({
+        terminal: '',
+        driveType: '',
+        user: '',
+        port: '',
+        host: '',
+        password: '',
+        database: '',
+      })
+      // 表单引用
+      const formRef = ref(null);
+      const ConfirmLoading = ref(false);
+      const btnloading = ref(false);
+      const istype = ref(false)
+      let database = JSON.parse(localStorage.getItem('database')) || '';
+      let typedata = JSON.parse(localStorage.getItem('type')) || [];
+      istype.value = database.host == 'remote' ? true : typedata.value;
+      const db_place = ref('');
+      const account_place = ref('')
+      let istest = ref(true);
+      const goInSite = ref(false)
+      watch(() => form.value, (val) => {
+        available.value = false
+        availableerr.value = false
+        if (val.port > 1025 && val.port < 65535 && val.host && val.user && val.password && /^[a-z_][a-z0-9_]*$/.test(val.database)) {
+          istest.value = false;
+        } else {
+          istest.value = true;
+        }
+      }, { deep: true })
+      const rules = ref({
+        host: [{
+          required: true,
+          message: '请输入数据库地址',
+          trigger: 'blur'
+        }],
+        port: [{
+          required: true,
+          trigger: 'blur',
+          validator: (rule, value, callback) => {
+            if (form.value.port == '') {
+              callback(new Error('请输入数据库端口'));
+            } else {
+              if (!Number(value)) {
+                callback(new Error('请输入数字值'));
+              }
+              else if (value < 1025 || value > 65535) {
+                callback(new Error('请输入1025-65535之间的数字'));
+              }
+              else {
+                callback();
+              }
+            }
+          }
+        }],
+        user: [{
+          required: true,
+          message: '请输入数据库账号',
+          trigger: 'blur'
+        }],
+        password: [{
+          required: true,
+          message: '请输入数据库密码',
+          trigger: 'blur'
+        }],
+        database: [{
+          required: true,
+          trigger: 'blur',
+          validator: (rule, value, callback) => {
+            if (form.value.database == '') {
+              callback(new Error('请输入数据库名称'));
+            } else {
+              if (!/^[a-z_][a-z0-9_]*$/.test(value)) {
+                callback(new Error('只能输入小写字母、数字、下划线，且不能以数字开头'));
+              }
+              else {
+                callback();
+              }
+            }
+          }
+        }],
+      })
+      let bettontitle = ref();
+
+
+      //连接websocket
+
+      let ws = null
+      function createSoc() {
+        ws = new WebSocket("ws://" + arr[2] + "/install/ws");
+        ws.onopen = function () {
+          console.log("连接成功");
+        }
+        ws.onmessage = function (e) {
+          let data = JSON.parse(e.data);
+          // let data = e.data;
+          let reg = new RegExp(/\n/g);
+          let reg1 = new RegExp(/^\n/g);
+          let st = data.content.split(/\n/g)
+          let tmp = [...new Set(st.flat(Infinity))]
+          if (data.content == "数据库安装失败" && data.error) {
+            error.show = false
+            terminal.style.display = 'block';
+            term.clear()
+            term.writeln(data.content)
+            term.writeln(data.error)
+          }
+          if (data.content && !data.error) {
+            terminal.style.display = 'block';
+            if (reg.test(data.content)) {
+              let n = data.content.match(/\n/g).length;
+              if (n >= 1) {
+                for (let index = 0; index < tmp.length; index++) {
+                  const element = tmp[index];
+                  if (element) {
+                    // g = '\n1241' => ['', 1241]
+                    if (st[0] === '' && tmp?.length > 1) {
+                      term.writeln(element)
+                    }
+                    // g = '1241\n' => [1241 , '']
+                    else if (st[st.length - 1] === '' && index == tmp?.length - 2) {
+                      term.writeln(element)
+                    }
+                    // g = '1241\n1421' => [1241 , '1421']
+                    else if (index == 0 && tmp?.length > 1) {
+                      term.writeln(element)
+                    } else {
+                      term.write(element)
+                    }
+                  } else {
+                    if (st[0] === '') term.writeln('')
+                  }
+                }
+              } else {
+                let s = data.content.replace(/\n/g, "")
+                if (s) term.write(s)
+              }
+            } else {
+              if (data.content) term.write(data.content)
+            }
+          }
+          if (data.content == '数据库安装成功') {
+            terminal.style.display = 'none';
+            // window.location.href = `${url}/install/system_guardian.html`
+            // window.location.href = `${CreateSite}`
+            btnloading.value = false;
+            istype.value = true;
+            typedata.value = true;
+            localStorage.setItem(localStorage.setItem('type', JSON.stringify(typedata)))
+          }
+        }
+        ws.onclose = function () {
+          console.log('关闭连接');
+          setTimeout(() => {
+            createSoc()
+          }, 1000);
+
+        }
+        ws.onerror = function () {
+          console.log('关闭连接');
+          setTimeout(() => {
+            createSoc()
+          }, 1000);
+
+        }
+      }
+      //关闭连接
+      function close() {
+        ws.close();
+      }
+
+      // let istype = database.host == 'remote' ? true : true;
+      let errorshow = ref(true)
+      Object.defineProperty(error, 'show', {
+        get() {
+          return show
+        },
+        set(val) {
+          errorshow.value = val
+          btnloading.value = false;
+        }
+      })
+      let ismysql = ref('')
+      if (database.host == 'local') {
+        form.value.host = 'localhost'
+        if (database.type == 'postgresql') {
+          form.value.port = '5432';
+          ismysql.value = 'postgresql';
+          db_place.value = '当前数据库postgresql，默认端口5432';
+          account_place.value = '推荐使用postgres作为账号';
+        }
+        if (database.type == 'mysql') {
+          form.value.port = '3306';
+          ismysql.value = 'mysql';
+          db_place.value = '当前数据库mysql，默认端口3306';
+          account_place.value = '建议使用root作为账号';
+        }
+      }
+      onMounted(() => {
+        console.log(bettontitle.value.innerHTML);
+        let database = JSON.parse(localStorage.getItem('database')) || '';
+        let typedata = JSON.parse(localStorage.getItem('type')) || [];
+        if (database.type) {
+          bettontitle.value.innerHTML = `请填写${database.type == 'mysql' ? 'MySQL' : 'PostgreSQL'}数据库信息`
+        }
+        createSoc()
+      });
+      // 提交表单
+      const submitForm = () => {
+        formRef.value.validate((valid) => {
+          if (valid) {
+            // istype.value = true;
+            // return
+            btnloading.value = true;
+            let databasedata = ref({
+              terminal: database.host,
+              driveType: database.type,
+              user: form.value.user,
+              port: Number(form.value.port),
+              host: form.value.host,
+              password: form.value.password,
+              database: form.value.database,
+            })
+            console.log(databasedata.value);
+            axios({
+              method: 'post',
+              url: url + '/install/database/install',
+              data: databasedata.value,
+            }).then(res => {
+              localStorage.setItem('databaseclone', JSON.stringify(databasedata.value));
+            }).catch(err => {
+              alert(err.response.data.message)
+              btnloading.value = false;
+            })
+          } else {
+            return false;
+          }
+        });
+      }
+      let available = ref(false)
+      let availableerr = ref(false)
+      const test = (type) => {
+        if (type == 'rest') {
+          console.log('rest');
+          available.value = false
+          availableerr.value = false
+        }
+        let databasedata = ref({
+          terminal: database.host,
+          driveType: database.type,
+          user: form.value.user,
+          port: Number(form.value.port),
+          host: form.value.host,
+          password: form.value.password,
+          database: form.value.database,
+        })
+        ConfirmLoading.value = true;
+        axios({
+          method: 'post',
+          url: url + '/install/database/available',
+          data: databasedata.value,
+        }).then(res => {
+          ConfirmLoading.value = false;
+          // istype.value = !istype.value
+          if (res.data.started) {
+            available.value = true
+            // istype.value = !istype.value
+          }
+          else {
+            availableerr.value = true
+          }
+        }).catch(err => {
+          ConfirmLoading.value = false;
+          // istype.value = !istype.value
+          availableerr.value = true
+          alert(err.response.data.message)
+        })
+
+      }
+      const go = async () => {
+        let databasedata = ref({
+          terminal: database.host,
+          driveType: database.type,
+          user: form.value.user,
+          port: Number(form.value.port),
+          host: form.value.host,
+          password: form.value.password,
+          database: form.value.database,
+        })
+
+        formRef.value.validate(async (valid) => {
+          if (valid) {
+            let site = null;
+
+            // 测试连接
+            ConfirmLoading.value = true;
+            btnloading.value = true;
+            axios({
+              method: 'post',
+              url: url + '/install/database/available',
+              data: databasedata.value,
+            }).then(async res => {
+              ConfirmLoading.value = false;
+              // istype.value = !istype.value
+              if (res.data.started) {
+                available.value = true
+                // istype.value = !istype.value
+                // try {
+                //   // site = await axios({
+                //   //   method: 'post',
+                //   //   url: url + '/install/verify/site/created',
+                //   //   data: databasedata.value,
+                //   // })
+                //   await axios({
+                //     method: 'post',
+                //     url: url + '/install/init',
+                //   })
+                //   let adminindex = "{{.AdminIndex}}"
+                //   window.location.href = `${adminindex}`
+                // } catch (error) {
+                //   alert('数据库连接失败,请检查数据库相关信息')
+                // }
+                await axios({
+                  method: 'post',
+                  url: url + '/install/init',
+                }).then(res => {
+                  // let adminindex = "{{.AdminIndex}}"
+                  window.location.href = `/`
+                }).catch(() => {
+                  alert('数据库连接失败,请检查数据库相关信息')
+                }).finally(()=>{
+                  btnloading.value = false;
+                })
+                // site.data.created
+                // if (site.data.created) {
+                //   ElementPlus.ElMessageBox.confirm(
+                //     '检测到已经创建站点，是否重新创建?',
+                //     '确认',
+                //     {
+                //       confirmButtonText: '是',
+                //       cancelButtonText: '否',
+                //       type: 'warning',
+                //       closeOnClickModal: false,
+                //       distinguishCancelAndClose: true,
+                //     }
+                //   )
+                //     .then(() => {
+                //       localStorage.setItem('databaseclone', JSON.stringify(databasedata.value));
+                //       window.location.href = `${CreateSite}`
+                //     })
+                //     .catch((action) => {
+                //       if (action === 'close') return;
+                //       goInSite.value = true;
+                //       axios({
+                //         method: 'post',
+                //         url: url + '/install/set/site/created',
+                //       }).then(() => {
+                //         localStorage.setItem('databaseclone', JSON.stringify(databasedata.value));
+                //         window.location.href = `${url}`
+                //       }).finally(()=>{
+                //         goInSite.value = false;
+                //       })
+                //     })
+                // } else {
+                //   btnloading.value = true;
+                //   localStorage.setItem('databaseclone', JSON.stringify(databasedata.value));
+                //   window.location.href = `${CreateSite}`
+                // }
+              }
+              else {
+                availableerr.value = true;
+                btnloading.value = false;
+              }
+            }).catch(err => {
+              ConfirmLoading.value = false;
+              // istype.value = !istype.value
+              availableerr.value = true;
+              btnloading.value = false;
+              alert(err.response.data.message)
+            })
+
+
+          }
+        })
+
+      }
+      const exit = () => {
+        window.location.href = `${url}/install/select_database.html?host=${database.host}&type=${database.type}`
+      }
+      const exittrem = () => {
+        let terminal = document.querySelector('#terminal')
+        terminal.style.display = 'none';
+        term.clear()
+        errorshow.value = true
+      }
+      return {
+        form,
+        rules,
+        istype,
+        submitForm,
+        formRef,
+        available,
+        availableerr,
+        go,
+        test,
+        exit,
+        ConfirmLoading,
+        btnloading,
+        errorshow,
+        exittrem,
+        ismysql,
+        bettontitle,
+        istest,
+        goInSite,
+        db_place,
+        account_place
+      };
+    },
+  };
+  const app = Vue.createApp(App);
+  app.use(ElementPlus);
+  app.mount("#app");
+  var term = new Terminal({
+    cursorBlink: true,
+    cols: 100,
+    rows: 34,
+    scrollback: 1000,
+    tabStopWidth: 4,
+    FontWeight: '400',
+    fontSize: 12,
+    letterSpacing: 1.2,
+    lineHeight: 1.4,
+    cursorStyle: 'block',
+    screenKeys: true,
+    windowsMode: true,
+    theme: {
+      background: '#474747',
+      foreground: '#fff',
+    }
+  });
+  term.open(document.getElementById('terminal'));
+</script>
+
+</html>

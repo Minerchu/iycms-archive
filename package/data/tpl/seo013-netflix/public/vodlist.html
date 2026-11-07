@@ -1,0 +1,46 @@
+<foreach name="$item" index="$index" data=".List">
+     <article class="module-item">
+          <div class="module-item-cover">
+               <div class="module-item-pic">
+                    <goLink href="/vod/detail.html"
+                         args="{id:$item.ID,type_id:$item.CategoryPid,cate_id:$item.CategoryChildId}"
+                         title="{{$item.Name}}">
+                    </goLink>
+                    <if data="$item.SurfacePlot">
+                         <img class="lazy lazyloaded" data-src="{{$item.SurfacePlot}}" src="{{$item.SurfacePlot}}" alt="{{$item.Name}}">
+                         <else />
+                         <img class="lazy lazyloaded" alt="{{$item.Name}}">
+                    </if>
+
+                    <div class="loading"></div>
+                    <eqIf data="$item.BuyMode 1">
+                         <eqIf data="$item.ChargingMode 2">
+                              <div class="cms_charging_mode_div_vip">VIP</div>
+                         </eqIf>
+                         <eqIf data="$item.ChargingMode 3">
+                              <div class="cms_charging_mode_div_gold">金币点播</div>
+                         </eqIf>
+                    </eqIf>
+               </div>
+               <div class="module-item-caption">
+                    <span>{{$item.Year}}</span>
+                    <span class="video-class">
+                         <foreach name="$j" index="$k" data="$item.Tag">
+                              {{$j.Name}}&nbsp;
+                         </foreach>
+                    </span>
+                    <span>
+                         <foreach name="$j" index="$k" data="$item.Areas">
+                              {{$j.Name}}&nbsp;
+                         </foreach>
+                    </span>
+               </div>
+          </div>
+          <div class="module-item-titlebox">
+               <goLink href="/vod/detail.html" args="{id:$item.ID,type_id:$item.CategoryPid}" class="module-item-title"
+                    title="{{$item.Name}}">
+                    {{$item.Name}}
+               </goLink>
+          </div>
+     </article>
+</foreach>

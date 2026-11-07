@@ -1,0 +1,183 @@
+<section class="pt-0 pb-0">
+    <div class="container-fluid px-0">
+        <div class="row no-gutters">
+            <div class="col-12">
+                <div class="gen-banner-movies banner-style-2">
+
+                    <div class="owl-carousel owl-loaded owl-drag" data-dots="false" data-nav="true" data-desk_num="1"
+                        data-lap_num="1" data-tab_num="1" data-mob_num="1" data-mob_sm="1" data-autoplay="true"
+                        data-loop="true" data-margin="0">
+
+                        <getAdsList name="$List" position="banner">
+                            <foreach name="$item" index="$index" data="$List.List">
+
+
+
+                                <a href="{{$item.Link}}" target="{{$item.Target}}">
+                                    <div class="item"
+                                        style="background-image: url({{$item.Content}});background-size: cover; ">
+                                        <div class="cms-h5-banenr-box">
+                                            
+                                        </div>
+                                    </div>
+                                </a>
+
+
+
+                            </foreach>
+                        </getAdsList>
+
+                        <foreach name="$item" index="$index" data=".List">
+
+
+                            <if data="$item.CycleImg">
+                                <div class="item"
+                                    style="background-image: url({{$item.CycleImg}});background-size: cover;">
+                                    <else />
+                                    <div class="item"
+                                        style="background-image: url({{$item.SurfacePlot}});background-size: cover;">
+                            </if>
+
+                            <div class="gen-movie-contain-style-2 h-100">
+                                <div class="container h-100">
+                                    <div class="row flex-row-reverse align-items-center h-100">
+                                        <div class="col-xl-6">
+                                            <div class="gen-front-image">
+                                                <if data="$item.CycleImg">
+                                                    <img src="{{$item.CycleImg}}" class="cmslazyload"
+                                                        style="object-fit: cover;  max-width: 865px; max-height: 424px;"
+                                                        alt="owl-carousel-banner-image">
+                                                    <goLink href="/vod/trySeePlay.html"
+                                                        class="playBut popup-youtube popup-vimeo popup-gmaps"
+                                                        args="{id:$item.ID,type_id:$item.CategoryPid,cate_id:$item.CategoryChildId}">
+                                                        <!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In  -->
+                                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                                            width="213.7px" height="213.7px" viewBox="0 0 213.7 213.7"
+                                                            enable-background="new 0 0 213.7 213.7"
+                                                            xml:space="preserve">
+                                                            <polygon class="triangle" id="XMLID_17_" fill="none"
+                                                                stroke-width="7" stroke-linecap="round"
+                                                                stroke-linejoin="round" stroke-miterlimit="10" points="
+                                                                              73.5,62.5 148.5,105.8 73.5,149.1 ">
+                                                            </polygon>
+                                                            <circle class="circle" id="XMLID_18_" fill="none"
+                                                                stroke-width="7" stroke-linecap="round"
+                                                                stroke-linejoin="round" stroke-miterlimit="10"
+                                                                cx="106.8" cy="106.8" r="103.3">
+                                                            </circle>
+                                                        </svg>
+                                                        <span>立即观看</span>
+                                                    </goLink>
+                                                    <else />
+                                                    <img src="{{$item.SurfacePlot}}" class="cmslazyload"
+                                                        style="object-fit: cover; max-width: 865px; max-height: 424px;"
+                                                        alt="owl-carousel-banner-image">
+                                                    <goLink href="/vod/trySeePlay.html"
+                                                        class="playBut popup-youtube popup-vimeo popup-gmaps"
+                                                        args="{id:$item.ID,type_id:$item.CategoryPid,cate_id:$item.CategoryChildId}">
+                                                        <!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In  -->
+                                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                                            width="213.7px" height="213.7px" viewBox="0 0 213.7 213.7"
+                                                            enable-background="new 0 0 213.7 213.7"
+                                                            xml:space="preserve">
+                                                            <polygon class="triangle" id="XMLID_17_" fill="none"
+                                                                stroke-width="7" stroke-linecap="round"
+                                                                stroke-linejoin="round" stroke-miterlimit="10" points="
+                                                                              73.5,62.5 148.5,105.8 73.5,149.1 ">
+                                                            </polygon>
+                                                            <circle class="circle" id="XMLID_18_" fill="none"
+                                                                stroke-width="7" stroke-linecap="round"
+                                                                stroke-linejoin="round" stroke-miterlimit="10"
+                                                                cx="106.8" cy="106.8" r="103.3">
+                                                            </circle>
+                                                        </svg>
+                                                        <span>立即观看</span>
+                                                    </goLink>
+                                                </if>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6">
+                                            <!-- <div class="gen-tag-line"><span>最受欢迎</span></div> -->
+                                            <div class="gen-movie-info">
+                                                <h3>{{$item.Name}}</h3>
+                                            </div>
+                                            <div class="gen-movie-meta-holder">
+                                                <ul class="gen-meta-after-title">
+                                                    <li class="gen-sen-rating">
+                                                        <foreach name="$item1" index="$index1" data="$item.Category">
+                                                            <span style="margin-left: 5px;">
+                                                                {{$item1.Name}}
+                                                            </span>
+                                                        </foreach>
+                                                    </li>
+                                                    <li>
+                                                        <img src="/static/images/asset-2.png" alt="rating-image">
+                                                        <span>
+                                                            {{$item.ScoreFormat}} </span>
+                                                    </li>
+                                                </ul>
+                                                <p class="cms-seo033-banner-Introduce">
+                                                    {{$item.Introduce}}
+                                                </p>
+                                                <div class="gen-meta-info">
+                                                    <ul class="gen-meta-after-excerpt">
+                                                        <if data="$item.Note">
+                                                            <li>
+                                                                <strong>状态 :</strong>
+                                                                {{$item.Note}}
+                                                            </li>
+                                                            <else />
+                                                            <li>
+                                                                <strong>导演 :</strong>
+                                                                <foreach name="$item2" index="$index2"
+                                                                    data="$item.Directors">
+                                                                    <span>
+                                                                        <a> {{$item2.Name}} </a>
+                                                                    </span>
+                                                                </foreach>
+                                                            </li>
+                                                        </if>
+
+                                                        <li>
+                                                            <strong>演员 :</strong>
+                                                            <foreach name="$item2" index="$index2" data="$item.Actors">
+                                                                <span>
+                                                                    <a> {{$item2.Name}} </a>
+                                                                </span>
+                                                            </foreach>
+                                                        </li>
+                                                        <li>
+                                                            <strong>题材 :</strong>
+                                                            <foreach name="$item3" index="$index3" data="$item.Tag">
+                                                                <span>
+                                                                    <a>
+                                                                        {{$item3.Name}} </a>
+                                                                </span>
+                                                            </foreach>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="gen-movie-action">
+                                                <div class="gen-btn-container">
+                                                    <goLink href="/vod/player.html" class="gen-button .gen-button-dark"
+                                                        args="{id:$item.ID,type_id:$item.CategoryPid,cate_id:$item.CategoryChildId}">
+                                                        <i aria-hidden="true" class="fas fa-play"></i> <span
+                                                            class="text">Play
+                                                            Now</span>
+                                                    </goLink>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    </foreach>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+</section>

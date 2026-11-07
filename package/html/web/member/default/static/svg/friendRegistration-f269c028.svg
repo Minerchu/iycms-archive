@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="42px" height="40px" viewBox="0 0 42 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>好友注册</title>
+    <g id="会员中心" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="邀请好友" transform="translate(-939.000000, -680.000000)" fill="#FE8B65" fill-rule="nonzero">
+            <g id="编组-49" transform="translate(600.000000, 229.000000)">
+                <g id="好友注册" transform="translate(339.000000, 451.000000)">
+                    <path d="M8,0 L8,40 L0,40 L0,0 L8,0 Z M12,0 L32.0098,0 C34.2136,0 36,1.79642 36,3.9816 L36,36.0184 C36,38.2174 34.2148,40 32.0098,40 L12,40 L12,0 Z M38,8 L42,8 L42,16 L38,16 L38,8 Z M38,20 L42,20 L42,28 L38,28 L38,20 Z M24,20 C26.2092,20 28,18.2092 28,16 C28,13.79086 26.2092,12 24,12 C21.7908,12 20,13.79086 20,16 C20,18.2092 21.7908,20 24,20 Z M18,28 L30,28 C30,24.6862 27.3138,22 24,22 C20.6862,22 18,24.6862 18,28 Z" id="形状"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

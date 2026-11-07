@@ -1,0 +1,14 @@
+{
+  "dbType": 2,
+  "dbHost": "127.0.0.1",
+  "dbName": "iycms",
+  "dbUser": "iycms",
+  "dbPassword": "<DB_PASSWORD>",
+  "dbPort": 3306,
+  "backendPort": 21007,
+  "openHttp": true,
+  "httpPort": 51200,
+  "openHttps": false,
+  "httpsPort": 443,
+  "env": ""
+}

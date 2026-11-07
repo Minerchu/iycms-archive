@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="80px" height="80px" viewBox="0 0 80 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>穿透</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="99.8961976%" id="linearGradient-1">
+            <stop stop-color="#2AE0C2" offset="0%"></stop>
+            <stop stop-color="#27CBCF" offset="100%"></stop>
+        </linearGradient>
+        <rect id="path-2" x="0" y="0" width="80" height="80" rx="6"></rect>
+    </defs>
+    <g id="网站工具" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="移动穿透管理" transform="translate(-296.000000, -109.000000)">
+            <g id="穿透" transform="translate(296.000000, 109.000000)">
+                <g id="矩形-2">
+                    <mask id="mask-3" fill="white">
+                        <use xlink:href="#path-2"></use>
+                    </mask>
+                    <use id="矩形" fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
+                    <polygon id="矩形" fill="#FFFFFF" opacity="0.171340216" mask="url(#mask-3)" transform="translate(39.137039, -4.252250) rotate(-30.000000) translate(-39.137039, 4.252250) " points="-60.9625832 -47.0031426 138.215988 -44.5906433 139.236661 38.4986424 -59.9419104 36.0861431"></polygon>
+                </g>
+                <g id="编组" transform="translate(15.000000, 15.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                    <path d="M16.6666667,0 L19.4444444,0 C20.9178694,0 22.3309467,0.58531578 23.3728155,1.62718455 C24.4146842,2.66905332 25,4.08213061 25,5.55555556 L25,44.4444444 C25,47.5126931 22.5126931,50 19.4444444,50 L16.6666667,50 C13.5984181,50 11.1111111,47.5126931 11.1111111,44.4444444 L11.1111111,5.55555556 C11.1111111,2.48730695 13.5984181,0 16.6666667,0 L16.6666667,0 Z M50,25 L36.1111111,11.1111111 L36.1111111,22.2222222 L27.7777778,22.2222222 L27.7777778,27.7777778 L36.1111111,27.7777778 L36.1111111,38.8888889 L50,25 Z M0,22.2222222 L8.33333333,22.2222222 L8.33333333,27.7777778 L0,27.7777778 L0,22.2222222 Z" id="形状"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

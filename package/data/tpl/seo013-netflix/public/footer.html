@@ -1,0 +1,133 @@
+<import file="../libs/web/ads/index.html" data="generalCustom" />
+
+<footer id="footer" class="wrapper">
+     <div class="content">
+          <div class="pm-footer-main">
+               <div class="pm-footer-left">
+                    <p>本站内容均从互联网收集而来，仅供交流学习使用，版权归原创者所有。如有侵犯了您的权益，尽请通知我们，本站将及时删除侵权内容。</p>
+               </div>
+               <div class="pm-footer-right">
+                    <p>Copyright @ 2023 {{$.G.Info.Name}} 版权所有</p>
+                    <if data="$.G.Info.ICP">
+                         <p>备案号：{{$.G.Info.ICP}}</p>
+                    </if>
+               </div>
+          </div>
+
+          <getLinkList name="$List" page="1" limit="10" order="'id asc'" type="link">
+               <gtIf data="$List.Total 0">
+                    <div class="pm-footer-links">
+                         <span>友情链接：</span>
+                         <foreach name="$item" index="$index" data="$List.List">
+                              <a target="_blank" href="{{$item.Link}}" index="{{$index}}">{{$item.Name}}</a>
+                         </foreach>
+                    </div>
+               </gtIf>
+          </getLinkList>
+
+          <getLinkList name="$List" page="1" limit="10" order="'id asc'" type="footer">
+               <gtIf data="$List.Total 0">
+                    <div class="pm-footer-links">
+                         <foreach name="$item" index="$index" data="$List.List">
+                              <a target="_blank" href="{{$item.Link}}" index="{{$index}}">{{$item.Name}}</a>
+                         </foreach>
+                    </div>
+               </gtIf>
+          </getLinkList>
+     </div>
+</footer>
+
+<style>
+     .pm-footer-main {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          flex-wrap: wrap;
+          gap: 20px;
+          padding-bottom: 24px;
+          border-bottom: 1px solid var(--pm-border);
+          margin-bottom: 24px;
+     }
+
+     .pm-footer-left {
+          max-width: 640px;
+     }
+
+     .pm-footer-right {
+          text-align: right;
+     }
+
+     .pm-footer-links {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px 20px;
+          align-items: center;
+          margin-bottom: 16px;
+     }
+
+     .pm-footer-links span {
+          color: var(--pm-text-tertiary);
+     }
+
+     .pm-footer-links a {
+          transition: var(--pm-transition);
+     }
+
+     @media (max-width: 899px) {
+          .pm-footer-main {
+               flex-direction: column;
+               text-align: center;
+          }
+          .pm-footer-right {
+               text-align: center;
+               width: 100%;
+          }
+          .pm-footer-links {
+               justify-content: center;
+          }
+     }
+
+     @media (max-width: 559px) {
+          .pm-footer-main {
+               padding-bottom: 16px;
+               margin-bottom: 16px;
+          }
+          .pm-footer-links {
+               font-size: 12px;
+          }
+     }
+</style>
+
+<!-- 公共文件 -->
+<import file="../libs/web/ads/index.html" data="floatLeftTop" />
+<import file="../libs/web/ads/index.html" data="floatLeft" />
+<import file="../libs/web/ads/index.html" data="floatLeftBottom" />
+<import file="../libs/web/ads/index.html" data="floatTop" />
+<import file="../libs/web/ads/index.html" data="floatCenter" />
+<import file="../libs/web/ads/index.html" data="floatBottom" />
+<import file="../libs/web/ads/index.html" data="floatRightTop" />
+<import file="../libs/web/ads/index.html" data="floatRightCenter" />
+<import file="../libs/web/ads/index.html" data="floatRightBottom" />
+<import file="../libs/web/member/index.html" />
+<import file="../libs/web/plugins/index.html" />
+
+</body>
+
+<style>
+     :root {
+          --tem--base--color: #8b5cf6;
+          --tem--base--conf--color: #a855f7;
+          --cms--util--bgColor: #0a0a0f;
+          --cms--notice--button: #8b5cf6;
+     }
+
+     .cms_ad_floatTop {
+          z-index: 99999;
+     }
+
+     .page-current {
+          background: var(--pm-accent-gradient) !important;
+     }
+</style>
+
+</html>

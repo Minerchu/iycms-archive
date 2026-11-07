@@ -1,0 +1,1 @@
+import{R as e}from"./entry-9cc5c370.js";const s=()=>e({url:"/tryWatch/detail",method:"get"}),o=t=>e({url:"/tryWatch/detail/"+t,method:"get",version:"v3"}),u=(t,a)=>e({url:"/tryWatch/save/"+t,method:"put",data:a,version:"v3"}),d=t=>e({url:"/tryWatch/save",method:"put",data:t});export{d as a,s as b,o as g,u as s};

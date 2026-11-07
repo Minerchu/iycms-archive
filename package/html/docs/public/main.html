@@ -1,0 +1,52 @@
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 cms-main-box" >
+    <div class="crumb">
+    </div>
+    <div class="main-menu">
+        <if data="$.Key">
+            <else />
+            <import file="/public/left_menu.html" data=".Data.Item" />
+        </if>
+    </div>
+    <foreach data=".Data.Item" name="$item" index="$index">
+        <eqIf data="$item.Index $.Key">
+            <if data="$item.Child">
+                <ol class="cms_main_ol">
+                    <foreach data="$item.Child" name="$item1" index="$index1">
+                        <li>
+                            <a href="?key={{$item1.Index}}">
+                                {{$item1.Name}}
+                            </a>
+                        </li>
+                    </foreach>
+                </ol>
+                <else />
+                <import file="/public/container.html" data="$item" />
+            </if>
+            <else />
+            <foreach data="$item.Child" name="$item1" index="$index1">
+                <eqIf data="$item1.Index $.Key">
+                    <if data="$item1.Child">
+                        <ol class="cms_main_ol">
+                            <foreach data="$item1.Child" name="$item2" index="$index2">
+                                <li>
+                                    <a href="?key={{$item2.Index}}">
+                                        {{$item2.Name}}
+                                    </a>
+                                </li>
+                            </foreach>
+                        </ol>
+                        <else />
+                        <import file="/public/container.html" data="$item1" />
+                    </if>
+
+                    <else />
+                    <foreach data="$item1.Child" name="$item2" index="$index2">
+                        <eqIf data="$item2.Index $.Key">
+                            <import file="/public/container.html" data="$item2" />
+                        </eqIf>
+                    </foreach>
+                </eqIf>
+            </foreach>
+        </eqIf>
+    </foreach>
+</main>

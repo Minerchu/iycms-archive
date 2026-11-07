@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="140px" height="140px" viewBox="0 0 140 140" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>分佣</title>
+    <defs>
+        <filter x="-129.2%" y="-129.2%" width="358.3%" height="358.3%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="8" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="12" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.294117647   0 0 0 0 0.509803922   0 0 0 0 0.980392157  0 0 0 0.4 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="会员" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="个人中心-代理模式" transform="translate(-224.000000, -640.000000)">
+            <g id="分佣" transform="translate(246.000000, 662.000000)">
+                <rect id="矩形" stroke="#FFFFFF" stroke-width="2" fill="#FFFFFF" x="1" y="1" width="94" height="94" rx="40"></rect>
+                <g id="编组" filter="url(#filter-1)" transform="translate(24.000000, 24.000000)">
+                    <polygon id="路径" points="0 0 48 0 48 48 0 48"></polygon>
+                    <path d="M18.66,23 L23,23 C27.9705627,23 32,27.0294373 32,32 L17.998,32 L18,34 L34,34 L34,32 C33.9936938,29.8719261 33.3788472,27.7900528 32.228,26 L38,26 C41.858614,25.9989355 45.3735678,28.2179642 47.032,31.702 C42.302,37.944 34.644,42 26,42 C20.478,42 15.8,40.82 12,38.75 L12,20.142 C14.4332258,20.4905531 16.7309471,21.4765722 18.66,23 Z M10,38 C10,39.1045695 9.1045695,40 8,40 L4,40 C2.8954305,40 2,39.1045695 2,38 L2,20 C2,18.8954305 2.8954305,18 4,18 L8,18 C9.1045695,18 10,18.8954305 10,20 L10,38 Z M28.5,4 C32.6421356,4 36,7.35786438 36,11.5 C36,15.6421356 32.6421356,19 28.5,19 C24.3578644,19 21,15.6421356 21,11.5 C21,7.35786438 24.3578644,4 28.5,4 Z" id="形状" fill="#4B82FA" fill-rule="nonzero"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

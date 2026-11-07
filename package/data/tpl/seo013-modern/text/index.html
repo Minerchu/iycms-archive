@@ -1,0 +1,161 @@
+<import file="/public/headerVod.html" data="'textindex'" />
+<link rel="stylesheet" href="/static/css/text013.css">
+
+
+<div class="mo-cols-case mo-java-waps" data-mob="0" data-wap>
+
+	<div class="mo-cols-case mo-java-waps">
+		<div class="section-box " style="margin-top: 20px;">
+			<import file="../libs/web/ads/index.html" data="topBanner" />
+		</div>
+	</div>
+	<div class="mo-cols-rows mo-part-over mo-java-theia">
+		<div class="mo-cols-info mo-cols-xs12 mo-cols-lg8 mo-java-side">
+			<getArticleList name="$List" limit="$.G.Nums.ArticleLatestNum" >
+				<div class="mo-cols-lays mo-back-white mo-part-round">
+					<div class="mo-cols-rows mo-paxs-5px mo-pamd-10px"
+						style="display: flex; justify-content: space-between;">
+						<h2 class="mo-fsxs-14px mo-fsss-16px mo-fsmd-18px">最新资讯</h2>
+						<goLink href="/text/list.html" class="cms-text-index-more-link">更多资讯</goLink>
+					</div>
+					<egtIf data="$List.Total 1">
+						<foreach name="$item" index="$index" data="$List.List">
+							<dl class="mo-deta-info mo-part-bbsd mo-bord-muted mo-maxs-5px mo-mrmd-10px mo-mlmd-10px">
+							</dl>
+							<dl class="mo-deta-info mo-cols-rows">
+								<dt
+									class="mo-paxs-5px mo-pamd-10px mo-cols-info mo-cols-xs5 mo-cols-sm3 mo-cols-lg4 mo-cols-xl3">
+									<goLink
+										class="mo-situ-pics mo-situ-lazy mo-lazy-color mo-bord-round mo-cols-rows mo-lazy-broad mo-byxs-16by9"
+										href="/text/detail.html"
+										args="{id:$item.Id,type_id:$item.CategoryPid,cate_id:$item.CategoryChildId}"
+										style="background:url('{{$item.SurfacePlot}}');background-size: cover;">
+										<span class="mo-situ-play mo-situ-npic"></span>
+										<span
+											class="mo-situ-tips mo-fsxs-12px mo-bord-round mo-back-mojia">{{$item.Popularity}}阅读</span>
+										<span
+											class="mo-situ-rema mo-part-ramp mo-fsxs-12px mo-text-white mo-coxs-center">
+											<showDateTime time="$item.UpdateAt" data="yy-mm-dd hh:ii:ss" />
+										</span>
+									</goLink>
+									<div class="mo-deta-btns mo-cols-rows mo-mlxs-5px mo-mlmd-10px">
+										<span class="mo-fsxs-12px mo-text-muted">
+											<showDateTime time="$item.UpdateAt" data="yy-mm-dd hh:ii:ss" />
+											&emsp;{{$item.Popularity}}阅读
+										</span>
+									</div>
+								</dt>
+								<dd
+									class="mo-paxs-5px mo-pamd-10px mo-cols-info mo-cols-xs7 mo-cols-sm9 mo-cols-lg8 mo-cols-xl9">
+									<h3 class="mo-fsxs-14px mo-fsss-16px mo-coxs-trow mo-comd-arow">
+										<goLink href="/text/detail.html"
+											args="{id:$item.Id,type_id:$item.CategoryPid,cate_id:$item.CategoryChildId}">
+											{{$item.Name}}</goLink>
+									</h3>
+									<p
+										class="mo-cols-info mo-cols-xs12 mo-ptxs-5px mo-fsxs-12px mo-lhxs-18px mo-coxs-none mo-comd-block mo-text-muted">
+										{{$item.Introduce}}
+									</p>
+								</dd>
+								<dl
+									class="mo-deta-info mo-part-bbsd mo-bord-muted mo-maxs-5px mo-mrmd-10px mo-mlmd-10px">
+								</dl>
+							</dl>
+						</foreach>
+						<else />
+						<div style="padding: 80px 0;display: flex; justify-content: center; flex-direction: column; align-items: center;" class="query-empty">
+							<img src="/static/image/alt05_back.png" alt=" 空状态">
+							<p>暂无数据</p>
+						</div>
+					</egtIf>
+				</div>
+			</getArticleList>
+		</div>
+
+		<div class="mo-cols-info mo-cols-xs12 mo-cols-lg4 mo-java-side mo-coxs-none mo-colg-block">
+			<div class="mo-cols-lays mo-back-white mo-part-round mo-mlmd-20px" style="padding-bottom: 35px;">
+				<ul class="mo-cols-rows">
+					<dd class="mo-paxs-5px mo-pamd-10px mo-coxs-none mo-colg-block mo-cols-info mo-cols-xs12" style="margin-bottom: 30px;">
+						<div class="mo-code-info mo-part-code mo-coxs-center mo-paxs-5px mo-pamd-10px" data-api="0">
+							<p class="mo-text-muted mo-pbxs-10px mo-lhxs-24px">扫描二维码打开</p>
+							<div id="mo-code-pics" class="mo-cols-show"
+								style="width:fit-content;border:5px solid #eee;border-radius:5px;font-size: 0;margin:0 auto;text-align: center;">
+							</div>
+							<script type="text/javascript">
+								$(document).ready(function () {
+									$('#mo-code-pics').qrcode({
+										text: location.href, //设置二维码内容，必须  
+										render: "canvas", //设置渲染方式 （有两种方式 table和canvas，默认是canvas）   
+										width: 140, //设置宽度    
+										height: 140, //设置高度    
+										typeNumber: -1,//计算模式
+										correctLevel: 2,//二维码纠错级别
+										background: "#ffffff",//背景颜色
+										foreground: "#000000"  //二维码颜色
+									});
+								})
+
+							</script>
+						</div>
+					</dd>
+				</ul>
+			</div>
+			<div class="mo-cols-lays mo-back-white mo-part-round mo-mlmd-20px">
+				<div class="mo-cols-rows mo-paxs-5px mo-pamd-10px">
+					<h2 class="mo-fsxs-14px mo-fsss-16px mo-fsmd-18px">热门资讯</h2>
+				</div>
+				<ul class="mo-cols-rows">
+					<getArticleList name="$List3" page="1" limit="$.G.Nums.VodCateCmdNum" order="1">
+						<foreach name="$item" index="$idx" data="$List3.List">
+							<!-- {{/*<eqIf data="$idx 0">
+								<dl class="mo-cols-rows" style="display: flex;">
+									<dt class="mo-paxs-5px mo-pamd-10px mo-cols-info mo-cols-xs4">
+										<goLink
+											class="mo-situ-pics mo-situ-lazy mo-lazy-color mo-bord-round mo-cols-rows mo-lazy-highs mo-byxs-2by3"
+											href="/vod/detail.html"
+											args="{id:$item.Id,type_id:$item.CategoryPid,cate_id:$item.CategoryChildId}"
+											style="background-image:url('{{$item.SurfacePlot}}');padding-top: 72px; width: 128px;">
+										</goLink>
+									</dt>
+									<dd class="mo-paxs-5px mo-pamd-10px mo-cols-info mo-cols-xs7"
+										style="margin-left: 20px;padding-top: 0px; padding-bottom: 0px;">
+										<h4 class="mo-wrap-arow mo-fsxs-16px">
+											<goLink href="/vod/detail.html" style="white-space: wrap; font-size: 14px;"
+												class="cms-text-rank-hot-txt"
+												args="{id:$item.Id,type_id:$item.CategoryPid,cate_id:$item.CategoryChildId}">
+												{{$item.Name}}</goLink>
+										</h4>
+									</dd>
+								</dl>
+								<else />
+							</eqIf>*/}} -->
+							
+								<li class="mo-cols-rows mo-paxs-5px mo-pamd-10px">
+									<goLink class="mo-cols-info mo-cols-xs9 mo-wrap-arow" href="/text/detail.html"
+										args="{id:$item.Id,type_id:$item.CategoryPid,cate_id:$item.CategoryChildId}">
+										<span class="mo-part-seal mo-back-items mo-back-item2" style="padding-left: 8px;">
+											<Number expression="$idx + 1" />
+										</span>{{$item.Name}}
+									</goLink>
+									<span class="mo-cols-info mo-cols-xs3 mo-text-mojia mo-coxs-right"></span>
+								</li>
+							
+						</foreach>
+					</getArticleList>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="mo-cols-case mo-java-waps">
+	<div class="section-box " style="margin-top: 10px;">
+		<import file="../libs/web/ads/index.html" data="bottomBanner" />
+	</div>
+</div>
+<style>
+	.navTopBox {
+		background-color: #191a20 !important;
+	}
+</style>
+
+<import file="/public/footer.html" data="'noHome'" />

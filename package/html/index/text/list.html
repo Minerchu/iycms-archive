@@ -1,0 +1,246 @@
+<import file="/public/header.html" data="'textlist'" />
+<link rel="stylesheet" href="/static/css/text001.css">
+
+
+<div class="mo-cols-case mo-java-waps" data-mob="0" data-wap>
+
+    <div class="mo-paxs-10px mo-cols-lays mo-back-white mo-part-round mo-cols-rows cms-text-h5-margin">
+        <div style="margin-top: 20px;">
+            <import file="../libs/web/ads/index.html" data="topBanner" />
+        </div>
+        <getArticlesCategoryList name="$List">
+
+            <div class="nav-swiper rel nav-swiper1 ">
+                <dl class="mo-scre-info mo-paxs-10x5 mo-pamd-1510 mo-bord-muted mo-part-slip mo-scre-show cms-scroll-display swiper-wrapper"
+                    style="border: 0px; align-items: center;">
+                    <dt class="mo-scre-head mo-mrxs-10px mo-coxs-iblock swiper-slide" style="font-weight: 700;">分类</dt>
+                    <dd class="mo-coxs-iblock swiper-slide">
+                        <eqIf data="$.U.TypeId 0">
+                            <goLink class="mo-scre-name mo-text-hover mo-mrxs-10px mo-lhxs-24px mo-text-mojia"
+                                href="/text/list.html" args="{type_id:}">全部</goLink>
+                            <else />
+                            <goLink class="mo-scre-name mo-text-hover mo-mrxs-10px mo-lhxs-24px" href="/text/list.html"
+                                args="{type_id:}">全部</goLink>
+                        </eqIf>
+                    </dd>
+                    <foreach name="$item" index="$index" data="$List.List">
+                        <dd class="mo-coxs-iblock swiper-slide">
+                            <eqIf data="$.U.TypeId $item.ID">
+                                <goLink
+                                    class="mo-scre-name mo-text-hover mo-mrxs-10px mo-lhxs-24px mo-text-mojia nav-dt"
+                                    href="/text/list.html" args="{type_id:$item.ID}">
+
+                                    <span data-index="{{$index}}">{{$item.Name}}</span>
+                                </goLink>
+                                <else />
+                                <goLink class="mo-scre-name mo-text-hover mo-mrxs-10px mo-lhxs-24px"
+                                    href="/text/list.html" args="{type_id:$item.ID}">{{$item.Name}}</goLink>
+                            </eqIf>
+                        </dd>
+                    </foreach>
+                </dl>
+            </div>
+            <!-- 子分类 -->
+            <div class="nav-swiper rel nav-swiper1 ">
+                <foreach name="$item" index="$index" data="$List.List">
+                    <egtIf data="$item.ChildNum 1">
+                        <eqIf data="$item.ID $.U.TypeId">
+
+                            <dl class="mo-scre-info mo-paxs-10x5 mo-pamd-1510 mo-bord-muted mo-part-slip mo-scre-show cms-scroll-display swiper-wrapper"
+                                style="border: 0px; align-items: center;">
+                                <dt class="mo-scre-head mo-mrxs-10px mo-coxs-iblock swiper-slide"
+                                    style="font-weight: 700;">{{$item.Name}}</dt>
+                                <dd class="mo-coxs-iblock swiper-slide">
+                                    <eqIf data="$.U.CateId 0">
+                                        <goLink
+                                            class="mo-scre-name mo-text-hover mo-mrxs-10px mo-lhxs-24px mo-text-mojia"
+                                            href="/text/list.html" args="{cate_id:,type_id:$.U.TypeId}">全部</goLink>
+                                        <else />
+                                        <goLink class="mo-scre-name mo-text-hover mo-mrxs-10px mo-lhxs-24px"
+                                            href="/text/list.html" args="{cate_id:,type_id:$.U.TypeId}">全部</goLink>
+                                    </eqIf>
+                                </dd>
+
+
+                                <foreach name="$item1" index="$index1" data="$item.Children">
+                                    <dd class="mo-coxs-iblock swiper-slide">
+                                        <eqIf data="$.U.CateId $item1.ID">
+                                            <goLink
+                                                class="mo-scre-name mo-text-hover mo-mrxs-10px mo-lhxs-24px mo-text-mojia nav-dt"
+                                                href="/text/list.html" args="{cate_id:$item1.ID,type_id:$.U.TypeId}">
+
+                                                <span data-index="{{$index1}}">{{$item1.Name}}</span>
+                                            </goLink>
+                                            <else />
+                                            <goLink class="mo-scre-name mo-text-hover mo-mrxs-10px mo-lhxs-24px"
+                                                href="/text/list.html" args="{cate_id:$item1.ID,type_id:$.U.TypeId}">
+                                                {{$item1.Name}}</goLink>
+                                        </eqIf>
+                                    </dd>
+                                </foreach>
+                            </dl>
+                        </eqIf>
+                    </egtIf>
+                </foreach>
+            </div>
+
+        </getArticlesCategoryList>
+
+
+    </div>
+
+    <getArticleList name="$List" page="$.U.Page" limit="$.G.Nums.ArticleListNum" categoryPid="$.U.TypeId"
+        categoryId="$.U.CateId" order="$.U.Order">
+        <!-- 常用筛选框 -->
+        <div class="mo-cols-lays mo-back-white mo-part-round" style="margin-top: 0px;">
+            <div class="mo-cols-rows mo-paxs-5px mo-pamd-10px">
+                <h2 class="mo-fsxs-14px mo-fsss-16px mo-fsmd-18px mo-cols-zero">
+                    <eqIf data="$.U.Order ''">
+                        <goLink class="mo-mrxs-5px mo-mrmd-10px mo-text-mojia" href="$.U.Path" args="{order:}">默认排序
+                        </goLink>
+                        <else />
+                        <goLink class="mo-mrxs-5px mo-mrmd-10px" href="$.U.Path" args="{order:}">默认排序</goLink>
+                    </eqIf>
+
+                    <eqIf data="$.U.Order '1'">
+                        <goLink class="mo-mrxs-5px mo-mrmd-10px mo-text-mojia" href="$.U.Path" args="{order:}">人气倒序
+                        </goLink>
+                        <else />
+                        <goLink class="mo-mrxs-5px mo-mrmd-10px" href="$.U.Path" args="{order:1}">人气倒序</goLink>
+                    </eqIf>
+
+                    <eqIf data="$.U.Order '2'">
+                        <goLink class="mo-mrxs-5px mo-mrmd-10px mo-text-mojia" href="$.U.Path" args="{order:}">人气正序
+                        </goLink>
+                        <else />
+                        <goLink class="mo-mrxs-5px mo-mrmd-10px" href="$.U.Path" args="{order:2}">人气正序</goLink>
+                    </eqIf>
+                </h2>
+                <ul class="mo-part-more mo-paxs-5px mo-pamd-10px mo-cols-zero">
+                    <li class="mo-coxs-iblock mo-fsxs-14px mo-lhxs-24px cms-h5-text-total">当前第&nbsp;<span
+                            id="mo-page-this" class="mo-text-mojia">{{$.U.Page}}</span>&nbsp;页，共&nbsp;
+                        <span id="mo-page-sums" class="mo-text-mojia">{{$List.Total}}</span>&nbsp;个结果
+                    </li>
+                </ul>
+            </div>
+            <!-- 图文列表 -->
+            <egtIf data="$List.Total 1">
+                <ul class="mo-cols-rows" style="display: flex; justify-content: start; flex-wrap: wrap;">
+                    <foreach name="$item" index="$index" data="$List.List">
+
+                        <li class="mo-paxs-5px mo-pamd-10px mo-cols-info mo-cols-xs6 mo-cols-sm4 mo-cols-lg3"
+                            style="flex-shrink: 0;">
+                            <goLink
+                                class="mo-situ-pics mo-situ-lazy mo-lazy-color mo-bord-round mo-cols-rows mo-lazy-broad mo-byxs-16by9"
+                                href="/text/detail.html"
+                                args="{id:$item.Id,type_id:$item.CategoryPid,cate_id:$item.CategoryChildId}"
+                                style="background:url('{{$item.SurfacePlot}}');background-size: cover;">
+                                <span class="mo-situ-play mo-situ-npic"></span>
+                                <span
+                                    class="mo-situ-tips mo-fsxs-12px mo-bord-round mo-back-mojia">{{$item.Popularity}}阅读</span>
+                                <span class="mo-situ-rema mo-part-ramp mo-fsxs-12px mo-text-white mo-coxs-center">
+                                    <showDateTime time="$item.UpdateAt" data="yy-mm-dd hh:ii" />
+                                </span>
+                            </goLink>
+                            <goLink class="mo-situ-name mo-fsxs-14px mo-coxs-center mo-comd-left mo-wrap-arow"
+                                href="/text/detail.html"
+                                args="{id:$item.Id,type_id:$item.CategoryPid,cate_id:$item.CategoryChildId}">
+                                {{$item.Name}}</goLink>
+                            <span
+                                class="mo-situ-desc mo-fsxs-12px mo-wrap-arow mo-text-muted mo-coxs-none mo-comd-block">{{$item.Introduce}}</span>
+                        </li>
+                    </foreach>
+                </ul>
+                <else />
+                <div style="padding: 80px 0;display: flex; justify-content: center; flex-direction: column; align-items: center;"
+                    class="query-empty">
+                    <img src="/static/image/alt05_back.png" alt=" 空状态">
+                    <p>暂无数据</p>
+                </div>
+            </egtIf>
+            <!-- 分页器 -->
+            <div id="pagination" class="my-pagination web_page">
+                <showPage name="$item" page="$.U.Page" total="$List.Total" limit="$.G.Nums.ArticleListNum" count="5"
+                    url="$.U.Path">
+                    <div class="layui-box layui-laypage layui-laypage-molv">
+                        <goLink class="layui-laypage-prev" href="{{$item.First.Href}}">首页</goLink>
+                        <goLink class="layui-laypage-prev" href="{{$item.Prev.Href}}">上一页</goLink>
+                        <foreach name="$vo" index="$idx" data="$item.List">
+                            <eqIf data="$vo.Num $.U.Page">
+                                <span class="layui-laypage-curr">
+                                    <em class="layui-laypage-em" style="background-color:#ff6f4b;"></em>
+                                    <em>{{$vo.Num}}</em>
+                                </span>
+                                <else />
+                                <goLink href="{{$vo.Href}}">{{$vo.Num}}</goLink>
+                            </eqIf>
+                        </foreach>
+                        <goLink class="layui-laypage-next" href="{{$item.Next.Href}}">下一页</goLink>
+                        <goLink class="layui-laypage-last" href="{{$item.Last.Href}}">尾页</goLink>
+                    </div>
+                </showPage>
+            </div>
+            <div id="pagination" class="my-pagination web_h5">
+                <showPage name="$item" page="$.U.Page" total="$List.Total" limit="$.G.Nums.ArticleListNum" count="3"
+                    url="$.U.Path">
+                    <div class="layui-box layui-laypage layui-laypage-molv">
+                        <goLink class="layui-laypage-frist" href="{{$item.First.Href}}">首页</goLink>
+                        <goLink class="layui-laypage-prev" href="{{$item.Prev.Href}}">上一页</goLink>
+                        <foreach name="$vo" index="$idx" data="$item.List">
+                            <eqIf data="$vo.Num $.U.Page">
+                                <span class="layui-laypage-curr">
+                                    <em class="layui-laypage-em" style="background-color:#ff6f4b;"></em>
+                                    <em>{{$vo.Num}}</em>
+                                </span>
+                                <else />
+                                <goLink href="{{$vo.Href}}">{{$vo.Num}}</goLink>
+                            </eqIf>
+                        </foreach>
+                        <goLink class="layui-laypage-next" href="{{$item.Next.Href}}">下一页</goLink>
+                        <goLink class="layui-laypage-last" href="{{$item.Last.Href}}">尾页</goLink>
+                    </div>
+                </showPage>
+            </div>
+        </div>
+    </getArticleList>
+    <div class="mo-paxs-10px mo-cols-lays mo-back-white mo-part-round mo-cols-rows">
+        <div style="margin-top: 20px;">
+            <import file="../libs/web/ads/index.html" data="bottomBanner" />
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        new Swiper(".nav-swiper1", {
+            slidesPerView: 'auto',
+            on: {
+                init: function () {
+
+                    var initialSlideIndex = $(this.el).find('.nav-dt').children().attr('data-index');
+                    this.slideTo(initialSlideIndex);
+
+                }
+            }
+        });
+    })
+</script>
+<import file="/public/footer.html" data="'noHome'" />
+<style>
+    .swiper-slide {
+        width: auto !important;
+    }
+
+    .swiper-wrapper {
+        overflow: visible !important;
+    }
+
+    .nav-swiper1 {
+        line-height: 100%;
+    }
+
+    @media screen and (max-width: 769px) {
+        .cms_util_text {
+            margin-top: -10px !important;
+        }
+    }
+</style>

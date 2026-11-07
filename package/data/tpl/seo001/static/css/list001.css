@@ -1,0 +1,63 @@
+
+.cs-itembox {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.cs-itembox .image-box {
+  position: relative;
+}
+
+.cs-itembox .image-box .unit {
+  bottom: 4px;
+  font-size: 12px;
+  right: 4px;
+  position: absolute;
+  color: #fff;
+  opacity: 0.8;
+  background: #333333;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.cs-itembox .image-box .tags {
+  top: 0;
+  right: 0;
+  position: absolute;
+  background-color: #ff6c49;
+  color: #fff;
+  font-size: 12px;
+  border-radius: 0 6px 0 6px;
+  padding: 0 6px;
+}
+
+.cs-itembox .desc,
+.title {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cs-itembox .desc {
+  font-size: 0.8rem;
+  color: #999999;
+  font-weight: 400;
+}
+
+.cs-itembox .title {
+  margin-top: 0.8rem;
+  font-size: 1rem;
+  color: #222222;
+  font-weight: 500;
+}
+
+.cs-itembox img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+  /* overflow: hidden; */
+}

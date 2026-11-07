@@ -1,0 +1,28 @@
+<if data=".Tpl">
+	<div class="table-hidden">
+		<table class="tb-parameter" style="margin-top: 24px;">
+			<thead>
+				<tr>
+					<th class="parameter-line" colspan="5" align="left" bgcolor="EFF0F1" height="32px">响应参数
+					</th>
+				</tr>
+			</thead>
+			<tr height="32px" align="left">
+				<th class="parameter-line">字段名</th>
+				<th class="parameter-line" width="70px">字段类型</th>
+				<th class="parameter-line">字段说明</th>
+				<th class="parameter-line" width="70px">必填项</th>
+				<th class="parameter-line" width="60px">默认值</th>
+			</tr>
+			<foreach name="$Queryitem" index="$idx" data=".Tpl">
+				<tr height="32px" align="left" class="tr-param">
+					<td class="parameter-line depth{{$Queryitem.Depth}}">{{$Queryitem.Key}}</td>
+					<td class="parameter-line">{{$Queryitem.FileType}}</td>
+					<td class="parameter-line">{{$Queryitem.Description}}</td>
+					<td class="parameter-line">{{$Queryitem.Disabled}}</td>
+					<td class="parameter-line">{{$Queryitem.Value}}</td>
+				</tr>
+			</foreach>
+		</table>
+	</div>
+</if>

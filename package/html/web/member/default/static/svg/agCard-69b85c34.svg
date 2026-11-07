@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="709px" height="121px" viewBox="0 0 709 121" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>卡片</title>
+    <defs>
+        <linearGradient x1="3.20923843e-15%" y1="48.5286378%" x2="98.6837201%" y2="51.4431439%" id="linearGradient-1">
+            <stop stop-color="#FF8050" offset="0%"></stop>
+            <stop stop-color="#FF8050" stop-opacity="0.8" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#FFFFFF" stop-opacity="0.8" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <path d="M26,0 L684,0 C692.836556,-1.623249e-15 700,7.163444 700,16 L700,121 L700,121 L10,121 L10,16 C10,7.163444 17.163444,1.623249e-15 26,0 Z" id="path-3"></path>
+        <filter x="-1.7%" y="-9.9%" width="103.5%" height="119.8%" filterUnits="objectBoundingBox" id="filter-4">
+            <feGaussianBlur stdDeviation="12" in="SourceAlpha" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.6 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="会员" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="个人中心-代理模式" transform="translate(-20.000000, -296.000000)">
+            <g id="卡片" transform="translate(20.000000, 296.000000)">
+                <polygon id="路径-2" fill="#F2DAC3" points="0 121 10 114 10 121"></polygon>
+                <polygon id="路径-2" fill="#F2DAC3" transform="translate(704.000000, 117.500000) scale(-1, 1) translate(-704.000000, -117.500000) " points="699 121 709 114 709 121"></polygon>
+                <g id="矩形">
+                    <use fill="url(#linearGradient-1)" fill-rule="evenodd" xlink:href="#path-3"></use>
+                    <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                    <path stroke="url(#linearGradient-2)" stroke-width="2" d="M684,1 C688.142136,1 691.892136,2.67893219 694.606602,5.39339828 C697.321068,8.10786438 699,11.8578644 699,16 L699,16 L699,120 L11,120 L11,16 C11,11.8578644 12.6789322,8.10786438 15.3933983,5.39339828 C18.1078644,2.67893219 21.8578644,1 26,1 L26,1 Z" stroke-linejoin="square"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

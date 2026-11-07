@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="54px" height="60px" viewBox="0 0 54 60" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>进程管理</title>
+    <defs>
+        <path d="M40.9200217,8.60162228 C40.9200217,8.60162228 21.7289463,0.184498218 21.6129882,0.129798868 C21.2154238,-0.0432662893 20.7764135,-0.0432662893 20.3871383,0.129798868 L1.08010476,8.6016721 C0.467202477,8.8658032 0.0613489188,9.51258067 0.0364813291,10.2322408 C0.0116137395,10.9610175 -0.460462799,28.0867464 2.86916704,35.1283661 C6.30651113,42.388584 19.8736158,47.6811695 20.4534066,47.8997677 C20.6273438,47.9635338 20.8178595,48 21.0000406,48 C21.1822217,48 21.3727827,47.9635338 21.5467199,47.8997677 C22.1265107,47.6811695 35.6936154,42.388584 39.1226703,35.1283661 C42.4605893,28.0867464 41.9884675,10.9610175 41.9636452,10.2322408 C41.9387776,9.51253086 41.532924,8.86575338 40.9200217,8.60162228 Z" id="path-1"></path>
+        <filter x="-21.4%" y="-14.6%" width="152.4%" height="145.8%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="2" dy="4" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="3" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.0543076487   0 0 0 0 0.673883853   0 0 0 0 0.505520754  0 0 0 0.3 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="系统信息" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="系统信息--GZIP未开启" transform="translate(-1117.000000, -111.000000)" fill-rule="nonzero">
+            <g id="进程管理" transform="translate(1118.000000, 113.000000)">
+                <rect id="矩形" fill="#000000" opacity="0" x="0" y="0" width="48" height="48"></rect>
+                <g id="编组-13" transform="translate(3.000000, 0.000000)">
+                    <g id="路径">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                        <use fill="#13CE9B" xlink:href="#path-1"></use>
+                    </g>
+                    <polygon id="路径" fill="#FFFFFF" points="35 26.5316744 29.2294588 26.5316744 27.3654454 22.2093034 20.9504134 35 16.0524237 25.596624 13.9305814 30.3512321 7 30.3512321 7 26.8227591 11.2337075 26.8227591 15.7648807 16.6696254 20.8710856 26.4787543 27.6331428 13 31.9461782 23.0032014 34.9900772 23.0032014 34.9900772 26.5316744"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="172px" height="68px" viewBox="0 0 172 68" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>左</title>
+    <defs>
+        <path d="M1266,406 L1395.27307,406 C1401.37807,406.000122 1406.50991,410.583861 1407.19634,416.650151 C1410.66897,447.258076 1412.93686,464.368863 1414,467.982511 C1415.18071,471.995798 1419.18129,474.002441 1426.00172,474.002441 L1254,473.980819 L1254,418 C1254,411.372583 1259.37258,406 1266,406 Z" id="path-1"></path>
+        <filter x="-2.3%" y="-5.9%" width="104.7%" height="111.8%" filterUnits="objectBoundingBox" id="filter-2">
+            <feGaussianBlur stdDeviation="2" in="SourceAlpha" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="4" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.5 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="会员中心" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="左" transform="translate(-1254.000000, -406.000000)">
+            <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+            <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <script src="./js/vue.min.js"></script>
+    <!-- import CSS -->
+    <link rel="stylesheet" href="./css/elment.min.css">
+    <link rel="stylesheet" href="./css/base.css">
+    <!-- import JavaScript -->
+    <script src="./js/elment.min.js"></script>
+    <link rel="stylesheet" href="./css/xterm.css" />
+    <script src="./js/xterm.js"></script>
+    <title>站点信息</title>
+</head>
+<script src="./js/axiso.js"></script>
+<link rel="stylesheet" href="./css/index.css">
+
+<style>
+    .container .header {
+        height: 70px;
+        width: 100%;
+    }
+    .container{
+        height: 460px;
+    }
+    .main .mainp {
+        font-family: PingFangSC-Regular;
+        font-size: 14px;
+        color: #444444;
+        font-weight: 400;
+        text-align: left;
+        margin: 20px 0;
+        display: flex;
+    }
+
+    .main .mainp label {
+        width: 120px;
+    }
+
+    .main .mainp input {
+        border: 1px solid #e5e5e5;
+        border-radius: 2px;
+        margin-left: 20px;
+    }
+
+    .main .mainp input[type="text"],
+    input[type="password"] {
+        width: 320px;
+        height: 32px;
+        /* padding: 0 10px; */
+        outline: none;
+
+    }
+
+    .btn {
+        float: right;
+        margin-top: 20px;
+    }
+
+    .btn button {
+        width: 80px;
+        height: 32px;
+        margin: 10px;
+
+    }
+
+    .el-form-item {
+        margin-bottom: 20px !important;
+    }
+
+    .container p {
+        font-family: PingFangSC-Regular;
+        font-size: 12px;
+        color: #FAAD14;
+        font-weight: 400;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+
+    .container2 p {
+        font-family: PingFangSC-Regular;
+        font-size: 12px;
+        color: #4E4E4E;
+        font-weight: 400;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+
+    .main button {
+        /* width: 80px; */
+        height: 32px;
+        margin: 10px 0px;
+        font-size: 14px;
+    }
+
+    .frombg {
+        background: #F8F9FC;
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-radius: 4px;
+        padding: 30px;
+        padding-top: 40px;
+    }
+
+    .xterm-viewport {
+        border-radius: 0px 0px 4px 4px;
+    }
+
+    .xterm-screen {
+        border: 0px;
+        padding-left: 20px;
+    }
+
+    ::-webkit-scrollbar {
+        display: none;
+        /* Chrome Safari */
+    }
+
+    .carousel {
+        position: absolute;
+        width: 200px;
+        bottom: 11%;
+        right: 14%;
+    }
+
+    @keyframes identifier {
+        0% {
+            width: 0;
+            height: 0;
+            opacity: 0;
+        }
+
+        100% {
+            width: 720px;
+            height: 572px;
+            opacity: 1;
+        }
+    }
+
+    .elform {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .bottom h5 {
+        font-family: MicrosoftYaHei;
+        font-size: 14px;
+        color: #666666;
+        letter-spacing: 0;
+        line-height: 20px;
+        font-weight: 400;
+    }
+
+    .bottom p {
+        font-family: MicrosoftYaHeiLight;
+        font-size: 12px;
+        color: #666666;
+        letter-spacing: 0;
+        margin-top: -20px;
+        font-weight: 200;
+    }
+
+    .fbg {
+        width: 180px;
+        height: 150px;
+        background: #F8F9FC;
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-radius: 4px;
+        padding: 30px;
+        padding-top: 40px;
+    }
+
+    .btna {
+        width: 140px !important;
+        height: 40px !important;
+        background: #4B82FA;
+        border: solid 1px #4B82FA;
+        border-radius: 2px;
+        margin-top: 50px !important;
+
+    }
+
+    .wz {
+        position: absolute;
+        width: 76%;
+    }
+
+    /* ==================== */
+    .container2 {
+        height: 900px;
+        background-size: auto 980px;
+        margin-top: 0;
+    }
+
+    .container2 .main {
+        padding: 0;
+        color: #4E4E4E;
+    }
+
+    .glo_discolor {
+        color: #B8B8B8 !important;
+    }
+
+    .glo_discolor2 {
+        color: #606266 !important;
+    }
+
+    .glo_discolor p {
+        color: #B8B8B8 !important;
+    }
+
+    .form_content {
+        width: 590px;
+        height: 695px;
+        background: #F8F9FC;
+        border: 1px solid rgba(233, 233, 233, 1);
+        border-radius: 4px;
+        margin: auto;
+        padding: 24px;
+        box-sizing: border-box;
+    }
+
+    .go_btn {
+        width: 140px !important;
+        height: 40px !important;
+        margin: auto !important;
+        margin-top: 22px !important;
+    }
+
+    /* 系统守护 */
+    .guard_form_item .el-form-item__content {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+    }
+
+    .check_sup {
+        position: absolute;
+        padding: 0;
+        margin: 0;
+        bottom: -16px;
+        right: 0;
+        font-size: 12px;
+        line-height: 20px;
+        color: #67C23A;
+    }
+
+    .check_sup2 {
+        color: #F56C6C;
+    }
+
+    .guard_box {
+        display: flex;
+        margin-bottom: 6px;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .guard_box span {
+        font-size: 16px;
+        /* color: #4E4E4E; */
+        letter-spacing: 1.6px;
+        /* margin-right: 34px; */
+    }
+
+    /* 守护提示 */
+    .guard_hint {
+        width: 542px;
+        /* height: 76px; */
+        background: #EAF6FF;
+        border: 1px solid rgba(208, 228, 245, 1);
+        border-radius: 4px;
+        padding: 16px 18px;
+        box-sizing: border-box;
+        margin-top: 20px;
+    }
+
+    .config_hit {
+        padding: 5px 11px;
+        border: 1px solid #e1e6e8 !important;
+        border-radius: 5px;
+        background-color: #fff;
+        margin-bottom: 8px;
+    }
+
+    .config_hit p {
+        display: flex;
+    }
+
+    .config_hit p>span:nth-of-type(1) {
+        width: 230px;
+    }
+
+    .guard_hint p {
+        margin: 0;
+        line-height: 16px;
+        font-size: 12px;
+        /* color: #4E4E4E; */
+        letter-spacing: 0;
+    }
+
+    .guard_hint p {
+        margin-bottom: 8px;
+    }
+
+    .guard_hint .hint_img {
+        width: 100%;
+    }
+
+    /* 输入框标题 */
+    .inp_lab {
+        font-size: 14px;
+        /* color: #4E4E4E; */
+        letter-spacing: 0;
+        font-weight: 400;
+        margin-bottom: 8px;
+        line-height: 19px;
+    }
+
+    /* 竖向盒子 */
+    .clo_flex {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    /* 安装输入框 */
+    .install_inp_box {
+        margin-top: 14px;
+    }
+
+    /* 配置复选框 */
+    .conf_check_box {
+        margin-top: 16px;
+    }
+
+    .conf_check_box .check {
+        display: flex;
+        align-items: center;
+    }
+
+    .conf_check_box .check {
+        display: flex;
+        align-items: center;
+    }
+
+    .conf_check_box .check .inp_num {
+        display: flex;
+        align-items: center;
+    }
+
+    .conf_check_box .check .inp_num>span {
+        margin-right: 8px;
+        color: #606266;
+        margin-left: 16px;
+    }
+
+    /* 配置示例 */
+    .conf_example_box {
+        margin-top: 15px;
+    }
+
+    .conf_example_box .example_cont {
+        width: 512px;
+        height: 230px;
+        background: #FFFFFF;
+        border: 1px solid rgba(216, 216, 216, 1);
+        border-radius: 2px;
+        padding: 16px 24px;
+        box-sizing: border-box;
+    }
+
+    .conf_example_box .example_cont pre {
+        height: 100%;
+        line-height: 20px;
+        margin: 0;
+        width: 225px;
+        font-size: 12px;
+        color: #666666;
+        letter-spacing: 0;
+    }
+
+    .conf_example_box .example_cont p {
+        margin: 0;
+        line-height: 20px;
+        display: flex;
+    }
+
+    /* 配置保存路径 */
+    .save_inp_box {
+        margin-top: 14px;
+    }
+
+    .container2 .el-form-item {
+        margin-bottom: 0px !important;
+    }
+
+    .open_hint {
+        font-size: 12px;
+        color: #E6A23C !important;
+        position: absolute;
+        bottom: -12px;
+        line-height: 16px;
+        user-select: none
+    }
+</style>
+
+<body>
+    <div id="app">
+
+        <div class="container container2" v-if="!isWindows">
+            <div class="header">
+                <div class="headertop">
+                    <div class="titleimg">
+                        <img src="./img/cms.svg" alt="">
+                    </div>
+                    <div class="title">
+                        欢迎使用
+                    </div>
+                    <div class="rightnav">
+
+                    </div>
+                </div>
+                <div class="betton ">
+                    恭喜您，系统初始化成功！
+                </div>
+
+                <div class="main">
+                    <div class="form_content">
+                        <transition name="el-zoom-in-center">
+                            <el-form :hide-required-asterisk="true" class="" :model="from">
+                                <div class="guard_box">
+                                    <span>系统守护说明</span>
+                                    <span style="font-size: 12px;">可在系统设置-启动重启设置-系统守护中查看</span>
+                                </div>
+                                <div class="guard_hint glo_discolor2">
+                                    <p>1.安装命令：yum -y install supervisor</p>
+                                    <p>2.启动服务命令：systemctl start supervisord</p>
+                                    <p>3.查看服务状态：systemctl status supervisord</p>
+                                    <p>4.配置示例</p>
+                                    <div class="config_hit">
+                                        <p><span>[program:cms]</span><span>cms自定义程序名</span></p>
+                                        <p><span>directory = <span
+                                                    class="replace_path">/root</span></span><span>程序所在目录</span></p>
+                                        <p><span>command = <span
+                                                    class="replace_path">/root</span>/cms</span><span>运行程序</span></p>
+                                        <p><span>autostart = true</span><span>是否自动启动，默认 true</span></p>
+                                        <p><span>autorestart = true</span><span>程序异常退出后自动重启</span></p>
+                                        <p><span>startsecs = 5</span><span>启动5秒后没有异常退出，就当作已经正常启动</span></p>
+                                        <p><span>startretries = 3</span><span>启动失败自动重试次数，默认是 3</span></p>
+                                        <p><span>user = root</span><span>哪个用户启动</span></p>
+                                        <p><span>redirect_stderr = true</span><span>把 stderr 重定向到 stdout，默认 false</span>
+                                        </p>
+                                        <p><span>stdout_logfile_maxbytes = 20MB</span><span>stdout 日志文件大小，默认 50MB</span>
+                                        </p>
+                                        <p><span>stdout_logfile_backups = 20</span><span>stdout 日志文件备份数</span></p>
+                                        <p><span>stdout_logfile = <span
+                                                    class="replace_path">/root/cms</span>/stdout.log</span><span>stdout
+                                                日志文件</span>
+                                        </p>
+                                    </div>
+                                    <p>5.注意事项</p>
+                                    <p style="padding-left: 12px;">*默认配置存放路径/etc/supervisord.d</p>
+                                    <p style="padding-left: 12px;">*默认配置默认后缀.ini；示例：webcli.ini</p>
+                                    <p style="padding-left: 12px;">*可把以上配置示例复制修改并保存到配置路径即可</p>
+                                    <p>6.守护进程</p>
+                                    <p style="padding-left: 12px;">*命令:supervisorctl</p>
+                                    <p style="padding-left: 12px;">*重启：restart 程序名称</p>
+                                </div>
+                            </el-form>
+
+                        </transition>
+                    </div>
+                    <el-button type="primary" @click="go()" class="go_btn"
+                        :loading="btnloading">进入系统</el-button>
+                </div>
+
+            </div>
+        </div>
+        <div class="container container2" v-else-if="isWindows">
+            <div class="header">
+                <div class="headertop">
+                    <div class="titleimg">
+                        <img src="./img/cms.svg" alt="">
+                    </div>
+                    <div class="title">
+                        欢迎使用
+                    </div>
+                    <div class="rightnav">
+
+                    </div>
+                </div>
+                <div class="betton ">
+                    恭喜您，系统初始化成功！
+                </div>
+
+                <div class="main">
+                    <div class="form_content">
+                        <transition name="el-zoom-in-center">
+                            <el-form :hide-required-asterisk="true" class="" ref="" :model="from">
+                                <div class="guard_box">
+                                    <span>系统守护说明</span>
+                                    <span style="font-size: 12px;">可在系统设置-启动重启设置-系统守护中查看</span>
+                                </div>
+                                <div class="guard_hint glo_discolor2">
+                                    <p>1.使用管理员身份运行cmd窗口，切换到cms程序安装目录</p>
+                                    <p>2.安装cms服务：cms.exe -service install</p>
+                                    <img class="hint_img" src="./img/super1.png" alt="">
+                                    <p>3.启动cms服务：cms.exe -service start</p>
+                                    <img class="hint_img" src="./img/super2.png" alt="">
+                                    <p style="line-height: 22px;">
+                                        4.使用命令services.msc打开注册表，可查看cms服务状态，正在运行则表示服务启动成功，此时已具备系统守护功能</p>
+                                    <img class="hint_img" src="./img/super3.png" alt="">
+                                    <p>5.撤销cms服务</p>
+                                    <p style="line-height: 22px;">&nbsp;&nbsp;&nbsp;&nbsp;ꔷ 停止cms服务，使用命令cms.exe -service
+                                        stop，或者在注册表右点击停止服务</p>
+                                    <p style="line-height: 22px;">&nbsp;&nbsp;&nbsp;&nbsp;ꔷ 卸载cms服务，使用命令cms.exe -service
+                                        uninstall，命令执行成功后查看注册表cms服务已移除，此时系统将不具备守护功能</p>
+                                    <img class="hint_img" src="./img/super4.png" alt="">
+                                </div>
+                            </el-form>
+
+                        </transition>
+                    </div>
+                    <el-button type="primary" @click="go()" class="go_btn"
+                        :loading="btnloading">进入系统</el-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    var url = window.location.href;
+    // var url = 'http://192.168.2.163:21007';
+    var arr = url.split('/');
+    var url = arr[0] + '//' + arr[2];
+    Object.assign(window, Vue)
+    const App = {
+        components: {
+            ElMessageBox: ElementPlus.ElMessageBox,
+        },
+        setup() {
+            let from = ref({
+                daemonOpen: false,//是否开启系统守护
+                useUserSupervisor: false,//是否使用用户的sp,默认false"`
+                openStart: false,//开机是否启动
+                openReStart: false,//异常是否启动
+                tryTimes: 3,//重试次数
+                installPath: "/usr/local/supervisord",//Supervisor程序所在路径
+                supervisorSystemDefaultPath: "/usr/local/supervisord/supervisor.conf",//配置保存路径
+            })
+
+           // 表单引用
+
+            const btnloading = ref(false);
+            const confPath = ref('/root')
+            const go = () => {
+                let adminindex = "{{.AdminIndex}}"
+                window.location.href = `${adminindex}`
+            }
+            // 获取配置路径
+            const getCongig = () => {
+                const textEleArr = document.querySelectorAll(".replace_path");
+                // 检测
+                axios({
+                    method: 'get',
+                    url: url + '/install/pwd',
+                }).then(res => {
+                    // console.log(res.data)
+                    confPath.value = res.data
+                    textEleArr.forEach(item => {
+                        item.innerHTML = confPath.value
+                    });
+                    // console.log(confPath.value)
+                }).catch(err => {
+                });
+            }
+            const repFroEleArr = ref();
+
+            const isWindows = ref(false);
+            // 检查系统
+            const getSystem = () => {
+                axios({
+                    method: 'get',
+                    url: url + '/windows',
+                }).then(res => {
+                    // console.log(res)
+                    if (res.data.windows) {
+                        isWindows.value = true;
+                    }
+                    // console.log(isWindows.value)
+                }).catch(err => {
+                });
+            };
+            onMounted(() => {
+                getSystem()
+                setTimeout(() => {
+                    repFroEleArr.value = document.querySelectorAll(".replace_from_value");
+                    getCongig();
+                }, 0)
+            })
+          
+            return {
+                from,
+                confPath,
+                // checkInstallSup,
+                repFroEleArr,
+                getCongig,
+                getSystem,
+                isWindows,
+                go,
+                btnloading,
+            };
+        },
+    };
+    const app = Vue.createApp(App);
+    app.use(ElementPlus);
+    app.mount("#app");
+</script>
+
+</html>

@@ -1,0 +1,228 @@
+<import file="/public/header.html" data="'textindex'" />
+<!--========== Header ==============-->
+
+<!-- breadcrumb -->
+<getArticlesCategoryList name="$List">
+    <div class="gen-breadcrumb" style="background-image: url('/static/images/background/asset-25.jpeg');">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-12">
+                    <nav aria-label="breadcrumb">
+                        <div class="gen-breadcrumb-title">
+                            <h1>
+
+                                <foreach data="$List.List" name="$item" index="$index">
+                                    <eqIf data="$item.ID $.U.TypeId">
+                                        {{$item.Name}}
+                                    </eqIf>
+                                </foreach>
+
+
+                            </h1>
+                        </div>
+                        <div class="gen-breadcrumb-container">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/index.html"><i
+                                            class="fas fa-home mr-2"></i>返回首页</a>
+                                </li>
+
+                                <foreach data="$List.List" name="$item" index="$index">
+                                    <eqIf data="$item.ID $.U.TypeId">
+                                        <li class="breadcrumb-item active">
+                                            {{$item.Name}}
+                                        </li>
+                                    </eqIf>
+                                </foreach>
+                            </ol>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</getArticlesCategoryList>
+<!-- breadcrumb -->
+
+
+<!-- Blog-Right-Sidebar -->
+<section class="gen-section-padding-3">
+    <div class="container">
+        <div class="row">
+            <getArticleList name="$List" page="$.U.Page" limit="$.G.Nums.ArticleListNum" categoryPid="$.U.TypeId"
+                categoryId="$.U.CateId" order="$.U.Order">
+                <egtIf data="$List.Total 1">
+                    <div class="col-xl-9 col-md-12">
+                        <div class="gen-blog gen-blog-col-1">
+                            <!-- 主体 -->
+                            <div class="row">
+                                <foreach data="$List.List" name="$item" index="$index">
+                                    <div class="col-lg-12">
+                                        <div class="gen-blog-post">
+                                            <div class="gen-post-media">
+                                                <if data="$item.SurfacePlot">
+                                                    <img src="{{$item.SurfacePlot}}" alt="blog-image" loading="lazy"
+                                                        class="cmslazyload">
+                                                    <else />
+                                                    <if data="$.G.Logo">
+                                                        <img src="{{$.G.Logo}}" alt="blog-image" loading="lazy">
+                                                        <else />
+                                                        暂无图片
+                                                    </if>
+                                                </if>
+                                            </div>
+                                            <div class="gen-blog-contain">
+                                                <div class="gen-post-meta">
+                                                    <ul>
+                                                        <li class="gen-post-meta" style="color: #cecfd1;"><goLink
+                                                                href="/text/detail.html" args="{id:$item.Id,type_id:$item.Category.ID}"><i class="fa fa-calendar"></i>
+                                                                <showDateTime time="$item.UpdateAt"
+                                                                    data="yy-mm-dd hh:ii" />
+                                                            </goLink>
+                                                        </li>
+
+                                                        <li class="gen-post-author" style="color: #cecfd1;">
+                                                            <i class="fas fa-eye"></i>{{$item.Popularity}}
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <h5 class="gen-blog-title"><goLink href="/text/detail.html" args="{id:$item.Id,type_id:$item.Category.ID}">{{$item.Name}}</goLink>
+                                                </h5>
+                                                <p>
+
+                                                    <if data="$item.Introduce">
+                                                        {{$item.Introduce}}
+                                                        <else />
+                                                        暂无摘要
+                                                    </if>
+
+                                                </p>
+                                                <div class="gen-btn-container">
+                                                    <goLink href="/text/detail.html" class="gen-button"
+                                                        args="{id:$item.Id,type_id:$item.Category.ID}">
+                                                        <div class="gen-button-block">
+                                                            <span class="gen-button-text">查看详情</span>
+                                                        </div>
+                                                    </goLink>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </foreach>
+                            </div>
+                            <!-- 分页器 -->
+                            <div class="row">
+                                <showPage name="$item" page="$.U.Page" total="$List.Total"
+                                    limit="$.G.Nums.ArticleListNum" count="3" url="$.U.Path">
+                                    <div class="col-lg-12"
+                                        style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div class="gen-pagination">
+                                            <nav aria-label="Page navigation">
+                                                <ul class="page-numbers">
+                                                    <eqIf data="$.U.Page 1">
+                                                        <else />
+                                                        <li>
+                                                            <goLink class="next page-numbers"
+                                                                href="{{$item.First.Href}}">首页</a>
+                                                        </li>
+                                                        <li>
+                                                            <goLink class="next page-numbers"
+                                                                href="{{$item.Prev.Href}}">上一页
+                                                            </goLink>
+                                                        </li>
+
+                                                    </eqIf>
+                                                    <foreach name="$vo" index="$idx" data="$item.List">
+                                                        <eqIf data="$vo.Num $.U.Page">
+                                                            <li><span aria-current="page"
+                                                                    class="page-numbers current">{{$vo.Num}}</span></li>
+                                                            <else />
+                                                            <li>
+                                                                <goLink class="page-numbers" href="{{$vo.Href}}">
+                                                                    {{$vo.Num}}
+                                                                </goLink>
+                                                            </li>
+                                                        </eqIf>
+                                                    </foreach>
+                                                    <if data="$item.Next.Href">
+                                                        <li>
+                                                            <goLink class="next page-numbers"
+                                                                href="{{$item.Next.Href}}">下一页</a>
+                                                        </li>
+                                                        <li>
+                                                            <goLink class="next page-numbers"
+                                                                href="{{$item.Last.Href}}">尾页</a>
+                                                        </li>
+                                                    </if>
+
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </showPage>
+
+                            </div>
+                        </div>
+                    </div>
+                    <else />
+                    <div style="padding: 80px 0;display: flex; justify-content: center; flex-direction: column; align-items: center;"
+                        class="col-xl-9 col-md-12">
+                        <img src="/static/images/alt05_back.png" alt=" 空状态">
+                        <p>暂无数据</p>
+                    </div>
+                </egtIf>
+            </getArticleList>
+            <div class="col-xl-3 col-md-12 mt-4 mt-xl-0">
+                <div class="widget widget_recent_entries">
+                    <h2 class="widget-title">最热资讯</h2>
+                    <ul>
+                        <getArticleList name="$List" limit="$.G.Nums.ArticleHotNum" order="1">
+                            <foreach data="$List.List" name="$item">
+                                <li style="line-height: 100% !important; padding: 8px 0px; ">
+                                    <goLink href="/text/detail.html" args="{id:$item.Id}"
+                                        class="cms-text-hotText-rank-a">{{$item.Name}}
+                                    </goLink>
+                                </li>
+                            </foreach>
+                        </getArticleList>
+
+                    </ul>
+                </div>
+                <getArticleList name="$List" limit="$.G.Nums.ArticleHotNum" page="1">
+                    <egtIf data="$List.Total 1">
+                        <div class="widget widget_archive">
+                            <h2 class="widget-title">最新资讯</h2>
+                            <ul>
+                                <foreach data="$List.List" name="$item">
+                                    <li style="line-height: 100% !important; padding: 8px 0px; ">
+                                        <goLink href="/text/detail.html" args="{id:$item.Id}"
+                                            class="cms-text-hotText-rank-a">{{$item.Name}}
+                                        </goLink>
+                                    </li>
+                                </foreach>
+                            </ul>
+                        </div>
+                    </egtIf>
+                </getArticleList>
+                <getArticleList name="$List" imit="$.G.Nums.ArticleGuessLikeNum" categoryPid="$.U.TypeId" page="1">
+                    <egtIf data="$List.Total 1">
+                        <div class="widget widget_meta">
+                            <h2 class="widget-title">猜你喜欢</h2>
+                            <ul>
+                                <foreach data="$List.List" name="$item">
+                                    <li style="line-height: 100% !important; padding: 8px 0px; ">
+                                        <goLink href="/text/detail.html" args="{id:$item.Id}"
+                                            class="cms-text-hotText-rank-a">{{$item.Name}}
+                                        </goLink>
+                                    </li>
+                                </foreach>
+                            </ul>
+                        </div>
+                    </egtIf>
+                </getArticleList>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Blog-left-Sidebar -->
+
+<import file="/public/footer.html" data="nohome" />

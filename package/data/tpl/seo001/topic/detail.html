@@ -1,0 +1,178 @@
+<import file="/public/header.html" data="'topicdetail'" />
+<getAlbumVodList name="$List" page="$.Q.page" limit="$.G.Nums.VodListNum" specialId="$.U.Id">
+    <getAlbumDetail name="$info" id="$.U.Id">
+        <style>
+            .content {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+            }
+        
+            .section-box {
+                padding: 1rem 0;
+                width: 1400px;
+                height: auto;
+                overflow: hidden;
+            }
+        
+            .section-box .list-items {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+        
+            .filter {
+                background: #f9f9f9;
+                border-radius: 6px;
+                margin-bottom: 1rem;
+                padding: 2rem;
+                display: flex;
+                flex-direction: column;
+                box-sizing: border-box;
+            }
+        
+            .scroll-box {
+                overflow: hidden;
+                width: calc(100% - 40px);
+            }
+        
+            .scroll-box .swiper-wrapper {
+                overflow-x: auto;
+            }
+        
+            .scroll-box .swiper-wrapper::-webkit-scrollbar {
+                width: 0;
+                height: 0;
+            }
+        
+            .filter .swiper .swiper-slide {
+                width: auto;
+                height: auto;
+            }
+        
+            .item.first {
+                pointer-events: none;
+                width: 80px;
+                min-width: 80px;
+            }
+        
+            @media (min-width: 980px) {
+                .filter {
+                    width: 1400px;
+                }
+            }
+        
+            @media (max-width: 979px) {
+                .filter {
+                    width: 100%;
+                    background: #fff;
+                    padding: 0;
+                }
+            }
+        
+            .item-box {
+                display: flex;
+                padding: 0.7rem 0 0.8rem;
+                border-bottom: 1px solid #ececec;
+            }
+        
+            .item.swiper-slide-active1 {
+                background: #ffece0;
+                border-radius: 24px;
+            }
+            .item.swiper-slide-active1 a{
+                color: #ff6f4b;
+        
+            }
+        
+            .item {
+                font-size: 12px;
+                color: #333333;
+                font-weight: 400;
+                padding: 0.3rem 1.5rem;
+                line-height: 20px;
+                cursor: pointer;
+            }
+        
+            .item a:hover {
+                color: #ff6f4b;
+            }
+        
+            .cms_swiper_slide {
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+            }
+            .content .box-title{
+                font-size: 1.4rem;
+                color: #333;
+                padding: 1em 0;
+                position: relative;
+                display: flex;
+                justify-content: space-between;
+            }
+            .tags{
+                display: flex;
+                font-size: 12px;
+            }
+            .tags p:first-child{
+                padding: 4px 12px;
+                border: #95dae8 solid 1px;
+                color: #95dae8;
+                margin-right: 10px;
+            }
+            .tags p:last-child{
+                padding: 4px 12px;
+                border: #86b451 solid 1px;
+                color: #86b451;
+            }
+        </style>
+        <section class="content mrgt72">
+            <div class="section-box" style="padding-top: 0px; padding-bottom: 0px;">
+				<import file="../libs/web/ads/index.html" data="topBanner" />
+
+            </div>
+                <div class="section-box">
+                    <div class="title box-title">{{$info.Title}}<div class="tags"><p>共{{$info.VideoNum}}部</p><p>今日更新：0 部</p></div></div>
+                    <gtIf data="$List.Count 0">
+                        <import file="/public/vodlist.html" data="$List" />
+        
+                        <div id="pagination" class="my-pagination">
+                            <showPage name="$item" page="$.U.Page" total="$List.Total" limit="$.G.Nums.VodListNum" count="5"
+                                url="$.U.Path">
+                                <div class="layui-box layui-laypage layui-laypage-molv">
+                                    <!-- <a class="layui-laypage-prev layui-disabled" >上一页</a> -->
+                                    <goLink class="layui-laypage-prev" href="{{$item.First.Href}}">首页</goLink>
+                                    <goLink class="layui-laypage-prev" href="{{$item.Prev.Href}}">上一页</goLink>
+                                    <foreach name="$vo" index="$idx" data="$item.List">
+                                        <eqIf data="$vo.Num $.U.Page">
+                                            <span class="layui-laypage-curr">
+                                                <em class="layui-laypage-em" style="background-color:#ff6f4b;"></em>
+                                                <em>{{$vo.Num}}</em>
+                                            </span>
+                                            <else />
+                                            <goLink href="{{$vo.Href}}">{{$vo.Num}}</goLink>
+                                        </eqIf>
+                                    </foreach>
+                                    <goLink class="layui-laypage-next" href="{{$item.Next.Href}}">下一页</goLink>
+                                    <goLink class="layui-laypage-last" href="{{$item.Last.Href}}">尾页</goLink>
+                                </div>
+                            </showPage>
+                        </div>
+                        <else />
+                        <div style="padding: 80px 0" class="query-empty">
+                            <img src="/static/image/image/empty.png" alt="{{esp " 空状态"}}" />
+                            <p>{{esp "暂无数据"}}</p>
+                        </div>
+                    </gtIf>
+                </div>
+            <div class="section-box " style="background-color: #fff;margin-bottom: 10px;">
+                <import file="../libs/web/ads/index.html" data="bottomBanner" />
+            </div>
+        </section>
+
+    </getAlbumDetail>
+</getAlbumVodList>
+<import file="/public/footer.html" data="'nohome'" />

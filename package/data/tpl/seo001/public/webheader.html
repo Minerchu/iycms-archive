@@ -1,0 +1,267 @@
+<div class="header-nav tem_head_meun">
+	<div class="header-logo">
+		<if data="$.G.Logo">
+			<goLink href="/">
+				<img src="{{$.G.Logo}}" />
+			</goLink>
+		</if>
+	</div>
+	<div class="nav-swiper001">
+		<div class="swiper-wrapper">
+			<eqIf data=". 'index'">
+				<goLink href="/index.html" class="active swiper-slide">
+					<div class="nav-item">{{esp "首页"}}</div>
+				</goLink>
+				<else />
+				<goLink href="/index.html" class="swiper-slide">
+					<div class="nav-item">{{esp "首页"}}</div>
+				</goLink>
+			</eqIf>
+
+			<getVideoCategoryList name="$Cate" parentId="0">
+				<foreach name="$item" index="$index" data="$Cate.List">
+					<eqIf data="$.U.TypeId $item.ID">
+						<goLink href="/vod/index.html" args="{type_id:$item.ID}" class="active swiper-slide"
+							id="menuon1">
+							<div class="nav-item active001" data-index="{{$index}}" dataId="{{$item.ID}}">{{esp
+								$item.Name }}</div>
+						</goLink>
+						<else />
+						<goLink href="/vod/index.html" args="{type_id:$item.ID}" class="swiper-slide">
+							<div class="nav-item" dataId="{{$item.ID}}">{{esp $item.Name }}</div>
+						</goLink>
+					</eqIf>
+
+				</foreach>
+			</getVideoCategoryList>
+			<eqIf data=". 'topicindex'">
+				<goLink href="/topic/index.html" class="active swiper-slide" id="menuon1">
+					<div class="nav-item active001" data-index="{{999}}">{{esp "专题"}}</div>
+				</goLink>
+				<else />
+				<eqIf data=". 'topicdetail'">
+					<goLink href="/topic/index.html" class="active swiper-slide" id="menuon1">
+						<div class="nav-item active001" data-index="{{999}}">{{esp "专题"}}</div>
+					</goLink>
+					<else />
+					<goLink href="/topic/index.html" class="swiper-slide">
+						<div class="nav-item">{{esp "专题"}}</div>
+					</goLink>
+				</eqIf>
+
+			</eqIf>
+			<eqIf data=". 'textindex'">
+				<goLink href="/text/index.html" class="active swiper-slide" id="menuon1">
+					<div class="nav-item active001" data-index="{{999}}">{{esp "资讯"}}</div>
+				</goLink>
+
+				<else />
+				<eqIf data=". 'textlist'">
+					<goLink href="/text/index.html" class="active swiper-slide" id="menuon1">
+						<div class="nav-item active001" data-index="{{999}}">{{esp "资讯"}}</div>
+					</goLink>
+					<else />
+					<eqIf data=". 'textdetail'">
+						<goLink href="/text/index.html" class="active swiper-slide" id="menuon1">
+							<div class="nav-item active001" data-index="{{999}}">{{esp "资讯"}}</div>
+						</goLink>
+						<else />
+						<goLink href="/text/index.html" class="swiper-slide">
+							<div class="nav-item">{{esp "资讯"}}</div>
+						</goLink>
+					</eqIf>
+				</eqIf>
+			</eqIf>
+
+			<eqIf data=". 'starindex'">
+				<goLink href="/star/index.html" class="active swiper-slide" id="menuon1">
+					<div class="nav-item active001" data-index="{{999}}">{{esp "明星"}}</div>
+				</goLink>
+				<else />
+				<eqIf data=". 'stardetail'">
+					<goLink href="/star/index.html" class="active swiper-slide" id="menuon1">
+						<div class="nav-item active001" data-index="{{999}}">{{esp "明星"}}</div>
+					</goLink>
+					<else />
+					<goLink href="/star/index.html" class="swiper-slide">
+						<div class="nav-item">{{esp "明星"}}</div>
+					</goLink>
+				</eqIf>
+
+			</eqIf>
+			<div class="nav-item swiper-slide">
+				<getLinkList name="$List" page="1" limit="10" order="'id asc'" type="header">
+					<gtIf data="$List.Total 0">
+						<foreach name="$item" index="$index" data="$List.List">
+							<a style="margin-right: 10px; color: rgb(100, 108, 255) !important;" href="{{$item.Link}}"
+								target="_blank">{{$item.Name}}</a>
+						</foreach>
+					</gtIf>
+				</getLinkList>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="header-user">
+	<goForm action="/search/index.html" onkeyup="if(event.keyCode === 13){return true}" class="cmsMyForm"
+		autocomplete="off">
+		<div class="search-box">
+			<input class="search-input" value="{{$.U.Keyword}}" name="keyword" placeholder="可输入影片名称以及名人搜索"
+				type="text" />
+			<button type="submit primary" class="search-btn">
+				<img src="/static/image/icons/search.svg">{{esp "搜全网"}}
+			</button>
+		</div>
+	</goForm>
+	<import file="/public/auto/avatar2.html" />
+</div>
+<style>
+	.meme_pc {
+		color: white;
+	}
+
+	.white .meme_pc {
+		color: #000000;
+	}
+
+	.meme_pc:hover {
+		color: #ff6f4b;
+	}
+
+	.meme_h5 {
+		display: none !important;
+		color: white;
+	}
+
+	@media (max-width: 979px) {
+		.meme_pc {
+			display: none !important;
+		}
+
+		.meme_h5 {
+			display: block !important;
+		}
+	}
+
+	.cms-nav-move {
+		position: relative;
+	}
+
+	.cms-arrow-down {
+		display: inline-block;
+		width: 8px;
+		height: 8px;
+		border-top: #fff 1px solid;
+		border-right: #fff 1px solid;
+		transform: rotate(135deg);
+		margin-left: 5px;
+		margin-top: -5px;
+	}
+
+
+
+	#cms-nav-more-box {
+		display: none;
+		padding-top: 10px;
+		top: 50px;
+		position: absolute;
+		z-index: 999;
+		max-width: 350px;
+	}
+
+	#cms-nav-more-box .more_triangle_box {
+		border: 10px solid transparent;
+		border-bottom-color: #f3f3f3;
+		position: absolute;
+		left: 50%;
+		top: -10px;
+		margin-left: -5px;
+	}
+
+	.cms-nav-more-container {
+		border-radius: 20px;
+		background-color: #f3f3f3;
+		padding: 12px;
+		flex-wrap: wrap;
+		/* justify-content: space-between; */
+		align-items: center;
+		display: flex;
+	}
+
+	.cms-swiper-slide {
+		height: 50px !important;
+	}
+
+	.cms-nav-more-item {
+		padding: 3px 10px;
+		position: relative;
+		margin-right: 10px;
+		line-height: 30px;
+	}
+
+	.nav-swiper001 .swiper-slide {
+		width: auto;
+		margin-right: 50px;
+	}
+
+	.nav-swiper001 {
+		overflow: hidden;
+		width: 44vw;
+	}
+</style>
+
+<script>
+	$(document).ready(function () {
+		let yw = $("#menuon1").parent().width() / 2;
+		let offset = $("#menuon1").offset()
+		if (offset?.left > yw) {
+			$("#menuon1").parent().animate({ scrollLeft: offset?.left - yw }, 300)
+		}
+	})
+	// var openMore = false
+	$(document).ready(function () {
+		const cmsMorePreEleLeft = $('#cms_mor_pat_hov').position()?.left;
+		// alert(cmsMorePreEleLeft)
+		const cmsMoreBtnEle = $('#cms-nav-more-box');
+		const cmsNavLefMar = '-' + ($('#cms-nav-more-box').width() / 2 - 10) + 'px';
+		cmsMoreBtnEle.css({ 'left': cmsMorePreEleLeft, 'margin-left': cmsNavLefMar })
+		$('.cms-nav-move,#cms-nav-more-box').on('mouseenter', function () {
+			$('#cms-nav-more-box').show()
+			$('.cms-arrow-down').eq(0).css("transform", 'rotate(-45deg)')
+			$('.cms-arrow-down').eq(0).css("margin-top", '5px')
+			// if (!openMore) {
+
+			// 	openMore = !openMore
+			// } else {
+			// 	$('#cms-nav-more-box').eq(0).css("display", 'none')
+			// 	$('.cms-arrow-down').eq(0).css("transform", 'rotate(135deg)')
+			// 	$('.cms-arrow-down').eq(0).css("margin-top", '-5px')
+			// 	openMore = !openMore
+			// }
+
+		})
+		$('.cms-nav-move,#cms-nav-more-box').on('mouseleave', function () {
+			$('#cms-nav-more-box').hide()
+			$('.cms-arrow-down').eq(0).css("transform", 'rotate(135deg)')
+			$('.cms-arrow-down').eq(0).css("margin-top", '-5px')
+		});
+
+	})
+	$(window).on('scroll', function () {
+		var scrollTop = $(window).scrollTop();
+		if (scrollTop > 100) {
+			$('.cms-arrow-down').css('border-color', '#000');
+		} else {
+			$('.cms-arrow-down').css('border-color', '#fff');
+		}
+	});
+	var mySwiper = new Swiper('.nav-swiper001', {
+		slidesPerView: 'auto',
+		on: {
+			init: function () {
+				var initialSlideIndex = $(this.el).find('.active001').attr('data-index');
+				this.slideTo(initialSlideIndex);
+			}
+		}
+	})
+</script>

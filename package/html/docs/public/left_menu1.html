@@ -1,0 +1,19 @@
+<ul class="nav flex-column menu">
+	<foreach data="." name="$item" index="$index">
+		<li class="nav-item">
+			<eqIf data="$.Key $item.Index">
+				<a href="?key={{$item.Index}}" class="nav-link active active-menu nav-link1 nav-abcd scroll-active" style="font-size: 14px;">
+
+					{{$item.Name}}
+				</a>
+				<else />
+				<a href="?key={{$item.Index}}" class="nav-link nav-link1 nav-abcd" style="font-size: 14px ;">
+					{{$item.Name}}
+				</a>
+			</eqIf>
+			<if data="$item.Child">
+				<import file="/public/left_menu1.html" data="$item.Child" />
+			</if>
+		</li>
+	</foreach>
+</ul>

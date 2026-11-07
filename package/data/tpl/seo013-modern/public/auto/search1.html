@@ -1,0 +1,175 @@
+<getVideosList name="$List" keyword="$.U.Keyword" page="$.U.Page" limit="$.G.Nums.VodListNum">
+    <div id="search-content">
+
+      <div class="search-stat">
+        <h1 style="color: hsla(0, 0%, 100%, .6);">{{$.U.Keyword}}</h1>
+        <h2><b>搜索"{{$.U.Keyword}}" ，找到{{$List.Total}}部在线影视</b></h2>
+        <h2><b>如果没有搜索到你想找的"{{$.U.Keyword}}" ，可以换个关键词尝试</b></h2>
+      </div>
+
+    </div>
+
+
+    <div class="module">
+      <div class="module-list">
+        <div class="module-items">
+          <foreach data="$List.List" name="$item" index="$i">
+            <div class="module-search-item">
+              <div class="video-cover">
+                <div class="module-item-cover">
+                  <div class="module-item-pic">
+                    <goLink href="/vod/detail.html" args="{id:$item.ID,type_id:$item.CategoryPid}"
+                      title="{{$item.Name}}">
+                      <i class="icon-play"></i>
+                    </goLink>
+                    <!-- <a href="/vod/player.html?id={{$item.ID}}"title="立刻播放{{$item.Name}}">
+                        <i class="icon-play"></i>
+                      </a> -->
+
+                    <img class="lazy lazyload" data-src="{{$item.SurfacePlot}}" src="" alt="{{$item.Name}}">
+                    <div class="loading"></div>
+                    <eqIf data="$item.BuyMode 1">
+                      <eqIf data="$item.ChargingMode 2">
+                        <div class="cms_charging_mode_div_vip">
+                          VIP
+                        </div>
+                      </eqIf>
+                      <eqIf data="$item.ChargingMode 3">
+                        <div class="cms_charging_mode_div_gold">
+                          金币点播
+                        </div>
+                      </eqIf>
+                    </eqIf>
+                  </div>
+                </div>
+              </div>
+              <div class="video-info">
+                <div class="video-info-header">
+                  <h3>
+                    <goLink href="/vod/player.html" args="{id:$item.ID,type_id:$item.CategoryPid}"
+                      title="{{$item.Name}}在线视频 - 线上看">
+                      {{$item.Name}}
+
+                    </goLink>
+                  </h3>
+                  <div class="video-info-aux">
+                    <if data="$item.Category">
+                      <goLink href="/vod/index.html" args="{type_id:$item.CategoryPid}"
+                        title="{{$item.Name}}在线视频 - 线上看" class="tag-link">
+                        <span class="video-tag-icon">
+                          <i class="icon-cate-dy"></i>
+                          <foreach data="$item.Category" name="$item1" index="$i">
+                            <eqIf data="$i 0">
+                              {{$item1.Name}}
+                            </eqIf>
+                          </foreach>
+
+                        </span>
+                      </goLink>
+                    </if>
+                    <if data="$item.ReleaseDate">
+                      <div class="tag-link">
+
+                        <span onclick="stop()">
+                          <showDateTime time="$item.ReleaseDate" data="yy" />
+                        </span>&nbsp;
+
+                      </div>
+                    </if>
+
+                    <if data="$item.Areas">
+                      <div class="tag-link">
+                        <span href="" target="_blank" onclick="stop()">
+                          <foreach data="$item.Areas" name="$item" index="$index">
+                            <eqIf data="$index 0">
+                              {{$item.Name}}
+                            </eqIf>
+                          </foreach>
+                        </span>&nbsp;
+                      </div>
+                    </if>
+
+                  </div>
+                </div>
+                <div class="video-info-main">
+                  <div class="video-info-items"><span class="video-info-itemtitle">导演：</span>
+                    <div class="video-info-item video-info-actor"><span class="slash">/</span>
+
+                      <span style="color: hsla(0, 0%, 100%, .6);">
+                        <foreach name="$cx" index="$i" data="$item.Directors">
+                          <eqIf data="$i 0">
+                            {{$cx.Name}}
+                          </eqIf>
+                        </foreach>
+                      </span><span class="slash">/</span>
+                    </div>
+                  </div>
+                  <div class="video-info-items"><span class="video-info-itemtitle">主演：</span>
+                    <div class="video-info-item video-info-actor"><span class="slash">/</span>
+                      <foreach name="$item1" data="$item.Actors">
+                        <span style="color: hsla(0, 0%, 100%, .6);" onclick="stop()">{{$item1.Name}}</span><span
+                          class="slash">/</span>
+                      </foreach>
+
+                    </div>
+                  </div>
+                  <div class="video-info-items"><span class="video-info-itemtitle">剧情：</span>
+                    <div class="video-info-item" style="color: hsla(0, 0%, 100%, .6);">
+                      {{$item.Introduce}}
+                    </div>
+                  </div>
+                </div>
+                <div class="video-info-footer">
+                  <goLink href="/vod/detail.html" args="{id:$item.ID,type_id:$item.CategoryPid}"
+                    title="{{$item.Name}}" class="btn-important btn-base">
+                    <i class="icon-play"></i><strong>在线观看</strong>
+                  </goLink>
+                </div>
+              </div>
+            </div>
+
+          </foreach>
+
+
+        </div>
+        <!-- 分页器 -->
+        <div class="module-footer">
+
+          <showPage name="$item2" page="$.U.Page" total="$List.Total" limit="$.G.Nums.VodListNum" count="5"
+          url="/search/index.html?{{$.U.Argument}}">
+
+            <div id="page">
+              <goLink href="{{$item2.First.Href}}" class="page-number page-previous cms-page-number" title="首页">首页
+              </goLink>
+              <goLink href="{{$item2.Prev.Href}}" class="page-number page-previous cms-page-number" title="上一页">上一页
+              </goLink>
+              <foreach name="$vo" index="$idx" data="$item2.List">
+                <eqIf data="$vo.Num $.U.Page">
+                  <span class="page-number page-current display cms-page-number"
+                    style="text-align: center;">{{$vo.Num}}</span>
+                  <else />
+                  <goLink class="page-number display cms-page-number" href="{{$vo.Href}}" title="第{{$vo.Num}}页"
+                    style="text-align: center;">{{$vo.Num}}</goLink>
+                </eqIf>
+              </foreach>
+              <goLink href="{{$item2.Next.Href}}" class="page-number page-next cms-page-number" title="下一页">下一页
+              </goLink>
+              <goLink href="{{$item2.Last.Href}}" class="page-number page-next cms-page-number" title="尾页">尾页
+              </goLink>
+            </div>
+          </showPage>
+        </div>
+
+
+      </div>
+    </div>
+  </getVideosList>
+  <script>
+    $(function () {
+        $(".lazyload").lazyload({
+          effect: "fadeIn",
+          // placeholder:"/static/image/other/loading.svg",
+          placeholder: "/static/image/loadingpic.jpg",
+        });
+      })
+    </script>

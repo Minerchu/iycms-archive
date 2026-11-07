@@ -1,0 +1,274 @@
+/* 登录 */
+.layCmsLogin {
+  border-radius: 8px;
+  overflow: hidden;
+  .layuicms-unselect.layuicms-tab-bar {
+    display: none;
+  }
+  .layuicms-tab-title {
+    border: none;
+    display: flex;
+    justify-content: center;
+    margin: 14px 0 0;
+    height: 60px;
+    gap: 30px;
+    .layuicms-this {
+      font-size: 18px;
+      &:after {
+        width: 50%;
+        margin-top: 8px;
+        margin-left: 25%;
+      }
+    }
+  }
+  .layuicms-form-item {
+    margin-bottom: 0px;
+  }
+  .layuicms-input-block {
+    margin-left: 0;
+    height: 52px;
+    border-radius: 26px;
+    margin-bottom: 34px;
+    input {
+      padding-left: 50px;
+      padding-right: 30px;
+      height: 52px;
+      border-radius: 26px;
+    }
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none !important;
+    }
+  }
+  .layuicms-tab-content {
+    padding-bottom: 0;
+    .cmstem_vali_code {
+      display: flex;
+      align-items: center;
+      .layuicms-input-block {
+        margin-right: 12px;
+      }
+      .layuicms-btn {
+        width: 94px;
+        height: 40px;
+        text-align: center;
+        margin-bottom: 34px;
+        padding: 0 16px;
+        font-size: 12px;
+      }
+    }
+    #temMemIphoneCodeSend {
+      display: none;
+    }
+    #temMemEmailCodeSend {
+      display: none;
+    }
+  }
+  .layuicms-btn {
+    height: 52px;
+    width: 100%;
+    border-radius: 26px;
+  }
+  .layuicms-form {
+    padding: 0 12px;
+  }
+  .layuicms-form-radio {
+    text-align: center;
+    width: 100%;
+    margin-top: 30px;
+    color: rgba(0, 0, 0, 0.851);
+    i {
+      font-size: 18px;
+    }
+    div {
+      font-size: 12px;
+    }
+  }
+  .cmstem_inp_requ {
+    color: red;
+    position: absolute;
+    right: 12px;
+    top: 22px;
+    line-height: 12px;
+  }
+  .tem_inp_icon {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    top: 14px;
+    left: 16px;
+  }
+  .tem_res_agent_code {
+    display: none;
+  }
+}
+/* 代理弹框 */
+.tem_agent_conf {
+  width: 320px;
+  min-height: 390px;
+  border-radius: 24px;
+  background-color: #fff;
+  position: relative;
+  .layuicms-layer-content {
+    width: 100%;
+    height: 100%;
+    position: static;
+  }
+  .tem_agent_cont {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    p {
+      margin: 0;
+      padding: 0;
+    }
+    .tem_age_invinfo {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      background-image: linear-gradient(180deg, #ffe9dc 0%, #fff9f4 97%);
+      border-radius: 24px;
+      padding: 28px 0;
+      color: #694627;
+      img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+      }
+      .name {
+        font-size: 18px;
+        color: #000;
+        line-height: 29px;
+      }
+      .grade {
+        color: #694627;
+      }
+    }
+    .tem_age_invite_code {
+      width: 240px;
+      height: 45px;
+      background: #efefef;
+      border-radius: 24px;
+      font-size: 16px;
+      color: #444;
+      margin: 24px 0;
+      text-align: center;
+      line-height: 45px;
+      letter-spacing: 4px;
+      font-weight: 600;
+    }
+    .tem_age_butns {
+      width: 240px;
+      height: 45px;
+      line-height: 45px;
+      text-align: center;
+      background-image: linear-gradient(90deg, #fea875 0%, #ff704c 100%);
+      border-radius: 40px;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+      user-select: none;
+    }
+  }
+  .age_close {
+    position: absolute;
+    bottom: -52px;
+    width: 32px;
+    height: 32px;
+    left: 50%;
+    margin-left: -16px;
+    border-radius: 50%;
+    background: #fff;
+    color: #3d3d3d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+}
+
+#cmstem_login {
+  width: 420px;
+  //   height: 482px;
+  padding: 24px;
+  box-sizing: border-box;
+  background-color: white;
+  display: none;
+  position: relative;
+  .cmstem_log_close_img {
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    right: 14px;
+    top: 14px;
+    cursor: pointer;
+  }
+  .cmstem_login_noacc {
+    color: #999999;
+    text-align: center;
+    .cmstem_go_fra {
+      color: var(--tem--base--color);
+      cursor: pointer;
+    }
+  }
+  //   注册
+  .cmstem_acc_res {
+    display: none;
+  }
+}
+/*cms收费模式vip*/
+.cms_charging_mode_div_vip {
+  background-color: rgb(254, 175, 121);
+  font-size: 12px;
+  padding: 3px 8px;
+  color: #fff;
+  border-radius: 0 5px 0 5px;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  display: none;
+}
+/*cms收费模式金币*/
+.cms_charging_mode_div_gold {
+  background-color: #ff6c49;
+  font-size: 12px;
+  padding: 3px 8px;
+  color: #fff;
+  border-radius: 0 5px 0 5px;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  display: none;
+}
+/* cms线路vip */
+.cms_charging_lin_div_vip {
+  background: linear-gradient(red 0%, red 100%);
+  line-height: 12px;
+  font-size: 12px;
+  padding: 2px 4px;
+  color: #fff;
+  border-radius: 0 5px 0 5px;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  display: none;
+}
+/* cms线路金币 */
+.cms_charging_lin_div_gold {
+  background: linear-gradient(180deg, gold 0%, gold 100%);
+  line-height: 12px;
+  font-size: 12px;
+  padding: 2px 4px;
+  color: #fff;
+  border-radius: 0 5px 0 5px;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  display: none;
+}

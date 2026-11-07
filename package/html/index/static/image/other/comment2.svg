@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>评论</title>
+    <g id="播放页" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="播放页2" transform="translate(-257.000000, -1731.000000)">
+            <g id="编组-7" transform="translate(257.000000, 1728.000000)">
+                <g id="评论" transform="translate(0.000000, 3.000000)">
+                    <polygon id="路径" points="0 0 12 0 12 12 0 12"></polygon>
+                    <path d="M0.999999328,4.497 C0.999467648,3.70146305 1.31546318,2.93840008 1.87827421,2.37615186 C2.44108524,1.81390364 3.20446398,1.49867171 3.99999933,1.49999582 L7.99999933,1.49999582 C9.6565,1.49999582 10.9999993,2.8475 10.9999993,4.497 L10.9999993,10.4999958 L3.99999933,10.4999958 C2.3435,10.4999958 0.999999328,9.1525 0.999999328,7.503 L0.999999328,4.497 Z M7,5.5 L7,6.5 L8,6.5 L8,5.5 L7,5.5 Z M4,5.5 L4,6.5 L5,6.5 L5,5.5 L4,5.5 Z" id="形状" fill="#999999" fill-rule="nonzero"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

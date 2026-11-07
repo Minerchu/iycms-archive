@@ -1,0 +1,174 @@
+<!-- h5 -->
+<header class="header-h5">
+	<div class="header-h5-nav">
+		<div class="header-h5-logo">
+			<goLink href="/index.html">
+				<span>
+					<if data="$.G.Logo">
+						<img src="{{$.G.Logo}}" />
+					</if>
+				</span>
+			</goLink>
+		</div>
+		<div class="search-box-h5" style="display: flex; flex-shrink: 1;align-items: center;justify-content: flex-end;">
+			<goForm action="/search/index.html" onkeyup="if(event.keyCode === 13){return true}" style="position: relative;"
+				class="cmsMyForm">
+				<input class="search-input" value="{{$.U.Keyword}}" name="keyword" placeholder="可输入影片以及名人" type="text">
+				<button class="ant-btn ant-btn-primary search-btn" type="submit">
+					<img class="svg-icon" src="/static/image/other/search.svg" style="width: 1.2rem; height: 1.2rem;">
+				</button>
+			</goForm>
+			<import file="/public/auto/avatar1.html" />
+		</div>
+	</div>
+	<div class="header-h5-menu">
+		<div class="swiper" id="h5menu">
+			<div class="swiper-wrapper"  style="overflow: auto !important;">
+				<eqIf data=". 'index'">
+					<div class="swiper-slide swiper-slide-active2" id="menuon">
+						<goLink href="/index.html">
+							{{esp "首页"}}
+						</goLink>
+					</div>
+					<else />
+					<div class="swiper-slide">
+						<goLink href="/index.html">
+							{{esp "首页"}}
+						</goLink>
+					</div>
+				</eqIf>
+				<getVideoCategoryList name="$Cate" parentId="0">
+					<foreach name="$item" index="$index" data="$Cate.List">
+						<eqIf data="$.U.TypeId $item.ID">
+							<div class="swiper-slide swiper-slide-active2 nav-dt" id="menuon" data-index="{{$index}}">
+								<goLink href="/vod/index.html" args="{type_id:$item.ID}" class="active ">{{esp
+									$item.Name}}</goLink>
+							</div>
+							<else />
+							<div class="swiper-slide">
+								<goLink href="/vod/index.html" args="{type_id:$item.ID}" class="active">{{esp
+									$item.Name}}</goLink>
+							</div>
+						</eqIf>
+					</foreach>
+				</getVideoCategoryList>
+				<eqIf data=". 'topicindex'">
+					<div class="swiper-slide swiper-slide-active2 nav-dt" id="menuon">
+						<goLink href="/topic/index.html" class="active">{{esp "专题"}}</goLink>
+					</div>
+					<else />
+					<eqIf data=". 'topicdetail'">
+						<div class="swiper-slide swiper-slide-active2 nav-dt" id="menuon">
+							<goLink href="/topic/index.html" class="active">{{esp "专题"}}</goLink>
+						</div>
+						<else />
+						<div class="swiper-slide ">
+							<goLink href="/topic/index.html" class="active">{{esp "专题"}}</goLink>
+						</div>
+					</eqIf>
+				</eqIf>
+				<eqIf data=". 'starindex'">
+					<div class="swiper-slide swiper-slide-active2 nav-dt" id="menuon">
+						<goLink href="/star/index.html" class="active">{{esp "明星"}}</goLink>
+					</div>
+					<else />
+					<div class="swiper-slide ">
+						<goLink href="/star/index.html" class="active">{{esp "明星"}}</goLink>
+					</div>
+				</eqIf>
+
+				<eqIf data=". 'textindex'">
+					<div class="swiper-slide swiper-slide-active2 nav-dt" id="menuon">
+						<goLink href="/star/index.html" class="active">{{esp "资讯"}}</goLink>
+					</div>
+			
+					<else />
+					<eqIf data=". 'textlist'">
+						<div class="swiper-slide swiper-slide-active2 nav-dt" id="menuon">
+							<goLink href="/text/index.html" class="active">{{esp "资讯"}}</goLink>
+						</div>
+						<else />
+						<eqIf data=". 'textdetail'">
+							<div class="swiper-slide swiper-slide-active2 nav-dt" id="menuon">
+								<goLink href="/text/index.html" class="active">{{esp "资讯"}}</goLink>
+							</div>
+							<else />
+							<div class="swiper-slide ">
+								<goLink href="/text/index.html" class="active">{{esp "资讯"}}</goLink>
+							</div>
+						</eqIf>
+					</eqIf>
+				</eqIf>
+
+				<div class="swiper-slide">
+					<getLinkList name="$List" page="1" limit="10" order="'id asc'" type="header">
+						<gtIf data="$List.Total 0">
+							<foreach name="$item" index="$index" data="$List.List">
+								<a style="margin-right: 10px; color: #ff4b4b !important;" href="{{$item.Link}}"
+									target="_blank">{{$item.Name}}</a>
+							</foreach>
+						</gtIf>
+					</getLinkList>
+				</div>
+			</div>
+
+		</div>
+
+		<script type="text/javascript">
+			$(document).ready(function () {
+				let yw = $("#menuon").parent().width() / 2;
+				let offset = $("#menuon").offset()
+				if (offset?.left > yw) {
+					$("#menuon").parent().animate({ scrollLeft: offset?.left - yw }, 300)
+				}
+			})
+		</script>
+
+		<script>
+			// $(document).ready(function () {
+			// 	new Swiper(".swiper", {
+			// 		slidesPerView: 'auto',
+			// 		on: {
+			// 			init: function () {
+			// 				var initialSlideIndex = $(this.el).find('.nav-dt').attr('data-index');
+			// 				this.slideTo(initialSlideIndex - 1);
+			// 			}
+			// 		}
+			// 	});
+			// })
+		</script>
+
+	</div>
+</header>
+<style>
+	.meme_pc {
+		margin-right: 24px;
+		color: white;
+	}
+
+	.meme_pc:hover {
+		color: #ff6f4b;
+	}
+
+	.meme_h5 {
+		display: none;
+		margin-right: 12px;
+		color: #333333;
+		margin-left: 12px;
+	}
+
+	@media (max-width: 979px) {
+		.meme_pc {
+			display: none;
+		}
+
+		.meme_h5 {
+			display: block;
+		}
+	}
+
+	.swiper-slide-active2 a{
+		color: #ff6f4b !important;
+		font-size: 16px;
+	}
+</style>

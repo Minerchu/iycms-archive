@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>提示</title>
+    <g id="会员中心" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="提示" fill="#FF8A32" fill-rule="nonzero">
+            <path d="M8.465872,30.11872 L0,32 L1.881296,23.53408 C0.680704,21.28896 0,18.724 0,16 C0,7.16344 7.16344,0 16,0 C24.83648,0 32,7.16344 32,16 C32,24.83648 24.83648,32 16,32 C13.276,32 10.71104,31.31936 8.465872,30.11872 Z M8,16 C8,20.41824 11.581728,24 16,24 C20.41824,24 24,20.41824 24,16 L20.8,16 C20.8,18.65104 18.65104,20.8 16,20.8 C13.34896,20.8 11.2,18.65104 11.2,16 L8,16 Z" id="形状"></path>
+        </g>
+    </g>
+</svg>

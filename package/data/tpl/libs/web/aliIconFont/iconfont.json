@@ -1,0 +1,198 @@
+{
+  "id": "4385068",
+  "name": "SEO模板",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "8094192",
+      "name": "关闭",
+      "font_class": "guanbi",
+      "unicode": "e648",
+      "unicode_decimal": 58952
+    },
+    {
+      "icon_id": "25888805",
+      "name": "画中画",
+      "font_class": "huazhonghua",
+      "unicode": "e63a",
+      "unicode_decimal": 58938
+    },
+    {
+      "icon_id": "5926014",
+      "name": "分享",
+      "font_class": "fenxiang",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "7275612",
+      "name": "排行",
+      "font_class": "paihang",
+      "unicode": "e666",
+      "unicode_decimal": 58982
+    },
+    {
+      "icon_id": "24584415",
+      "name": "搜索",
+      "font_class": "sousuo1",
+      "unicode": "e61d",
+      "unicode_decimal": 58909
+    },
+    {
+      "icon_id": "27498010",
+      "name": "衣服",
+      "font_class": "a-ziyuan120",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "34202232",
+      "name": "垃圾桶",
+      "font_class": "lajitong",
+      "unicode": "e85e",
+      "unicode_decimal": 59486
+    },
+    {
+      "icon_id": "2681693",
+      "name": "火",
+      "font_class": "huo",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "982499",
+      "name": "排行",
+      "font_class": "paixing",
+      "unicode": "e66f",
+      "unicode_decimal": 58991
+    },
+    {
+      "icon_id": "15392661",
+      "name": "历史",
+      "font_class": "lishi",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "19949527",
+      "name": "搜索",
+      "font_class": "sousuo",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
+      "icon_id": "430545",
+      "name": "上箭头",
+      "font_class": "arrow-up",
+      "unicode": "e647",
+      "unicode_decimal": 58951
+    },
+    {
+      "icon_id": "3930510",
+      "name": "上箭头",
+      "font_class": "shangjiantou",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
+      "icon_id": "1526235",
+      "name": "留言2",
+      "font_class": "liuyan-fill",
+      "unicode": "e63f",
+      "unicode_decimal": 58943
+    },
+    {
+      "icon_id": "8297581",
+      "name": "客服",
+      "font_class": "kefu1",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
+      "icon_id": "28410565",
+      "name": "客服-面性",
+      "font_class": "kefu-mianxing",
+      "unicode": "e667",
+      "unicode_decimal": 58983
+    },
+    {
+      "icon_id": "696569",
+      "name": "安卓logo",
+      "font_class": "anzhuologo",
+      "unicode": "e679",
+      "unicode_decimal": 59001
+    },
+    {
+      "icon_id": "20186091",
+      "name": "安卓android",
+      "font_class": "anzhuoandroid",
+      "unicode": "e7ba",
+      "unicode_decimal": 59322
+    },
+    {
+      "icon_id": "1048891",
+      "name": "关闭",
+      "font_class": "icon_close",
+      "unicode": "e62c",
+      "unicode_decimal": 58924
+    },
+    {
+      "icon_id": "594372",
+      "name": "关闭",
+      "font_class": "guanbi1",
+      "unicode": "e634",
+      "unicode_decimal": 58932
+    },
+    {
+      "icon_id": "1017255",
+      "name": "安卓",
+      "font_class": "anzhuo1",
+      "unicode": "e677",
+      "unicode_decimal": 58999
+    },
+    {
+      "icon_id": "1092108",
+      "name": "安卓",
+      "font_class": "anzhuo2",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "4338070",
+      "name": "iOS",
+      "font_class": "iOS",
+      "unicode": "e734",
+      "unicode_decimal": 59188
+    },
+    {
+      "icon_id": "22273017",
+      "name": "ios",
+      "font_class": "ios1",
+      "unicode": "e66e",
+      "unicode_decimal": 58990
+    },
+    {
+      "icon_id": "5460560",
+      "name": "客服",
+      "font_class": "kefu",
+      "unicode": "ec2e",
+      "unicode_decimal": 60462
+    },
+    {
+      "icon_id": "8605736",
+      "name": "留言管理",
+      "font_class": "liuyanguanli",
+      "unicode": "e665",
+      "unicode_decimal": 58981
+    },
+    {
+      "icon_id": "1420800",
+      "name": "IOS",
+      "font_class": "ios",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    }
+  ]
+}

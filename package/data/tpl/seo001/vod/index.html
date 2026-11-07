@@ -1,0 +1,490 @@
+<import file="/public/header.html" data="'vodindex'" />
+<style>
+	.content {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 2rem 0;
+	}
+
+	.section-box {
+		padding: 1rem 0;
+		width: 1400px;
+		height: auto;
+		overflow: hidden;
+	}
+
+	.section-box .list-items {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 20px;
+	}
+
+	.filter {
+		background: #f9f9f9;
+		border-radius: 6px;
+		margin-bottom: 1rem;
+		padding: 2rem;
+		display: flex;
+		flex-direction: column;
+		box-sizing: border-box;
+	}
+
+	.scroll-box {
+		overflow: hidden;
+		width: calc(100% - 40px);
+	}
+
+	.scroll-box .swiper-wrapper {
+		overflow-x: auto;
+	}
+
+	.scroll-box .swiper-wrapper::-webkit-scrollbar {
+		width: 0;
+		height: 0;
+	}
+
+	.filter .swiper .swiper-slide {
+		width: auto;
+		height: auto;
+	}
+
+	.item.first {
+		pointer-events: none;
+		width: 80px;
+		min-width: 80px;
+	}
+
+	@media (min-width: 980px) {
+		.filter {
+			width: 1400px;
+		}
+	}
+
+	@media (max-width: 979px) {
+		.filter {
+			width: 100%;
+			background: #fff;
+			padding: 0;
+		}
+	}
+
+	.item-box {
+		display: flex;
+		padding: 0.7rem 0 0.8rem;
+		border-bottom: 1px solid #ececec;
+	}
+
+	.item.swiper-slide-active1 {
+		background: #ffece0;
+		border-radius: 24px;
+	}
+
+	.item.swiper-slide-active1 a {
+		color: #ff6f4b;
+
+	}
+
+	.item {
+		font-size: 12px;
+		color: #333333;
+		font-weight: 400;
+		padding: 0.3rem 1.5rem;
+		line-height: 20px;
+		cursor: pointer;
+	}
+
+	.item a:hover {
+		color: #ff6f4b;
+	}
+
+	.cms_swiper_slide {
+		display: flex !important;
+		justify-content: center !important;
+		align-items: center !important;
+	}
+</style>
+<section class="content mrgt72">
+	<div class="section-box" style="padding-top: 0px; padding-bottom: 0px;">
+		<import file="../libs/web/ads/index.html" data="topBanner" />
+
+	</div>
+
+
+	<getVodFilterList name="$List" tid="$.U.TypeId">
+		<div class="filter">
+			<if data="$List.Cates">
+				<script>
+					var typeIdx = 0 
+				</script>
+				<div class="item-box">
+					<div class="item first">{{esp "类型"}}</div>
+					<div class="scroll-box swiper nav-swiper1" id="cate">
+						<div class="swiper-wrapper">
+							<eqIf data="$.U.CateId 0">
+								<div class="swiper-slide item swiper-slide-active1 cms_swiper_slide nav-dt" id="cateon">
+									<goLink href="$.U.Path" args="{cate_id:0,page:0}">{{esp "全部"}}</goLink>
+								</div>
+								<else />
+								<div class="swiper-slide item cms_swiper_slide">
+									<goLink href="$.U.Path" args="{cate_id:0,page:0}">{{esp "全部"}}</goLink>
+								</div>
+							</eqIf>
+
+							<foreach name="$item" index="$index" data="$List.Cates">
+								<eqIf data="$.U.CateId $item.ID">
+									<div class="swiper-slide item swiper-slide-active1 cms_swiper_slide nav-dt"
+										id="cateon" data-index="{{$index}}">
+										<goLink href="$.U.Path" args="{cate_id:$item.ID,page:0}">{{esp $item.Name}}
+										</goLink>
+									</div>
+									<else />
+									<div class="swiper-slide item cms_swiper_slide ">
+										<goLink href="$.U.Path" args="{cate_id:$item.ID,page:0}">{{esp $item.Name}}
+										</goLink>
+									</div>
+								</eqIf>
+							</foreach>
+
+						</div>
+					</div>
+					<div class="swiper-slide item cms_swiper_slide">
+
+					</div>
+				</div>
+
+			</if>
+
+			<if data="$List.Regions">
+				<div class="item-box">
+					<div class="item first">{{esp "地区"}}</div>
+					<div class="scroll-box swiper nav-swiper1" id="region">
+						<div class="swiper-wrapper">
+							<eqIf data="$.U.AreaId 0">
+								<div class="swiper-slide item swiper-slide-active1 cms_swiper_slide nav-dt" id="areaon">
+									<goLink href="$.U.Path" args="{area_id:0,page:0}">{{esp "全部"}}</goLink>
+								</div>
+								<else />
+								<div class="swiper-slide item cms_swiper_slide">
+									<goLink href="$.U.Path" args="{area_id:0,page:0}">{{esp "全部"}}</goLink>
+								</div>
+							</eqIf>
+							<foreach name="$reg" index="$index" data="$List.Regions">
+								<eqIf data="$.U.AreaId $reg.Id">
+									<div class="swiper-slide item swiper-slide-active1 cms_swiper_slide nav-dt"
+										id="areaon" data-index="{{$index}}">
+										<goLink href="$.U.Path" args="{area_id:$reg.Id,page:0}">{{esp $reg.Name}}
+										</goLink>
+									</div>
+									<else />
+									<div class="swiper-slide item cms_swiper_slide">
+										<goLink href="$.U.Path" args="{area_id:$reg.Id,page:0}">{{esp $reg.Name}}
+										</goLink>
+									</div>
+								</eqIf>
+							</foreach>
+						</div>
+					</div>
+					<div class="swiper-slide item cms_swiper_slide">
+
+					</div>
+				</div>
+
+			</if>
+
+			<if data="$List.Languages">
+				<div class="item-box">
+					<div class="item first">{{esp "语言"}}</div>
+					<div class="scroll-box swiper nav-swiper1" id="lang">
+						<div class="swiper-wrapper">
+							<eqIf data="$.U.LangId 0">
+								<div class="swiper-slide item swiper-slide-active1 cms_swiper_slide nav-dt" id="langon">
+									<goLink href="$.U.Path" args="{lang_id:0,page:0}">{{esp "全部"}}</goLink>
+								</div>
+								<else />
+								<div class="swiper-slide item cms_swiper_slide">
+									<goLink href="$.U.Path" args="{lang_id:0,page:0}">{{esp "全部"}}</goLink>
+								</div>
+							</eqIf>
+							<foreach name="$lang" index="$index" data="$List.Languages">
+								<eqIf data="$.U.LangId $lang.Id">
+									<div class="swiper-slide item swiper-slide-active1 cms_swiper_slide nav-dt"
+										id="langon" data-index="{{$index}}">
+										<goLink href="$.U.Path" args="{lang_id:$lang.Id,page:0}">{{esp $lang.Name}}
+										</goLink>
+									</div>
+									<else />
+									<div class="swiper-slide item cms_swiper_slide">
+										<goLink href="$.U.Path" args="{lang_id:$lang.Id,page:0}">{{esp $lang.Name}}
+										</goLink>
+									</div>
+								</eqIf>
+							</foreach>
+							<div class="swiper-slide item cms_swiper_slide">
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</if>
+
+			<if data="$List.Years">
+				<div class="item-box">
+					<div class="item first">{{esp "年份"}}</div>
+					<div class="scroll-box swiper nav-swiper1" id="year">
+						<div class="swiper-wrapper">
+							<eqIf data="$.U.YearId 0">
+								<div class="swiper-slide item swiper-slide-active1 cms_swiper_slide nav-dt" id="yearon">
+									<goLink href="$.U.Path" args="{year_id:0,page:0}">{{esp "全部"}}</goLink>
+								</div>
+								<else />
+								<div class="swiper-slide item cms_swiper_slide">
+									<goLink href="$.U.Path" args="{year_id:0,page:0}">{{esp "全部"}}</goLink>
+								</div>
+							</eqIf>
+							<foreach name="$year" index="$index" data="$List.Years">
+								<eqIf data="$.U.YearId $year.Id">
+									<div class="swiper-slide item swiper-slide-active1 cms_swiper_slide nav-dt"
+										id="yearon" data-index="{{$index}}">
+										<goLink href="$.U.Path" args="{year_id:$year.Id,page:0}">{{esp $year.Name}}
+										</goLink>
+									</div>
+									<else />
+									<div class="swiper-slide item cms_swiper_slide">
+										<goLink href="$.U.Path" args="{year_id:$year.Id,page:0}">{{esp $year.Name}}
+										</goLink>
+									</div>
+								</eqIf>
+							</foreach>
+							<div class="swiper-slide item cms_swiper_slide">
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</if>
+
+			<if data="$List.Charges">
+				<div class="item-box">
+					<div class="item first">{{esp "收费"}}</div>
+					<div class="scroll-box swiper nav-swiper1" id="year">
+						<div class="swiper-wrapper">
+							<eqIf data="$.U.Mode 0">
+								<div class="swiper-slide item swiper-slide-active1 cms_swiper_slide nav-dt"
+									id="Charges">
+									<goLink href="$.U.Path" args="{mode:0,page:0}">{{esp "全部"}}</goLink>
+								</div>
+								<else />
+								<div class="swiper-slide item cms_swiper_slide">
+									<goLink href="$.U.Path" args="{mode:0,page:0}">{{esp "全部"}}</goLink>
+								</div>
+							</eqIf>
+							<foreach name="$year" index="$index" data="$List.Charges">
+								<eqIf data="$.U.Mode $year.Id">
+									<div class="swiper-slide item swiper-slide-active1 cms_swiper_slide nav-dt"
+										id="Charges" data-index="{{$index}}">
+										<goLink href="$.U.Path" args="{mode:$year.Id,page:0}">{{esp $year.Name}}
+										</goLink>
+									</div>
+									<else />
+									<div class="swiper-slide item cms_swiper_slide">
+										<goLink href="$.U.Path" args="{mode:$year.Id,page:0}">{{esp $year.Name}}
+										</goLink>
+									</div>
+								</eqIf>
+							</foreach>
+
+						</div>
+					</div>
+				</div>
+
+			</if>
+
+			<if data="$List.Labels">
+				<div class="item-box">
+					<div class="item first">{{esp "题材"}}</div>
+					<div class="scroll-box swiper nav-swiper1" id="year">
+						<div class="swiper-wrapper" style="overflow: hidden;">
+							<eqIf data="$.U.TagId 0">
+								<div class="swiper-slide item swiper-slide-active1 cms_swiper_slide nav-dt"
+									id="Charges">
+									<goLink href="$.U.Path" args="{tag_id:0,page:0}">{{esp "全部"}}</goLink>
+								</div>
+								<else />
+								<div class="swiper-slide item cms_swiper_slide">
+									<goLink href="$.U.Path" args="{tag_id:0,page:0}">{{esp "全部"}}</goLink>
+								</div>
+							</eqIf>
+							<foreach name="$year" index="$index" data="$List.Labels">
+								<eqIf data="$.U.TagId $year.Id">
+									<div class="swiper-slide item swiper-slide-active1 cms_swiper_slide nav-dt"
+										id="Charges" data-index="{{$index}}">
+										<goLink href="$.U.Path" args="{tag_id:$year.Id,page:0}">{{esp $year.Name}}
+										</goLink>
+									</div>
+									<else />
+									<div class="swiper-slide item cms_swiper_slide ">
+										<goLink href="$.U.Path" args="{tag_id:$year.Id,page:0}">{{esp $year.Name}}
+										</goLink>
+									</div>
+								</eqIf>
+							</foreach>
+							<div class="swiper-slide item cms_swiper_slide">
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</if>
+
+
+		</div>
+	</getVodFilterList>
+
+	<getVideosList name="$List" page="$.U.Page" limit="$.G.Nums.VodListNum" categoryPid="$.U.TypeId"
+		labelFilterId="$.U.TagId" categoryId="$.U.CateId" regionFilterId="$.U.AreaId" languageFilterId="$.U.LangId"
+		yearFilterId="$.U.YearId" chargeFilterId="$.U.Mode">
+		<div class="section-box">
+			<gtIf data="$List.Count 0">
+				<import file="/public/vodlist.html" data="$List" />
+
+				<div id="pagination" class="my-pagination web_page">
+					<showPage name="$item" page="$.U.Page" total="$List.Total" limit="$.G.Nums.VodListNum" count="5"
+						url="$.U.Path">
+						<div class="layui-box layui-laypage layui-laypage-molv">
+							<!-- <a class="layui-laypage-prev layui-disabled" >上一页</a> -->
+							<goLink class="layui-laypage-prev" href="{{$item.First.Href}}">首页</goLink>
+							<goLink class="layui-laypage-prev" href="{{$item.Prev.Href}}">上一页</goLink>
+							<foreach name="$vo" index="$idx" data="$item.List">
+								<eqIf data="$vo.Num $.U.Page">
+									<span class="layui-laypage-curr">
+										<em class="layui-laypage-em" style="background-color:#ff6f4b;"></em>
+										<em>{{$vo.Num}}</em>
+									</span>
+									<else />
+									<goLink href="{{$vo.Href}}">{{$vo.Num}}</goLink>
+								</eqIf>
+							</foreach>
+							<goLink class="layui-laypage-next" href="{{$item.Next.Href}}">下一页</goLink>
+							<goLink class="layui-laypage-last" href="{{$item.Last.Href}}">尾页</goLink>
+						</div>
+					</showPage>
+				</div>
+				<div id="pagination" class="my-pagination web_h5">
+					<showPage name="$item" page="$.U.Page" total="$List.Total" limit="$.G.Nums.VodListNum" count="3"
+					url="$.U.Path">
+						<div class="layui-box layui-laypage layui-laypage-molv">
+							<goLink class="layui-laypage-frist" href="{{$item.First.Href}}">首页</goLink>
+							<goLink class="layui-laypage-prev" href="{{$item.Prev.Href}}">上一页</goLink>
+							<foreach name="$vo" index="$idx" data="$item.List">
+								<eqIf data="$vo.Num $.U.Page">
+									<span class="layui-laypage-curr">
+										<em class="layui-laypage-em" style="background-color:#ff6f4b;"></em>
+										<em>{{$vo.Num}}</em>
+									</span>
+									<else />
+									<goLink href="{{$vo.Href}}">{{$vo.Num}}</goLink>
+								</eqIf>
+							</foreach>
+							<goLink class="layui-laypage-next" href="{{$item.Next.Href}}">下一页</goLink>
+							<goLink class="layui-laypage-last" href="{{$item.Last.Href}}">尾页</goLink>
+						</div>
+					</showPage>
+				</div>
+				<else />
+				<div style="padding: 80px 0" class="query-empty">
+					<img src="/static/image/image/empty.png" alt="{{esp " 空状态"}}" />
+					<p>{{esp "暂无数据"}}</p>
+				</div>
+			</gtIf>
+		</div>
+	</getVideosList>
+	<import file="../libs/web/ads/index.html" data="bottomBanner" />
+</section>
+
+<style>
+	/* .swiper-wrapper {
+		flex-wrap: wrap;
+	}
+
+	@media screen and (max-width:768px) {
+		.swiper-wrapper {
+			flex-wrap: nowrap;
+		}
+	} */
+
+	/* .item-box {
+		overflow: auto !important;
+	}
+
+	.item-box::-webkit-scrollbar {
+		height: 7px !important;
+		background-color: transparent;
+	}
+
+	.scroll-box {
+		overflow: visible !important;
+	}
+
+	.swiper {
+		overflow: visible !important;
+	}
+
+	.item-box::-webkit-scrollbar-thumb {
+		background-color: #9e9999;
+		border-radius: 8px !important;
+	}
+
+	@media screen and (max-width:768px) {
+		.item-box::-webkit-scrollbar {
+			display: none;
+		}
+	} */
+	.scroll-box,
+	.swiper-wrapper {
+		overflow: visible !important;
+	}
+
+	.item-box {
+		overflow: hidden !important;
+	}
+
+	.item.first {
+		background-color: #f9f9f9;
+		z-index: 999;
+	}
+
+	@media screen and (max-width:768px) {
+		.item.first {
+			background-color: #fff;
+		}
+	}
+
+	.cms-arrow-down {
+		border-top: #000 1px solid !important;
+		border-right: #000 1px solid !important;
+	}
+</style>
+<script>
+	$(document).ready(function () {
+		new Swiper(".nav-swiper1", {
+			slidesPerView: 'auto',
+			on: {
+				init: function () {
+					var initialSlideIndex = $(this.el).find('.nav-dt').attr('data-index');
+					if (initialSlideIndex > 9 && window.innerWidth > 900) {
+						this.slideTo(initialSlideIndex);
+					}else if(window.innerWidth < 900){
+						this.slideTo(initialSlideIndex);
+					}
+				}
+			}
+		});
+	})
+</script>
+
+<import file="/public/footer.html" data="'noHome'" />

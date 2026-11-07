@@ -1,0 +1,453 @@
+<import file="/public/headerVod.html" data="'vodindex'" />
+
+
+<body class="library page">
+
+	<script>
+		$(".nav-menu-search").click(function () {
+			$(".nav-search").addClass("block");
+		});
+		$(document).scroll(function () {
+			var H = $(document).scrollTop();
+			if (H > 20) {
+				$(".header-content").addClass("header-bg");
+			} else {
+				$(".header-content").removeClass("header-bg");
+			}
+			if (H > 140) {
+				$(".header-content").addClass("header-bg");
+				$(".search-dh").append($(".search-box"));
+				$(".nav-menu-search").click(function () {
+					$(".nav-search").addClass("block");
+				});
+			} else {
+				$(".header-content").removeClass("header-bg");
+				$(".search-main").append($(".search-box"));
+
+			}
+		});
+	</script>
+
+	<main id="main" class="wrapper">
+		<div class="content">
+			<div class="section-box " style="margin-bottom: 10px;">
+				<import file="../libs/web/ads/index.html" data="topBanner" />
+			</div>
+			<!-- 筛选器 -->
+			<div class="page-heading">
+				<!-- 头部文字描述 -->
+				<h1 class="page-title" style="color: #fff;">
+					<getVideoCategoryList name="$CateList">
+						<foreach name="$item" data="$CateList.List">
+
+							<eqIf data="$.U.TypeId $item.ID">
+
+								{{$item.Name}}
+
+							</eqIf>
+						</foreach>
+					</getVideoCategoryList>
+				</h1>
+				<!-- 主体 -->
+				<div class="box">
+					<div class="library-box library-box-first scroll-box ovauto">
+						<!-- 一级分类选择 -->
+						<div class="scroll-content">
+							<div class="library-list">
+								<getVideoCategoryList name="$CateList">
+									<foreach name="$item" data="$CateList.List">
+
+										<eqIf data="$.U.TypeId $item.ID">
+											<goLink href="$.U.Path"
+												args="{type_id:$item.ID,page:,cate_id:,area_id:,lang_id:,year_id:,}"
+												title="{{$item.Name}}" class="library-item selected">
+												<span>{{$item.Name}}</span>
+											</goLink>
+											<else />
+
+											<goLink href="$.U.Path"
+												args="{type_id:$item.ID,page:,cate_id:,area_id:,lang_id:,year_id:,}"
+												title="{{$item.Name}}" class="library-item ">
+												<span>{{$item.Name}}</span>
+											</goLink>
+
+
+										</eqIf>
+									</foreach>
+								</getVideoCategoryList>
+
+							</div>
+						</div>
+					</div>
+					<!-- 二级分类选择 -->
+					<getVodFilterList name="$List" tid="$.U.TypeId">
+						<!-- 类型 -->
+						<if data="$List.Cates">
+							<div class="library-box scroll-box scroll-content6">
+								<div class="scroll-content">
+									<eqIf data="$.U.CateId 0">
+										<goLink class="library-item library-item-first  selected" href="$.U.Path"
+											id="Cates" args="{cate_id:,page:}">全部分类</goLink>
+										<else />
+										<goLink class="library-item library-item-first" href="$.U.Path"
+											args="{cate_id:,page:}">全部分类</goLink>
+									</eqIf>
+									<div class="library-list">
+										<foreach name="$item" index="$index" data="$List.Cates">
+											<eqIf data="$.U.CateId $item.ID">
+												<goLink class="library-item selected" href="$.U.Path" id="Cates"
+													args="{cate_id:$item.ID,page:}">{{ $item.Name}}</goLink>
+												<else />
+												<goLink class="library-item" href="$.U.Path"
+													args="{cate_id:$item.ID,page:}">{{ $item.Name}}</goLink>
+											</eqIf>
+										</foreach>
+									</div>
+								</div>
+								<script type="text/javascript">
+									$(document).ready(function () {
+										let offset = $("#Cates").offset()
+										if (offset) {
+											const dom123 = document.querySelector('.scroll-content6')
+											dom123.scrollLeft = offset?.left - 110
+										}
+
+
+									})
+								</script>
+							</div>
+						</if>
+						<!-- 地区 -->
+						<if data="$List.Regions">
+							<div class="library-box scroll-box scroll-content5">
+								<div class="scroll-content">
+									<eqIf data="$.U.AreaId 0">
+										<goLink class="library-item library-item-first  selected" href="$.U.Path"
+											id="Regions" args="{area_id:,page:}">全部地区</goLink>
+										<else />
+										<goLink class="library-item library-item-first " href="$.U.Path"
+											args="{area_id:,page:}">全部地区</goLink>
+									</eqIf>
+									<div class="library-list">
+										<foreach name="$item" index="$index" data="$List.Regions">
+											<eqIf data="$.U.AreaId $item.Id">
+												<goLink class="library-item selected" href="$.U.Path" id="Regions"
+													args="{area_id:$item.Id,page:}">{{ $item.Name}}</goLink>
+												<else />
+												<goLink class="library-item" href="$.U.Path"
+													args="{area_id:$item.Id,page:}">{{ $item.Name}}</goLink>
+											</eqIf>
+										</foreach>
+									</div>
+								</div>
+								<script type="text/javascript">
+									$(document).ready(function () {
+										let offset = $("#Regions").offset()
+										if (offset) {
+											const dom123 = document.querySelector('.scroll-content5')
+											dom123.scrollLeft = offset?.left - 110
+										}
+
+
+									})
+								</script>
+							</div>
+						</if>
+
+
+						<!-- 语言 -->
+						<if data="$List.Languages">
+							<div class="library-box scroll-box scroll-content4">
+								<div class="scroll-content">
+									<eqIf data="$.U.LangId 0">
+										<goLink class="library-item library-item-first  selected" href="$.U.Path"
+											id="Languages" args="{lang_id:,page:}">全部语言</goLink>
+										<else />
+										<goLink class="library-item library-item-first " href="$.U.Path"
+											args="{lang_id:,page:}">全部语言</goLink>
+									</eqIf>
+									<div class="library-list">
+										<foreach name="$item" index="$index" data="$List.Languages">
+											<eqIf data="$.U.LangId $item.Id">
+												<goLink class="library-item selected" href="$.U.Path" id="Languages"
+													args="{lang_id:$item.Id,page:}">{{ $item.Name}}</goLink>
+												<else />
+												<goLink class="library-item " href="$.U.Path"
+													args="{lang_id:$item.Id,page:}">{{ $item.Name}}</goLink>
+											</eqIf>
+										</foreach>
+									</div>
+								</div>
+								<script type="text/javascript">
+									$(document).ready(function () {
+										let offset = $("#Languages").offset()
+										if (offset) {
+											const dom123 = document.querySelector('.scroll-content4')
+											dom123.scrollLeft = offset?.left - 110
+										}
+
+
+									})
+								</script>
+							</div>
+						</if>
+
+						<!-- 时间 -->
+						<if data="$List.Years">
+							<div class="library-box scroll-box scroll-content3">
+								<div class="scroll-content">
+									<eqIf data="$.U.YearId 0">
+										<goLink class="library-item library-item-first  selected" href="$.U.Path"
+											id="Years" args="{year_id:,page:}">全部时间</goLink>
+										<else />
+										<goLink class="library-item library-item-first " href="$.U.Path"
+											args="{year_id:,page:}">全部时间</goLink>
+									</eqIf>
+									<div class="library-list">
+										<foreach name="$item" index="$index" data="$List.Years">
+											<eqIf data="$.U.YearId $item.Id">
+												<goLink class="library-item selected" href="$.U.Path" id="Years"
+													args="{year_id:$item.Id,page:}">{{ $item.Name}}</goLink>
+												<else />
+												<goLink class="library-item" href="$.U.Path"
+													args="{year_id:$item.Id,page:}">{{ $item.Name}}</goLink>
+											</eqIf>
+										</foreach>
+									</div>
+								</div>
+								<script type="text/javascript">
+									$(document).ready(function () {
+										let yw = $("#Years").parent().parent().parent().width() / 2;
+										let offset = $("#Years").offset()
+										if (offset) {
+											const dom123 = document.querySelector('.scroll-content3')
+											dom123.scrollLeft = offset?.left - 110
+										}
+
+
+									})
+								</script>
+							</div>
+						</if>
+
+						<!-- 收费 -->
+						<if data="$List.Charges">
+							<div class="library-box scroll-box scroll-content2">
+								<div class="scroll-content">
+									<eqIf data="$.U.Mode 0">
+										<goLink class="library-item library-item-first  selected" id="Charges"
+											href="$.U.Path" args="{mode:,page:}">全部模式</goLink>
+										<else />
+										<goLink class="library-item library-item-first " href="$.U.Path"
+											args="{mode:,page:}">全部模式</goLink>
+									</eqIf>
+									<div class="library-list">
+										<foreach name="$item" index="$index" data="$List.Charges">
+											<eqIf data="$.U.Mode $item.Id">
+												<goLink class="library-item selected" href="$.U.Path" id="Charges"
+													args="{mode:$item.Id,page:}">{{ $item.Name}}</goLink>
+												<else />
+												<goLink class="library-item" href="$.U.Path"
+													args="{mode:$item.Id,page:}">{{ $item.Name}}</goLink>
+											</eqIf>
+										</foreach>
+									</div>
+								</div>
+								<script type="text/javascript">
+									$(document).ready(function () {
+										let yw = $("#Charges").parent().parent().parent().width() / 2;
+										let offset = $("#Charges").offset()
+										if (offset) {
+											const dom123 = document.querySelector('.scroll-content2')
+											dom123.scrollLeft = offset?.left - 110
+										}
+
+
+									})
+								</script>
+							</div>
+						</if>
+
+						<if data="$List.Labels">
+							<div class="library-box scroll-box scroll-content1">
+								<div class="scroll-content ">
+									<eqIf data="$.U.TagId 0">
+										<goLink class="library-item library-item-first  selected" href="$.U.Path"
+											args="{tag_id:,page:}" id="Labels">全部题材</goLink>
+										<else />
+										<goLink class="library-item library-item-first " href="$.U.Path"
+											args="{tag_id:,page:}">全部题材</goLink>
+									</eqIf>
+									<div class="library-list">
+										<foreach name="$item" index="$index" data="$List.Labels">
+											<eqIf data="$.U.TagId $item.Id">
+												<goLink class="library-item selected" href="$.U.Path"
+													args="{tag_id:$item.Id,page:}" id="Labels">{{ $item.Name}}</goLink>
+												<else />
+												<goLink class="library-item" href="$.U.Path"
+													args="{tag_id:$item.Id,page:}">{{ $item.Name}}</goLink>
+											</eqIf>
+										</foreach>
+									</div>
+								</div>
+								<script type="text/javascript">
+									$(document).ready(function () {
+										let yw = $("#Labels").parent().parent().parent().width() / 2;
+										let offset = $("#Labels").offset()
+										if (offset) {
+											const dom123 = document.querySelector('.scroll-content1')
+											dom123.scrollLeft = offset?.left - 110
+										}
+
+
+									})
+								</script>
+							</div>
+						</if>
+
+					</getVodFilterList>
+
+				</div>
+
+
+
+			</div>
+
+			<!-- 筛选结果 -->
+			<div class="module" style="margin-top: 30px;">
+
+				<getVideosList name="$CateList" page="$.U.Page" limit="$.G.Nums.VodListNum" categoryPid="$.U.TypeId"
+					categoryId="$.U.CateId" regionFilterId="$.U.AreaId" languageFilterId="$.U.LangId"
+					yearFilterId="$.U.YearId" chargeFilterId="$.U.Mode" labelFilterId="$.U.TagId">
+					<div class="module-list">
+						<div class="module-items">
+							<foreach name="$item" data="$CateList.List">
+								<div class="module-item">
+									<div class="module-item-cover">
+										<div class="module-item-pic">
+											<goLink href="/vod/detail.html" args="{id:$item.ID,type_id:$.U.TypeId}"
+												title="{{$item.Name}}在线看">
+
+											</goLink>
+											<!-- <a href="./detail.html?id={{$item.ID}}" title="{{$item.Name}}在线看">
+                                                    </a> -->
+											<if data="$item.SurfacePlot">
+												<img class="lazy lazyloaded" data-src="{{$item.SurfacePlot}}"
+													src="{{$item.SurfacePlot}}">
+												<else />
+												<img class="lazy lazyloaded">
+											</if>
+											<div class="loading"></div>
+											<eqIf data="$item.BuyMode 1">
+												<eqIf data="$item.ChargingMode 2">
+													<div class="cms_charging_mode_div_vip">
+														VIP
+													</div>
+												</eqIf>
+												<eqIf data="$item.ChargingMode 3">
+													<div class="cms_charging_mode_div_gold">
+														金币点播
+													</div>
+												</eqIf>
+											</eqIf>
+										</div>
+										<div class="module-item-caption">
+											<span>
+												<showDateTime time="{{$item.Date}}" data="yy" />
+											</span>
+											<span>{{$item.Name}}</span>
+											<foreach data="$item.Category" name="$item1" index="$i">
+												<eqIf data="$i 1">
+													<span>{{$item1.Name}}</span>
+												</eqIf>
+											</foreach>
+
+
+										</div>
+									</div>
+
+									<div class="module-item-titlebox">
+										<goLink href="/vod/detail.html" args="{id:$item.ID}" class="module-item-title"
+											title="{{$item.Name}}">
+											{{$item.Name}}
+										</goLink>
+									</div>
+								</div>
+							</foreach>
+						</div>
+					</div>
+
+
+
+					<!-- 分页器 -->
+					<div class="cor5 flex between">
+						<span style="color: #fff;">共<span class="on hl-total"
+								style="color: red;">{{$CateList.Total}}</span>个筛选结果</span>
+					</div>
+					<div style="width: 100%; display: flex; justify-content: center;">
+						<showPage name="$item2" page="$.U.Page" total="$CateList.Total" limit="$.G.Nums.VodListNum"
+							count="5" url="$.U.Path">
+
+							<div id="page">
+
+								<goLink href="{{$item2.First.Href}}" class="page-number page-previous cms-page-number"
+									title="首页">首页</goLink>
+								<goLink href="{{$item2.Prev.Href}}" class="page-number page-previous cms-page-number"
+									title="上一页">上一页</goLink>
+								<foreach name="$vo" index="$idx" data="$item2.List">
+									<eqIf data="$vo.Num $.U.Page">
+										<span class="page-number page-current display cms-page-number"
+											style="text-align: center;">{{$vo.Num}}</span>
+										<else />
+										<goLink class="page-number display cms-page-number" href="{{$vo.Href}}"
+											title="第{{$vo.Num}}页" style="text-align: center;">{{$vo.Num}}
+										</goLink>
+									</eqIf>
+								</foreach>
+								<goLink href="{{$item2.Next.Href}}" class="page-number page-next cms-page-number"
+									title="下一页">
+									下一页</goLink>
+								<goLink href="{{$item2.Last.Href}}" class="page-number page-next cms-page-number"
+									title="尾页">尾页
+								</goLink>
+							</div>
+						</showPage>
+					</div>
+
+				</getVideosList>
+			</div>
+			<div class="section-box " style="margin-bottom: 10px;">
+				<import file="../libs/web/ads/index.html" data="bottomBanner" />
+			</div>
+		</div>
+	</main>
+	<import file="/public/footer.html" data="'noHome'" />
+	<script type="text/javascript">
+
+		$("#clothes").on('click', function () {
+			$(this).children(".iconfont").toggleClass("icon-a-yejian2");
+			$(this).children(".iconfont").toggleClass("icon-rijianmoshi")
+		});
+	</script>
+	<script type="text/javascript">
+		document.onkeydown = function () {
+
+			var e = window.event || arguments[0];
+
+		}
+	</script>
+	<div class="shortcuts-mobile-overlay"></div>
+	<script src="/static/js/mxui013.js"></script>
+
+
+	<script>
+		$(".mac_total").text('2941');
+	</script>
+	<script>(function () { var js = "window['__CF$cv$params']={r:'806665db8e10b156',t:'MTY5NDY3MTEwMy4yOTYwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);"; var _0xh = document.createElement('iframe'); _0xh.height = 1; _0xh.width = 1; _0xh.style.position = 'absolute'; _0xh.style.top = 0; _0xh.style.left = 0; _0xh.style.border = 'none'; _0xh.style.visibility = 'hidden'; document.body.appendChild(_0xh); function handler() { var _0xi = _0xh.contentDocument || _0xh.contentWindow.document; if (_0xi) { var _0xj = _0xi.createElement('script'); _0xj.innerHTML = js; _0xi.getElementsByTagName('head')[0].appendChild(_0xj); } } if (document.readyState !== 'loading') { handler(); } else if (window.addEventListener) { document.addEventListener('DOMContentLoaded', handler); } else { var prev = document.onreadystatechange || function () { }; document.onreadystatechange = function (e) { prev(e); if (document.readyState !== 'loading') { document.onreadystatechange = prev; handler(); } }; } })();</script>
+	<script defer="" src="/static/js/v8b253dfea2ab4077af8c6f58422dfbfd1689876627854013.js"
+		integrity="sha512-bjgnUKX4azu3dLTVtie9u6TKqgx29RBwfj3QXYt5EKfWM/9hPSAI/4qcV5NACjwAo8UtTeWefx6Zq5PHcMm7Tg=="
+		data-cf-beacon='{"rayId":"806665db8e10b156","version":"2023.8.0","r":1,"token":"4fc702c92ed14a49ae62376e7b7263f8","si":100}'
+		crossorigin="anonymous"></script>
+</body>
+
+</html>

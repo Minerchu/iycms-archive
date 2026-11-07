@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <button id="test">点击</button>
+    <button id="login">获取登录</button>
+    <button id="userInfo">获取用户信息</button>
+    <div id="info"></div>
+    <script src="./member.js"></script>
+    <script>
+      const ts = new IyMember();
+      delete ts;
+      ts.Init({ domain: 'http://192.168.2.70:80' });
+      function write(val) {
+        document.querySelector('#info').innerText = JSON.stringify(val);
+      }
+      document
+        .querySelector('#login')
+        .addEventListener('click', function (event) {
+          ts.IsLogin().then(res => {
+            write(res);
+            console.log(res, '===是否登录');
+          });
+        });
+      document
+        .querySelector('#userInfo')
+        .addEventListener('click', function (event) {
+          ts.GetLoginInfo().then(res => {
+            write(res);
+            console.log('===用户信息', res);
+          });
+        });
+      document
+        .querySelector('#test')
+        .addEventListener('click', function (event) {
+          ts.ToRegiseter( '_self',location.href, true);
+        });
+    </script>
+  </body>
+</html>

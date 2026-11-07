@@ -1,0 +1,60 @@
+<script type="text/javascript">
+	// 响应参数示例和说明左右切换
+	function bindResponseEv(dom){
+		let tableBtn = $(dom).find(".table-btn") || []
+		let tableDiv = $(dom).find(".table-hidden") || []
+		let tableEv = function(idx){
+			if(tableBtn.length > 0){
+				tableBtn.each(function(){
+					$(this).removeClass("btn-active")
+				})
+				tableBtn.eq(idx).addClass("btn-active")
+			}
+
+			if(tableDiv.length > 0){
+				tableDiv.each(function(){
+					$(this).hide()
+				})
+				tableDiv.eq(idx).show() // 最后一组显示
+			}
+		}
+		tableEv(0)
+		tableBtn.each(function(){
+			let idx = $(this).index()
+			$(this).click(function(){
+				tableEv(idx)
+			})
+		})
+	}
+</script>
+<li class="step" id="req-response">响应结果</li>
+<foreach name="$Respitemdata" index="$Respindex" data="">
+	<div id="code{{$Respitemdata.Code}}">
+		<div class="res-result">
+			<code class="c{{$Respitemdata.Code}}">{{$Respitemdata.Code}}</code>
+			{{$Respitemdata.Name}}
+		</div>
+
+		<div class="response_layout">
+			<p class="tab">
+				<if data="$Respitemdata.Origin.Header">
+					<span class="table-btn">响应Header头</span>
+				</if>
+
+				<if data="$Respitemdata.Origin.Body">
+					<span class="table-btn">响应参数</span>
+				</if>
+				
+				<if data="$Respitemdata.Origin.Json">
+					<span class="table-btn">响应示例</span>
+				</if>
+			</p>
+			<import file="/api/args/rep_header.html" data="$Respitemdata.Origin"></import>
+			<import file="/api/args/rep_body.html" data="$Respitemdata.Origin"></import>
+			<import file="/api/args/rep_example.html" data="$Respitemdata.Origin"></import>
+		</div>
+		<script type="text/javascript">
+			bindResponseEv($("#code{{$Respitemdata.Code}}"))
+		</script>
+	</div>
+</foreach>

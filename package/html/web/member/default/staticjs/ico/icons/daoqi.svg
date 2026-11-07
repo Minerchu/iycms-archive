@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>到期时间</title>
+    <g id="个人中心" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(-51.000000, -422.000000)" id="到期时间">
+            <g transform="translate(51.000000, 422.000000)">
+                <circle id="椭圆形" stroke="#C17F3A" stroke-width="3" cx="18" cy="18" r="16.5"></circle>
+                <g id="闪电（快速）" transform="translate(5.400000, 5.400000)" fill="#FFA23B" fill-rule="nonzero">
+                    <rect id="矩形" opacity="0" x="0" y="0" width="25.2" height="25.2"></rect>
+                    <path d="M12.9528,20.7648 L18.8496,11.9448 C19.1016,11.592 19.0008,11.1384 18.648,10.8864 C18.5472,10.7856 18.396,10.7352 18.2448,10.7352 L13.608,10.7352 L13.608,5.1912 C13.608,4.788 13.2552,4.4352 12.852,4.4352 C12.6,4.4352 12.348,4.5864 12.2472,4.788 L6.3504,13.608 C6.0984,13.9608 6.1992,14.4144 6.552,14.6664 C6.6528,14.7672 6.804,14.8176 6.9552,14.8176 L11.592,14.8176 L11.592,20.3616 C11.592,20.7648 11.9448,21.1176 12.348,21.1176 C12.6,21.1176 12.852,20.9664 12.9528,20.7648 L12.9528,20.7648 Z" id="路径"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

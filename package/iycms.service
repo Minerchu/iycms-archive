@@ -1,0 +1,21 @@
+[Unit]
+Description=iycms service
+Documentation=https://www.iycms.com
+# 这里的 After 建议改为 network-online.target，确保网络真的通了再动
+After=network-online.target
+
+[Service]
+Type=simple
+# --- 核心修改 1：开机后先等 20 秒，确保数据库和环境完全就绪 ---
+#ExecStartPre=/bin/sleep 20
+User=root
+WorkingDirectory=/www/wwwroot/netflixcn.de
+ExecStart=/www/wwwroot/netflixcn.de/cms
+# --- 核心修改 2：把重启间隔从 1s 改为 5s，防止频繁崩溃导致系统锁定服务 ---
+Restart=always
+RestartSec=5
+StandardOutput=append:/www/wwwroot/netflixcn.de/stdout.log
+StandardError=append:/www/wwwroot/netflixcn.de/stdout.log
+
+[Install]
+WantedBy=multi-user.target

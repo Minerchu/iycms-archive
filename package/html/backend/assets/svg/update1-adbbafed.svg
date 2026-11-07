@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="60px" height="28px" viewBox="0 0 60 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>可更新</title>
+    <g id="模版商城" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="查看详情" transform="translate(-484.000000, -146.000000)">
+            <g id="编组-6" transform="translate(460.000000, 130.000000)">
+                <g id="可更新" transform="translate(24.000000, 16.000000)">
+                    <rect id="矩形" fill="#41D888" x="0" y="0" width="60" height="28" rx="4"></rect>
+                    <g id="编组-4" transform="translate(7.000000, 6.000000)" fill="#FFFFFF">
+                        <g id="编组" transform="translate(40.000000, 3.000000)">
+                            <polygon id="三角形" points="3.5 0 7 4 0 4"></polygon>
+                            <polygon id="矩形" points="2 4 5 4 5 8 2 8"></polygon>
+                            <rect id="矩形" stroke="#FFFFFF" x="2.5" y="9.5" width="2" height="1"></rect>
+                        </g>
+                        <text id="可更新" font-family="MicrosoftYaHei, Microsoft YaHei" font-size="12" font-weight="normal">
+                            <tspan x="0" y="13">可更新</tspan>
+                        </text>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

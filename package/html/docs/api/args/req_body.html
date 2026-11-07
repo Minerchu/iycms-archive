@@ -1,0 +1,68 @@
+
+<if data=".RequestBody">
+	<li class="step" id="req-body">请求Body</li>
+	<div class="response_layout" id="reqargs">
+		<p class="tab">
+			<span class="table-btn">请求参数</span>
+			<span class="table-btn">代码示例</span>
+		</p>
+		<table class="tb-parameter table-hidden" style="margin-top: 24px;">
+			<thead>
+				<tr>
+					<th class="parameter-line" colspan="5" align="left" bgcolor="EFF0F1" height="32px">
+						参数说明
+					</th>
+				</tr>
+			</thead>
+			<tr height="32px" align="left">
+				<th class="parameter-line">字段名</th>
+				<th class="parameter-line" width="70px">字段类型</th>
+				<th class="parameter-line">字段说明</th>
+				<th class="parameter-line" width="70px">必填项</th>
+				<th class="parameter-line" width="60px">默认值</th>
+			</tr>
+			<foreach name="$requestboditem" index="$reqindex" data=".RequestBody">
+				<tr height="32px" align="left" class="tr-param">
+					<td class="parameter-line depth{{$requestboditem.Depth}}">{{$requestboditem.Key}}</td>
+					<td class="parameter-line">{{$requestboditem.FileType}}</td>
+					<td class="parameter-line">{{$requestboditem.Description}}</td>
+					<td class="parameter-line">{{$requestboditem.Disabled}}</td>
+					<td class="parameter-line">{{$requestboditem.Value}}</td>
+				</tr>
+			</foreach>
+		</table>
+		<div class="table-hidden rel">
+			<div class="copy" title="点击可复制" data-clipboard-text="{{.PostmanBody.raw}}">点此复制</div>
+			<pre class="code-area">{{.PostmanBody.raw}}</pre>
+		</div>
+	</div>
+	<script type="text/javascript">
+	// 请求参数示例和说明左右切换
+	(function(){
+		let tableBtn = $("#reqargs").find(".table-btn") || []
+		let tableDiv = $("#reqargs").find(".table-hidden") || []
+		let tableEv = function(idx){
+			if(tableBtn.length > 0){
+				tableBtn.each(function(){
+					$(this).removeClass("btn-active")
+				})
+				tableBtn.eq(idx).addClass("btn-active")
+			}
+
+			if(tableDiv.length > 0){
+				tableDiv.each(function(){
+					$(this).hide()
+				})
+				tableDiv.eq(idx).show() // 最后一组显示
+			}
+		}
+		tableEv(0)
+		tableBtn.each(function(){
+			let idx = $(this).index()
+			$(this).click(function(){
+				tableEv(idx)
+			})
+		})
+	})()
+</script>
+</if>

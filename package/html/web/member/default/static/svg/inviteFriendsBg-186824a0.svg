@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="778px" height="680px" viewBox="0 0 778 680" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 9</title>
+    <defs>
+        <filter x="-5.4%" y="-6.3%" width="110.8%" height="112.5%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="4" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="8" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.305882353   0 0 0 0 0.305882353   0 0 0 0 0.305882353  0 0 0 0.1 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#FFB59D" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+        <path d="M0,16.0004261 C0,7.16363477 7.15520988,0 16.0050444,0 L703.994956,0 C712.834298,0 720,7.17339636 720,16.0004261 L720,605.999574 C720,614.836365 712.84479,622 703.994956,622 L16.0050444,622 C7.16570247,622 0,614.826604 0,605.999574 L0,16.0004261 Z" id="path-3"></path>
+        <filter x="-34.5%" y="-33.0%" width="169.0%" height="165.9%" filterUnits="objectBoundingBox" id="filter-5">
+            <feGaussianBlur stdDeviation="50" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-147.1%" y="-140.6%" width="394.3%" height="381.1%" filterUnits="objectBoundingBox" id="filter-6">
+            <feGaussianBlur stdDeviation="50" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-54.4%" y="-51.9%" width="208.8%" height="203.9%" filterUnits="objectBoundingBox" id="filter-7">
+            <feGaussianBlur stdDeviation="50" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+    </defs>
+    <g id="会员中心" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="邀请好友" transform="translate(-571.000000, -200.000000)">
+            <g id="编组-9" transform="translate(600.000000, 229.000000)" filter="url(#filter-1)">
+                <mask id="mask-4" fill="white">
+                    <use xlink:href="#path-3"></use>
+                </mask>
+                <use id="蒙版" fill="url(#linearGradient-2)" xlink:href="#path-3"></use>
+                <g mask="url(#mask-4)" id="椭圆形">
+                    <g transform="translate(-46.000000, -276.564014)">
+                        <ellipse fill="#FF8B5B" opacity="0.382765997" filter="url(#filter-5)" cx="217.375643" cy="227.570951" rx="217.375643" ry="227.570951"></ellipse>
+                        <ellipse fill="#FF5B5B" opacity="0.67171224" filter="url(#filter-6)" cx="586.164666" cy="607.37902" rx="50.9708405" ry="53.3614643"></ellipse>
+                        <ellipse fill="#FF8B5B" opacity="0.407552083" filter="url(#filter-7)" cx="736.078902" cy="310.752057" rx="137.921098" ry="144.389845"></ellipse>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

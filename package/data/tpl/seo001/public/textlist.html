@@ -1,0 +1,14 @@
+<div class="list-items">
+    <foreach name="$item" index="$index" data=".List">
+        <div class="vertical-box cs-itembox" style="position: relative;">
+            <goLink href="/text/detail.html"
+            args="{id:$item.Id,type_id:$item.CategoryPid}">
+                <div class="image-box">
+                    <img class="lazyload" style="object-fit: cover;" data-original="{{$item.SurfacePlot}}" />
+                </div>
+                <div class="title">{{esp $item.Name }}</div>
+                <div class="desc">{{esp $item.Introduce }}</div>
+            </goLink>
+        </div>
+    </foreach>
+</div>

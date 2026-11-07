@@ -1,0 +1,227 @@
+<link rel="stylesheet" href="/libs/plugins/css/index.css">
+<script src="/libs/commJs/jquery.qrcode.min.js"></script>
+
+<!-- 侧边栏（app下载） -->
+<ul class="stui-extra clearfix" id="cms_app_downloads">
+
+    <if data="$.G.App.Android">
+        <li class="cms_util_li cms_app_hover">
+            <a class="cms_apk_download">
+
+                <svg style="width: 18px;height: 18px;" class="tem_side_svg tem_anzuo_svg" aria-hidden="true">
+                    <use xlink:href="#icon-anzhuologo"></use>
+                </svg>
+                <div class="cms_sideslip">
+
+                    <p id="cms_qrcode_apk" style="margin: 0;"></p>
+
+
+                </div>
+                <p class="cms_util_text">&nbsp;APK</p>
+            </a>
+        </li>
+    </if>
+
+    <if data="$.G.App.Ios.Url">
+        <li class="cms_util_li cms_app_hover">
+            <a class="cms_ios_download">
+                <svg style="width: 18px;height: 18px;" class="tem_side_svg tem_ios_svg" aria-hidden="true">
+                    <use xlink:href="#icon-ios"></use>
+                </svg>
+                <div class="cms_sideslip">
+
+                    <p id="cms_qrcode_ios" style="margin: 0;"></p>
+
+                </div>
+                <p class="cms_util_text">&nbsp;IOS</p>
+            </a>
+
+        </li>
+    </if>
+
+    <if data="$.G.CustomerOpen">
+        <li class="cms_util_li" id="cms_service_ku">
+            <a class="">
+                <svg style="width: 18px;height: 18px;" class="tem_side_svg tem_kefu_svg" aria-hidden="true">
+                    <use xlink:href="#icon-kefu-mianxing"></use>
+                </svg>
+
+                <p class="cms_util_text">客服</p>
+            </a>
+
+        </li>
+    </if>
+    <if data="$.G.MessageBoardOpen">
+        <li class="cms_util_li" id="cms_contact_ku" onclick="openContact()">
+            <a class="">
+                <svg style="width: 18px;height: 18px;" class="tem_side_svg tem_liuyan_svg" aria-hidden="true">
+                    <use xlink:href="#icon-liuyan-fill"></use>
+                </svg>
+                <p class="cms_util_text">留言</p>
+            </a>
+
+        </li>
+    </if>
+
+    <div id="cms_go_top" style="display: none;">
+        <li class="cms_util_li">
+            <a class="" href="javascript:;">
+                <svg style="width: 18px;height: 18px;" class="tem_side_svg tem_jiantou_svg" aria-hidden="true">
+                    <use xlink:href="#icon-arrow-up"></use>
+                </svg>
+            </a>
+
+        </li>
+    </div>
+</ul>
+
+<!-- 侧边栏（app下载） -->
+<script>
+    $(document).ready(function () {
+        let apkUrl = '';
+        const temAppAndr = "{{$.G.App.Android}}";
+        if (temAppAndr.startsWith("http")) {
+            apkUrl = temAppAndr
+        } else {
+            apkUrl = location.origin + temAppAndr;
+        }
+        const iosUrl = location.origin + "/libs/ios/downloads.html"
+        if ($("#cms_qrcode_apk").length > 0) {
+            $("#cms_qrcode_apk").qrcode({
+                render: "canvas", // 渲染方式有table方式（IE兼容）和canvas方式
+                width: 160, //宽度 
+                height: 160, //高度 
+                text: temUtf16to8(apkUrl), //内容 
+                typeNumber: -1,//计算模式
+                correctLevel: 2,//二维码纠错级别
+                background: "#ffffff",//背景颜色
+                foreground: "#000000"  //二维码颜色
+
+            });
+        }
+        if ($("#cms_qrcode_ios").length > 0) {
+            $("#cms_qrcode_ios").qrcode({
+                render: "canvas", // 渲染方式有table方式（IE兼容）和canvas方式
+                width: 160, //宽度 
+                height: 160, //高度 
+                text: iosUrl, //内容 
+                typeNumber: -1,//计算模式
+                correctLevel: 2,//二维码纠错级别
+                background: "#ffffff",//背景颜色
+                foreground: "#000000"  //二维码颜色
+
+            });
+        }
+
+
+        //判断当前浏览器环境
+        function isH5() {
+            var ua = navigator.userAgent;
+            if (ua.indexOf("Mobile") > -1 || ua.indexOf("Android") > -1 || ua.indexOf("iPhone") > -1 || ua.indexOf("iPad") > -1) {
+
+                return true;
+
+            } else {
+                return false;
+            }
+        }
+        const pcState = isH5()
+        $(".cms_apk_download").click(() => {
+            if (isH5()) {
+
+                window.location.href = "{{$.G.App.Android}}"
+            } else {
+
+            }
+        })
+        $(".cms_ios_download").click(() => {
+            if (isH5()) {
+                window.location.href = "/libs/ios/downloads.html"
+            } else {
+
+            }
+        })
+
+        //回到顶部
+        $(window).scroll(function () {
+            if ($(window).scrollTop() >= 500) {
+                $('#cms_go_top').css('display', 'block');
+            } else {
+                $('#cms_go_top').css('display', 'none');
+            }
+        });
+
+        $('#cms_go_top').click(function () {
+
+            $('html,body').animate({ 'scrollTop': 0 });
+        })
+
+        //触摸显示
+        $(".cms_app_hover").mousemove(function () {
+            const index = $(".cms_app_hover").index(this)
+            if (!pcState) {
+                $(".cms_sideslip").eq(index).show()
+            }
+
+        })
+        //离开隐藏
+        $(".cms_app_hover").mouseleave(function () {
+            const index = $(".cms_app_hover").index(this)
+            if (!pcState) {
+                $(".cms_sideslip").eq(index).hide()
+            }
+        })
+    })
+    $(document).ready(() => {
+        $('#cms_go_top').hide()
+    })
+    // iosApp不显示app下载
+    $(document).ready(() => {
+        if (window.self !== window.top) {
+            $(".cms_app_hover")?.hide();
+        }
+    });
+
+</script>
+
+
+
+<!-- 客服 -->
+<if data="$.G.CustomerOpen">
+    <script>
+        var scriptElement1 = document.createElement("script");
+        let sym1 = location.origin
+        scriptElement1.src = (sym1) + "/api/v1/assets/layer/ai_service_diy_1.js";
+        scriptElement1.id = "service_js";
+        scriptElement1.charset = "UTF-8";
+        if (temUserInfo.info?.id) {
+            scriptElement1.setAttribute('data-source', '2')
+            $('#cms_service_ku').click(function (params) {
+                serCtr.open(temUserInfo.info.id);
+            })
+        } else {
+            scriptElement1.setAttribute('data-source', '3')
+            scriptElement1.setAttribute('data-eventid', 'cms_service_ku')
+        }
+        scriptElement1.setAttribute('data-title', '在线客服')
+        scriptElement1.setAttribute('data-adicon', '')
+        document.head.appendChild(scriptElement1);
+    </script>
+</if>
+
+<!-- 留言 -->
+<if data="$.G.MessageBoardOpen">
+    <script>
+        var scriptElement = document.createElement("script");
+        let sym = location.origin
+        scriptElement.src = (sym) + "/api/v1/assets/js/leaveMsg.js?v=1696989092";
+        scriptElement.id = "leave_js";
+        scriptElement.charset = "UTF-8";
+        document.head.appendChild(scriptElement);
+    </script>
+    <script>
+        function openContact() {
+            leaveMag.open('', 'white')
+        }
+    </script>
+</if>

@@ -1,0 +1,83 @@
+<head>
+
+  <link rel="stylesheet" type="text/css" href="/static/css/style013.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/aliicon013.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/black013.css">
+
+
+
+
+
+
+
+
+
+</head>
+<import file="/public/header.html" data="'search'" />
+
+<body class="search page">
+
+
+  <script>
+    $(".nav-menu-search").click(function () {
+      $(".nav-search").addClass("block");
+    });
+    $(document).scroll(function () {
+      var H = $(document).scrollTop();
+      if (H > 20) {
+        $(".header-content").addClass("header-bg");
+      } else {
+        $(".header-content").removeClass("header-bg");
+      }
+      if (H > 140) {
+        $(".header-content").addClass("header-bg");
+        $(".search-dh").append($(".search-box"));
+        $(".nav-menu-search").click(function () {
+          $(".nav-search").addClass("block");
+        });
+      } else {
+        $(".header-content").removeClass("header-bg");
+        $(".search-main").append($(".search-box"));
+
+      }
+    });
+  </script>
+
+
+  <main id="main" class="wrapper">
+    <div class="content">
+      <div class="section-box " style="margin-bottom: 10px;">
+        <import file="../libs/web/ads/index.html" data="topBanner" />
+      </div>
+      <import file="/public/search/search1.html" />
+      <div class="section-box " style="margin-bottom: 10px;">
+        <import file="../libs/web/ads/index.html" data="bottomBanner" />
+      </div>
+    </div>
+  </main>
+
+
+
+  <!-- 页脚 -->
+
+
+
+
+
+  <script type="text/javascript">
+    document.onkeydown = function () {
+
+      var e = window.event || arguments[0];
+
+    }
+  </script>
+
+  <script>
+    $(".mac_total").text('12');
+    function stop() {
+      event.preventDefault();
+    }
+  </script>
+
+
+  <import file="/public/footer.html" data="'noHome'" />

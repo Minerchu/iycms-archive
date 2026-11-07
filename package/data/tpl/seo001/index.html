@@ -1,0 +1,223 @@
+<!-- 轮播板块 -->
+<getVideosList name="$List" page="1" limit="5" banner="1">
+	<getAdsList name="$List1" position="banner">
+		<if data="$List.List">
+			<!-- 有轮播数据时的头部 -->
+			<import file="/public/index_header.html" data="'default'" />
+			<script>
+				$(document).ready(function () {
+					$(document).scroll(function (ev) {
+						if ($(this).scrollTop() > 5) {
+							$("#cms-header").addClass("white")
+						} else {
+							$("#cms-header").removeClass("white")
+						}
+					});
+				});
+			</script>
+			<!-- 轮播 -->
+			<div class="swiper banner">
+				<div class="swiper-wrapper">
+
+					<foreach name="$item" index="$index" data="$List1.List">
+						<eqIf data="$item.Position 'banner'">
+							<div class="swiper-slide cms_ad_banner">
+
+								<a href="{{$item.Link}}" target="_blank" style="width: 100%; height: 100%;">
+									<img src="{{$item.Content}}" alt="" style="max-width: 100%; max-height: 100%;">
+								</a>
+
+							</div>
+						</eqIf>
+					</foreach>
+
+
+					<foreach name="$item" index="$index" data="$List.List">
+						<div class="swiper-slide">
+							<if data="$item.CycleImg">
+								<goLink href="/vod/detail.html"
+									args="{id:$item.ID,type_id:$item.CategoryPid,cate_id:$item.CategoryChildId}">
+									<img src="{{$item.CycleImg}}" />
+								</goLink>
+								<else />
+								<goLink href="/vod/detail.html"
+									args="{id:$item.ID,type_id:$item.CategoryPid,cate_id:$item.CategoryChildId}">
+									<img src="{{$item.SurfacePlot}}" />
+								</goLink>
+							</if>
+						</div>
+					</foreach>
+
+				</div>
+				<div class="swiper-pagination"></div>
+			</div>
+			<script>
+				new Swiper('.banner', {
+					loop: true, // 循环模式选项
+					pagination: {
+						el: '.swiper-pagination',
+						color: 'red'
+					},
+					effect: 'fade',
+					autoplay: {
+						delay: 3000,
+						dration:3000,
+						stopOnLastSlide: false,
+						disableOnInteraction: true,
+					},
+					on: {
+						resize: function () {
+							this.update(); //窗口变化时，更新Swiper的一些属性，如宽高等
+						}
+					}
+				});
+			</script>
+			<else />
+			<if data="$List1.List">
+				<!-- 有轮播数据时的头部 -->
+				<import file="/public/index_header.html" data="'default'" />
+				<script>
+					$(document).ready(function () {
+						$(document).scroll(function (ev) {
+							if ($(this).scrollTop() > 5) {
+								$("#cms-header").addClass("white")
+							} else {
+								$("#cms-header").removeClass("white")
+							}
+						});
+					});
+				</script>
+				<div style="background-color: #fff;margin-bottom: 10px;">
+				</div>
+				<!-- 轮播 -->
+				<div class="swiper banner">
+					<div class="swiper-wrapper">
+
+						<foreach name="$item" index="$index" data="$List1.List">
+							<eqIf data="$item.Position 'banner'">
+								<div class="swiper-slide cms_ad_banner">
+
+									<a href="{{$item.Link}}" target="_blank" style="width: 100%; height: 100%;">
+										<img src="{{$item.Content}}" alt="" style="max-width: 100%; max-height: 100%;">
+									</a>
+
+								</div>
+							</eqIf>
+						</foreach>
+
+
+						<foreach name="$item" index="$index" data="$List.List">
+							<div class="swiper-slide">
+								<if data="$item.CycleImg">
+									<goLink href="/vod/detail.html"
+										args="{id:$item.ID,type_id:$item.CategoryPid,cate_id:$item.CategoryChildId}">
+										<img src="{{$item.CycleImg}}" />
+									</goLink>
+									<else />
+									<goLink href="/vod/detail.html"
+										args="{id:$item.ID,type_id:$item.CategoryPid,cate_id:$item.CategoryChildId}">
+										<img src="{{$item.SurfacePlot}}" />
+									</goLink>
+								</if>
+							</div>
+						</foreach>
+
+					</div>
+					<div class="swiper-pagination"></div>
+				</div>
+				<script>
+					new Swiper('.banner', {
+						loop: true, // 循环模式选项
+						pagination: {
+							el: '.swiper-pagination',
+							color: 'red'
+						},
+						effect: 'fade',
+						autoplay: {
+							delay: 3000,
+							stopOnLastSlide: false,
+							disableOnInteraction: true,
+						},
+						on: {
+							resize: function () {
+								this.update(); //窗口变化时，更新Swiper的一些属性，如宽高等
+							}
+						}
+					});
+				</script>
+				<else />
+
+				<!-- 无轮播数据时的头部 -->
+				<import file="/public/index_header.html" data="'white'" />
+				<div class="mrgt72"></div>
+
+			</if>
+		</if>
+
+	</getAdsList>
+</getVideosList>
+
+
+
+<section class="content">
+	<import file="../libs/web/ads/index.html" data="topBanner" />
+	<import file="../libs/web/notice/index.html" />
+
+	<!-- 热门推荐 -->
+	<getVideosList name="$List3" page="1" limit="$.G.Nums.VodHotNum" hots="1" random="1">
+		<gtIf data="$List3.Count 0">
+			<div class="section-box">
+				<div class="titleH3">{{esp "热门推荐"}}</div>
+				<import file="/public/vodlist.html" data="$List3" />
+			</div>
+		</gtIf>
+	</getVideosList>
+	<!-- 热门专题 -->
+    <getAlbumList name="$List">
+			<div class="section-box">
+				<div class="titleH3">{{esp "热门专题"}}</div>
+				<import file="/public/topiclist.html" data="$List" />
+			</div>
+	</getAlbumList>
+	<!-- 各大类热门 -->
+	<getVideoGroupList name="$List" limit="$.G.Nums.HomeNUm">
+		<foreach name="$item" index="$index" data="$List.List">
+			<gtIf data="$item.VideoList.Total 0">
+				<div class="section-box">
+					<goLink href="/vod/index.html" args="{type_id:$item.CateInfo.ID}">
+						<div class="titleH3"> {{esp "热门"}}{{esp $item.CateInfo.Name}}
+							<span class="rightTags">{{esp "查看更多"}}</span>
+						</div>
+					</goLink>
+					<import file="/public/vodlist.html" data="$item.VideoList" />
+				</div>
+			</gtIf>
+		</foreach>
+	</getVideoGroupList>
+	<!-- 热门推荐 -->
+	<getArticleList name="$List2" page="1" limit="$.Q.limit">
+		<gtIf data="$List2.Count 0">
+			<div class="section-box">
+				<goLink href="/text/index.html">
+					<div class="titleH3">{{esp "热门资讯"}}
+						<span class="rightTags">{{esp "查看更多"}}</span>
+					</div>
+				</goLink>
+				<import file="/public/textlist.html" data="$List2" />
+			</div>
+		</gtIf>
+	</getArticleList>
+	<div style="margin: 10px 0;">
+		<import file="../libs/web/ads/index.html" data="bottomBanner" />
+	</div>
+
+</section>
+<style>
+	.swiper-pagination-bullet-active{
+		background-color: #fff !important;
+	}
+</style>
+<!-- 首页弹出广告 -->
+<import file="../libs/web/ads/index.html" data="homePop" />
+
+<import file="/public/footer.html" data="'home'">

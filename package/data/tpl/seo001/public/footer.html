@@ -1,0 +1,159 @@
+<footer class="footer">
+	<div class="layout">
+		<p class="friend-link" style=" color: #999999;text-align: left;">
+			<getLinkList name="$List" page="1" limit="10" order="'id asc'" type="link">
+				<gtIf data="$List.Total 0">
+					<span style="margin-right: 10px;">友情链接</span>
+					<foreach name="$item" index="$index" data="$List.List">
+						<a style="margin-right: 10px;color:rgb(100, 108, 255);" href="{{$item.Link}}" target="_blank">{{$item.Name}}</a>
+					</foreach>
+				</gtIf>
+			</getLinkList>
+		</p>
+		<p style=" color: #999999;">
+			<getLinkList name="$List" page="1" limit="10" order="'id asc'" type="footer">
+				<gtIf data="$List.Total 0">
+					<foreach name="$item" index="$index" data="$List.List">
+						<a style="margin-right: 10px;color: rgb(100, 108, 255);" href="{{$item.Link}}" target="_blank">{{$item.Name}}</a>
+					</foreach>
+				</gtIf>
+			</getLinkList>
+		</p>
+		<div class="desc">
+			{{esp "本站内容均从互联网收集而来，仅供交流学习使用，版权归原创者所有如有侵犯了您的权益，尽请通知我们，本站将及时删除侵权内容。"}}
+		</div>
+		<div class="copyright">
+			Copyright @ 2023 {{$.G.Info.Name}} 版权所有
+
+			<if data="$.G.Info.ICP">
+				<p>备案号：{{$.G.Info.ICP}}</p>
+			</if>
+		</div>
+	</div>
+</footer>
+<style>
+	.cms_sideslip {
+		width: 160px !important;
+		height: 160px !important;
+	}
+</style>
+
+<style>
+	@media (max-width: 980px) {
+		.friend-link{
+			text-align: center !important;
+		}
+	}
+	.footer {
+		width: 100%;
+		background: rgba(231, 231, 231, 0.6);
+		text-align: center;
+		margin-top: 30px;
+	}
+
+	.footer .layout {
+		display: block;
+		margin: 0 auto;
+		height: 100%;
+		padding: 30px;
+	}
+
+	.footer .layout .desc {
+		padding-top: 15px;
+		padding-bottom: 15px;
+		font-size: 14px;
+		color: #999999;
+		letter-spacing: 1px;
+		font-weight: 400;
+	}
+
+	.footer .layout .copyright {
+		font-family: PingFangSC-Regular;
+		font-size: 14px;
+		color: #999999;
+		letter-spacing: 1px;
+		font-weight: 400;
+		padding-bottom: 15px;
+	}
+	.tem_jiantou_svg{
+		display: none;
+	}
+	#cms_app_downloads .tem_side_svg{
+		fill: #ff6f4b !important;
+	}
+	.cms_util_li p{
+		color: #ff6f4b !important;
+	}
+	/* .cms_util_li:hover{
+		background: linear-gradient(to right,#e99d61,#fe5b0f)
+	}
+	.cms_util_li:hover p{
+		color: #fff !important;
+	}
+	.cms_util_li:hover .tem_side_svg{
+		fill: #fff !important;
+	} */
+</style>
+<script>
+	$(function () {
+		$(".lazyload").lazyload({
+			effect: "fadeIn",
+			// placeholder:"/static/image/other/loading.svg",
+			placeholder: "/static/image/image/empty.png",
+		});
+	})
+	$(document).ready(function () {
+        let aLLDicEle = $('.duration_hint')
+        aLLDicEle.each(function (params) {
+            let duration_hint = $(this).text();
+            $(this).text(getTimes(duration_hint - 0))
+        });
+    })
+    function getTimes(t) {
+        let h = parseInt(t / 60 / 60 % 24)
+        let m = parseInt(t / 60 % 60)
+        let s = parseInt(t % 60)
+        h = h < 10 ? '0' + h : h
+        m = m < 10 ? '0' + m : m
+        s = s < 10 ? '0' + s : s
+        return `${h}:${m}:${s}`
+    }
+	$(document).ready(function(){
+        var image = $("<img>")
+        image.attr("src","/static/image/image/back-home.png");
+        image.css({width:"24px",height:"19px"}).addClass("img-size");
+        $("#cms_go_top a").append(image)
+    })
+</script>
+
+<!-- 公共文件 -->
+<import file="../libs/web/ads/index.html" data="floatLeftTop" />
+<import file="../libs/web/ads/index.html" data="floatLeft" />
+<import file="../libs/web/ads/index.html" data="floatLeftBottom" />
+<import file="../libs/web/ads/index.html" data="floatTop" />
+<import file="../libs/web/ads/index.html" data="floatCenter" />
+<import file="../libs/web/ads/index.html" data="floatBottom" />
+<import file="../libs/web/ads/index.html" data="floatRightTop" />
+<import file="../libs/web/ads/index.html" data="floatRightCenter" />
+<import file="../libs/web/ads/index.html" data="floatRightBottom" />
+<import file="../libs/web/member/index.html" />
+<import file="../libs/web/plugins/index.html" />
+
+
+
+<style>
+	:root {
+		--tem--base--color: #ff6f4b;
+		--tem--base--conf--color: #ff8e61;
+		/* --cms--util--bgColor: #000;
+		--cms--notice--button: #000 */
+	}
+
+	.cms_sideslip {
+		width: 180px !important;
+		height: 180px !important;
+	}
+</style>
+</body>
+
+</html>

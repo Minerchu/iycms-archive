@@ -1,0 +1,205 @@
+<div class="cms_container">
+    <div class="table-responsive">
+        <!-- <print data="." mode="json" /> -->
+        <!-- 主体内容 -->
+        <div>
+            <h2>{{.Name}}</h2>
+            <div class="tabs-1 include-info" id="tabs">
+                <ol>
+                    <if data=".Used">
+                        <div class="step" id="req-url" style="margin-left: 0px;">用法示例</div>
+                        <div class="apiUse rel">
+                            <div class="copy" title="点击可复制" data-clipboard-text="{{.Used}}">点此复制</div>
+                            <pre class="label-exampile">{{.Used}}</pre>
+                        </div>
+                    </if>
+
+                    <if data=".Request.Url.Addr">
+                        <div class="step" id="req-url" style="margin-left: 0px;">API地址</div>
+                        <div class="apiUrl rel">
+                            <div class="copy" title="点击可复制" data-clipboard-text="{{.Request.Url.Addr}}">点此复制</div>
+                            <div style="display: flex;align-items: center;overflow: hidden;">
+                                <p class="api-method {{.Request.Url.Method}}">{{.Request.Url.Method}}</p>
+                                <p class="api-name" style="overflow: auto;">{{.Request.Url.Addr}}</p>
+                            </div>
+                        </div>
+                    </if>
+
+                    <!-- 模板语法 -->
+                    <if data=".Request.Query">
+                        <div class="step" id="req-Query" style="margin-left: 0px;">标签参数</div>
+                        <table class="tb-parameter" style="margin-top: 24px;">
+                            <thead>
+                                <tr>
+                                    <th class="parameter-line" colspan="5" align="left" bgcolor="EFF0F1" height="32px">
+                                        标签参数(路由参数)
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tr height="32px" align="left">
+                                <th class="parameter-line">字段名</th>
+                                <th class="parameter-line" width="70px">字段类型</th>
+                                <th class="parameter-line">字段说明</th>
+                                <th class="parameter-line" width="70px">必填项</th>
+                                <th class="parameter-line" width="60px">默认值</th>
+                            </tr>
+                            <foreach name="$requestboditem" index="$reqindex" data=".Request.Query">
+                                <tr height="32px" align="left" class="tr-param">
+                                    <td class="parameter-line depth{{$requestboditem.FileName}}">
+                                        {{$requestboditem.FileName}}</td>
+                                    <td class="parameter-line">{{$requestboditem.FileType}}</td>
+                                    <td class="parameter-line">{{$requestboditem.Description}}</td>
+                                    <td class="parameter-line disabled-line">{{$requestboditem.Validate}}</td>
+                                    <td class="parameter-line">{{$requestboditem.FileValue}}</td>
+                                </tr>
+                            </foreach>
+                        </table>
+                    </if>
+                    <if data=".Request.Param">
+                        <div class="step" id="req-Param" style="margin-left: 0px;">路径参数</div>
+                        <table class="tb-parameter" style="margin-top: 24px;">
+                            <thead>
+                                <tr>
+                                    <th class="parameter-line" colspan="5" align="left" bgcolor="EFF0F1" height="32px">
+                                        路径参数
+                                    </th>
+                                </tr>
+                            </thead>
+                            <import file="/public/table.html" data=".Request.Param" />
+                        </table>
+                    </if>
+
+                    <if data=".Request.Header">
+                        <div class="step" id="req-Header" style="margin-left: 0px;">请求头</div>
+                        <table class="tb-parameter" style="margin-top: 24px;">
+                            <thead>
+                                <tr>
+                                    <th class="parameter-line" colspan="5" align="left" bgcolor="EFF0F1" height="32px">
+                                        请求头
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <import file="/public/table.html" data=".Request.Header" />
+                        </table>
+                    </if>
+
+                    <if data=".Request.Cookie">
+                        <div class="step" id="req-Cookie" style="margin-left: 0px;">Cookie</div>
+                        <table class="tb-parameter" style="margin-top: 24px;">
+                            <thead>
+                                <tr>
+                                    <th class="parameter-line" colspan="5" align="left" bgcolor="EFF0F1" height="32px">
+                                        Cookie
+                                    </th>
+                                </tr>
+                            </thead>
+                            <import file="/public/table.html" data=".Request.Cookie" />
+                        </table>
+                    </if>
+
+
+
+                    <!-- api -->
+
+                    <if data=".Request.Data">
+                        <div class="step" id="req-data" style="margin-left: 0px;">请求数据</div>
+                        <div style="display: flex;flex-direction: column;" class="cms-api-codeBox">
+                            <foreach data=".Request.Data" name="$item" index="$index">
+                                <div>
+                                    <pre class="cms-api-p">{{$item}}</pre>
+                                </div>
+                            </foreach>
+                        </div>
+                    </if>
+                    <if data=".Response">
+                        <div class="step" id="req-body1" style="margin-left: 0px;">响应示例</div>
+                        <foreach data=".Response" name="$item" index="$index">
+                            <div class="type-{{$item.HttpCode}} type" style="margin-left: 0px;"
+                                id="req-code-{{$item.HttpCode}}">
+                                <div class="HttpCode-{{$item.HttpCode}} HttpCode">
+                                    {{$item.HttpCode}}
+                                </div>
+                                <div class="Desc">
+                                    {{$item.Desc}}
+                                </div>
+                            </div>
+                            <div class="cms-api-codeBox">
+                                <div>
+                                    <foreach data="$item.Data" name="$name" index="$index">
+                                        <pre class="cms-api-p">{{$name}}</pre>
+                                    </foreach>
+                                </div>
+                                <!-- <div>
+                                    <pre style="color: #fff;" class="pre1">
+                                        {{$item.Example}} 
+                                    </pre>
+                                </div> -->
+                            </div>
+                        </foreach>
+
+                    </if>
+                </ol>
+
+            </div>
+        </div>
+
+
+
+        <import file="/public/footer.html" />
+    </div>
+    <!-- 锚点栏 -->
+    <div class="right-content">
+        <div class="tag-box table-hidden aside-active" id="joggle">
+            <p style="margin-top:5px;margin-bottom: 5px; font-size: 18px;" class="active">
+                <a href="JavaScript:;">{{.Name}}</a>
+            </p>
+            <ol>
+                <!-- 模板语法 -->
+                <if data=".Used">
+                    <li><a href="#req-url" class="anchor-point">用法示例</a></li>
+                </if>
+
+                <if data=".Request.Url.Addr">
+                    <li><a href="#req-url" class="anchor-point">API地址</a></li>
+                </if>
+
+                <if data=".Request.Query">
+                    <li><a href="#req-Query" class="anchor-point">标签参数</a></li>
+                </if>
+
+                <if data=".Request.Param">
+                    <li><a href="#req-Param" class="anchor-point">路径参数</a></li>
+                </if>
+
+                <if data=".Request.Header">
+                    <li><a href="#req-Header" class="anchor-point">请求头</a></li>
+                </if>
+
+                <if data=".Request.Cookie">
+                    <li><a href="#req-Cookie" class="anchor-point">Cookie</a></li>
+                </if>
+                <if data=".Request.Data">
+                    <li><a href="#req-data" class="anchor-point">请求数据</a></li>
+                </if>
+                <!-- api -->
+                <if data=".Request.Url.Addr">
+                    <li>
+                        <a href="#req-body1" class="anchor-point">响应示例</a>
+                        <ul style="padding-left: 5px;list-style-type:none">
+                            <foreach data=".Response" name="$item" index="$index">
+                                <li>
+                                    <a href="#req-code-{{$item.HttpCode}}">
+                                        {{$item.HttpCode}} {{$item.Desc}}
+                                    </a>
+                                </li>
+                            </foreach>
+                        </ul>
+                    </li>
+
+                </if>
+            </ol>
+        </div>
+    </div>
+</div>
+

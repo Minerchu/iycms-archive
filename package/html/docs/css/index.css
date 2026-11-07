@@ -1,0 +1,493 @@
+/* 主体布局 */
+.cms_container {
+  display: grid;
+  grid-template-columns: 85% 15%;
+  gap: 10px;
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 5px !important;
+}
+::-webkit-scrollbar-thumb {
+  background: #d8d8d8 !important;
+  border-radius: 10px !important;
+}
+::-webkit-scrollbar-track-piece {
+  background: transparent !important;
+}
+
+/*手机端*/
+@media screen and (max-width: 768px) {
+  .right-content {
+    display: none;
+  }
+  .cms_container {
+    grid-template-columns: 100% 0%;
+  }
+
+  /*用法示例*/
+  .copy {
+    display: block !important;
+  }
+  pre::-webkit-scrollbar {
+    display: none;
+  }
+  .crumb {
+    display: none;
+  }
+  .nav-item {
+    margin-left: 20px;
+  }
+  .active {
+    color: #448fff !important;
+  }
+  .cms_main_ol li {
+    height: 40px;
+    line-height: 40px;
+  }
+  .cms_main_ol li a {
+    font-size: 14px;
+    color: #333;
+  }
+  .h5Header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .position-absolute {
+    position: static !important;
+  }
+  .table-responsive .step {
+    margin-left: 22px;
+  }
+  .downloadJson {
+    display: none;
+  }
+
+  .footer-cms {
+    padding: 5px 0;
+    color: #fff;
+  }
+  .display-none {
+    display: none;
+  }
+  .nav-item-abc {
+    margin-left: 40px !important;
+  }
+
+}
+
+/*pc端*/
+@media screen and (min-width: 769px) {
+  .navbar-brand {
+    box-shadow: none;
+  }
+  .downloadJsonh5 {
+    display: none;
+  }
+  .downloadJsonWeb {
+    display: block !important;
+    color: #fff !important;
+    margin-left: 5px;
+    font-size: 12px;
+  }
+  .downloadJsonWeb:hover {
+    color: #fff !important;
+  }
+  .downJsonWeb_btn {
+    border: 2px solid #6f6d6d12;
+    border-radius: 25px;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    background-color: #007bff;
+  }
+  .downloadJson {
+    border: 0px solid;
+    background-color: #fff;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+  }
+  .downloadJson a {
+    color: #fff !important;
+  }
+
+  .navbar {
+    height: 60px;
+    background-color: #f8f9fa !important ;
+  }
+  .navbar-brand {
+    background-color: #f8f9fa;
+    color: #333 !important;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+  }
+  .navbar-brand > div {
+    margin-left: 40px;
+  }
+  .navbar .form-control {
+    height: 60px;
+  }
+  #downloadJson {
+    color: #333;
+  }
+  .form-control-dark {
+    color: #333;
+  }
+  .shadow {
+    box-shadow: none !important;
+  }
+  .active {
+    color: #448fff;
+  }
+  .sidebar-sticky {
+    position: relative;
+  }
+  .sidebar-sticky > ul {
+    margin-left: 1rem;
+  }
+  .flex-column ul {
+    margin-left: 25px;
+  }
+  a:hover {
+    color: #448fff !important;
+  }
+  #navbar1 {
+    height: 40px;
+  }
+  .crumb {
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: #666666;
+    font-weight: 200;
+    gap: 8px;
+  }
+  .cms_main_ol li {
+    height: 40px;
+    line-height: 40px;
+    font-size: 16px;
+  }
+  .cms_main_ol {
+    padding-left: 18px;
+  }
+  .cms_main_ol a {
+    color: #333;
+  }
+  .anchor-title {
+    font-size: 18px;
+    color: #666666;
+  }
+  .tag-box ol {
+    padding-left: 16px;
+  }
+  .tag-box li {
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
+  }
+  .tag-box a {
+    color: #333;
+  }
+  .table-responsive {
+    height: calc(100vh - 110px);
+    overflow-y: auto;
+  }
+
+  .form-control {
+    display: none !important;
+  }
+  .cms_api_input {
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    background-color: #fff;
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 999;
+  }
+  .cms_api_input input {
+    width: 80%;
+    border: 0px;
+    outline: none;
+    padding-left: 10px;
+  }
+  .cms_api_input button {
+    min-width: 70px;
+    border: 0px;
+    background-color: #448fff;
+    color: #fff;
+  }
+  .cms_api_input button:hover {
+    background-color: #3366ff;
+  }
+  #sidebarMenu {
+    padding-top: 60px !important;
+  }
+  .sidebar-sticky {
+    padding-top: 0px !important;
+  }
+
+  /* 锚点链接 */
+  .right-content {
+    padding-left: 1.5rem;
+  }
+
+  /*面包屑*/
+  .crumb {
+    font-size: 12px;
+    color: #a3b6d3;
+  }
+  .crumb a {
+    color: #a3b6d3;
+  }
+  .crumb .active {
+    color: #007bff;
+  }
+  .cms-api-codeBox {
+    display: flex;
+    justify-content: space-between;
+  }
+  .footer-cms {
+    color: #333;
+  }
+  .footer-cms1 {
+    height: 80px;
+  }
+  /* .table-responsive {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  } */
+}
+
+/* 模板用法 */
+.label-exampile {
+  background: #000000;
+  margin-top: 17px;
+  font-size: 14px;
+  color: #ffffff;
+  line-height: 24px;
+  font-weight: 400;
+  padding: 11px;
+}
+.step {
+  height: 18px;
+  font-family: MicrosoftYaHei;
+  font-size: 18px;
+  color: #333333;
+  line-height: 18px;
+  font-weight: 400;
+  margin-top: 32px;
+  margin-left: 18px;
+}
+.rel {
+  position: relative;
+}
+.rel .copy {
+  display: none;
+  content: "点击复制";
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 12px;
+  color: #fff;
+  background: rgba(204, 204, 204, 0.7);
+  padding: 2px 5px;
+  border-radius: 0 0 0 8px;
+  cursor: pointer;
+}
+.rel:hover .copy {
+  display: block;
+}
+/* 表格 */
+.tb-parameter {
+  border: 0px solid #fff;
+  margin: 17px 0;
+  width: 100%;
+}
+.parameter-line {
+  border-width: 1px;
+  border-collapse: 0;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 12px;
+  font-weight: 400;
+  padding-left: 15px;
+  color: #999999;
+}
+
+thead > tr > th {
+  color: #333333 !important;
+}
+
+tbody > tr:nth-child(1) > th {
+  color: #666666 !important;
+}
+
+#tabs ol {
+  padding-left: 0px;
+}
+
+pre::-webkit-scrollbar {
+  height: 8px !important;
+}
+.h40 {
+  height: 40px;
+  overflow: hidden;
+}
+.h-auto {
+  height: auto !important;
+}
+.nav-link1 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+.main-menu a {
+  color: #333;
+}
+
+/*h5侧边栏*/
+.h5-menu {
+  width: 70%;
+  height: 100%;
+  background-color: #fff;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 9999;
+  box-shadow: inset 2px 0 0 0 rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  display: none;
+}
+.h5-menu a {
+  color: #333;
+}
+.null-search {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  color: #333;
+  font-style: 18px;
+}
+.cms-api-codeBox {
+  background: #000000;
+  margin-top: 17px;
+  font-size: 14px;
+  color: #ffffff;
+  line-height: 24px;
+  font-weight: 400;
+  padding: 11px;
+}
+
+.cms-api-p {
+  color: #fff !important;
+  margin-bottom: 2px;
+}
+
+.apiUrl {
+  height: 50px;
+  background: #000;
+  display: flex;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.api-method {
+  width: 60px;
+  height: 28px;
+  background: #eee;
+  font-family: MicrosoftYaHei;
+  border-radius: 2px;
+  font-size: 12px;
+  color: #448fff;
+  line-height: 28px;
+  text-align: center;
+  margin-left: 20px;
+  margin-bottom: 0px;
+}
+
+.api-name {
+  font-size: 14px;
+  color: #fff;
+  font-weight: 200;
+  margin-left: 12px;
+  margin-bottom: 0px;
+}
+.api-name::-webkit-scrollbar {
+  display: none;
+}
+.api-method.GET {
+  background: #229300;
+  color: #ffffff;
+}
+.api-method.POST {
+  background: #c77701;
+  color: #ffffff;
+}
+.api-method.PUT {
+  background: #448fff;
+  color: #ffffff;
+}
+.api-method.DELETE {
+  background: #c32f00;
+  color: #ffffff;
+}
+
+.type {
+  display: flex;
+  margin-top: 18px;
+  font-size: 16px;
+  background: #eef3ff;
+}
+.HttpCode {
+  font-size: 16px;
+  display: inline-block;
+  height: 40px;
+  width: 60px;
+  text-align: center;
+  color: #fff;
+  font-weight: bold;
+  margin-right: 15px;
+  line-height: 40px;
+}
+.Desc {
+  line-height: 40px;
+}
+.HttpCode-200 {
+  background: #8acd8a;
+}
+.HttpCode-500 {
+  background: #ffc2c2;
+}
+.HttpCode-404 {
+  background: gold;
+}
+.HttpCode-400,
+.HttpCode-404,
+.HttpCode-403,
+.HttpCode-401 {
+  background: #ffc2c2;
+}
+
+.icon-abc {
+  display: inline-block;
+  width: 25px !important;
+  text-align: center;
+  transform: rotate(90deg);
+}
+.cms-main-box {
+  min-height: 80vh !important;
+}
+.click-menu span,
+.active-menu span {
+  transform: rotate(180deg);
+}
+.search-highlight {
+  background: rgb(255, 255, 0) !important;
+}

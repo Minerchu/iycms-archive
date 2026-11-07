@@ -1,0 +1,3391 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta description="" />
+    <meta keyword="" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+  </head>
+  <body style="margin: 0; padding: 0; height: 100vh; overflow: hidden">
+    <!-- <if data="$.channelId">-->
+    <script type="text/javascript">
+      document.cookie =
+        'X-Host-Code={{$.channelId}}; domain={{$.host}}; path=/';
+    </script>
+    <!-- </if>-->
+    <iframe
+      name="iosiframe"
+      width="100%%"
+      height="100%%"
+      src="{{$.domain}}"
+      frameborder="0"
+      allowfullscreen
+    ></iframe>
+
+    <script type="text/javascript">
+      (function (name, context, definition) {
+        'use strict';
+        if (
+          typeof window !== 'undefined' &&
+          typeof define === 'function' &&
+          define.amd
+        ) {
+          define(definition);
+        } else if (typeof module !== 'undefined' && module.exports) {
+          module.exports = definition();
+        } else if (context.exports) {
+          context.exports = definition();
+        } else {
+          context[name] = definition();
+        }
+      })('Fingerprint2', this, function () {
+        'use strict';
+
+        /// MurmurHash3 related functions
+
+        //
+        // Given two 64bit ints (as an array of two 32bit ints) returns the two
+        // added together as a 64bit int (as an array of two 32bit ints).
+        //
+        var x64Add = function (m, n) {
+          m = [m[0] >>> 16, m[0] & 0xffff, m[1] >>> 16, m[1] & 0xffff];
+          n = [n[0] >>> 16, n[0] & 0xffff, n[1] >>> 16, n[1] & 0xffff];
+          var o = [0, 0, 0, 0];
+          o[3] += m[3] + n[3];
+          o[2] += o[3] >>> 16;
+          o[3] &= 0xffff;
+          o[2] += m[2] + n[2];
+          o[1] += o[2] >>> 16;
+          o[2] &= 0xffff;
+          o[1] += m[1] + n[1];
+          o[0] += o[1] >>> 16;
+          o[1] &= 0xffff;
+          o[0] += m[0] + n[0];
+          o[0] &= 0xffff;
+          return [(o[0] << 16) | o[1], (o[2] << 16) | o[3]];
+        };
+
+        //
+        // Given two 64bit ints (as an array of two 32bit ints) returns the two
+        // multiplied together as a 64bit int (as an array of two 32bit ints).
+        //
+        var x64Multiply = function (m, n) {
+          m = [m[0] >>> 16, m[0] & 0xffff, m[1] >>> 16, m[1] & 0xffff];
+          n = [n[0] >>> 16, n[0] & 0xffff, n[1] >>> 16, n[1] & 0xffff];
+          var o = [0, 0, 0, 0];
+          o[3] += m[3] * n[3];
+          o[2] += o[3] >>> 16;
+          o[3] &= 0xffff;
+          o[2] += m[2] * n[3];
+          o[1] += o[2] >>> 16;
+          o[2] &= 0xffff;
+          o[2] += m[3] * n[2];
+          o[1] += o[2] >>> 16;
+          o[2] &= 0xffff;
+          o[1] += m[1] * n[3];
+          o[0] += o[1] >>> 16;
+          o[1] &= 0xffff;
+          o[1] += m[2] * n[2];
+          o[0] += o[1] >>> 16;
+          o[1] &= 0xffff;
+          o[1] += m[3] * n[1];
+          o[0] += o[1] >>> 16;
+          o[1] &= 0xffff;
+          o[0] += m[0] * n[3] + m[1] * n[2] + m[2] * n[1] + m[3] * n[0];
+          o[0] &= 0xffff;
+          return [(o[0] << 16) | o[1], (o[2] << 16) | o[3]];
+        };
+        //
+        // Given a 64bit int (as an array of two 32bit ints) and an int
+        // representing a number of bit positions, returns the 64bit int (as an
+        // array of two 32bit ints) rotated left by that number of positions.
+        //
+        var x64Rotl = function (m, n) {
+          n %= 64;
+          if (n === 32) {
+            return [m[1], m[0]];
+          } else if (n < 32) {
+            return [
+              (m[0] << n) | (m[1] >>> (32 - n)),
+              (m[1] << n) | (m[0] >>> (32 - n)),
+            ];
+          } else {
+            n -= 32;
+            return [
+              (m[1] << n) | (m[0] >>> (32 - n)),
+              (m[0] << n) | (m[1] >>> (32 - n)),
+            ];
+          }
+        };
+        //
+        // Given a 64bit int (as an array of two 32bit ints) and an int
+        // representing a number of bit positions, returns the 64bit int (as an
+        // array of two 32bit ints) shifted left by that number of positions.
+        //
+        var x64LeftShift = function (m, n) {
+          n %= 64;
+          if (n === 0) {
+            return m;
+          } else if (n < 32) {
+            return [(m[0] << n) | (m[1] >>> (32 - n)), m[1] << n];
+          } else {
+            return [m[1] << (n - 32), 0];
+          }
+        };
+        //
+        // Given two 64bit ints (as an array of two 32bit ints) returns the two
+        // xored together as a 64bit int (as an array of two 32bit ints).
+        //
+        var x64Xor = function (m, n) {
+          return [m[0] ^ n[0], m[1] ^ n[1]];
+        };
+        //
+        // Given a block, returns murmurHash3's final x64 mix of that block.
+        // (`[0, h[0] >>> 1]` is a 33 bit unsigned right shift. This is the
+        // only place where we need to right shift 64bit ints.)
+        //
+        var x64Fmix = function (h) {
+          h = x64Xor(h, [0, h[0] >>> 1]);
+          h = x64Multiply(h, [0xff51afd7, 0xed558ccd]);
+          h = x64Xor(h, [0, h[0] >>> 1]);
+          h = x64Multiply(h, [0xc4ceb9fe, 0x1a85ec53]);
+          h = x64Xor(h, [0, h[0] >>> 1]);
+          return h;
+        };
+
+        //
+        // Given a string and an optional seed as an int, returns a 128 bit
+        // hash using the x64 flavor of MurmurHash3, as an unsigned hex.
+        //
+        var x64hash128 = function (key, seed) {
+          key = key || '';
+          seed = seed || 0;
+          var remainder = key.length % 16;
+          var bytes = key.length - remainder;
+          var h1 = [0, seed];
+          var h2 = [0, seed];
+          var k1 = [0, 0];
+          var k2 = [0, 0];
+          var c1 = [0x87c37b91, 0x114253d5];
+          var c2 = [0x4cf5ad43, 0x2745937f];
+          for (var i = 0; i < bytes; i = i + 16) {
+            k1 = [
+              (key.charCodeAt(i + 4) & 0xff) |
+                ((key.charCodeAt(i + 5) & 0xff) << 8) |
+                ((key.charCodeAt(i + 6) & 0xff) << 16) |
+                ((key.charCodeAt(i + 7) & 0xff) << 24),
+              (key.charCodeAt(i) & 0xff) |
+                ((key.charCodeAt(i + 1) & 0xff) << 8) |
+                ((key.charCodeAt(i + 2) & 0xff) << 16) |
+                ((key.charCodeAt(i + 3) & 0xff) << 24),
+            ];
+            k2 = [
+              (key.charCodeAt(i + 12) & 0xff) |
+                ((key.charCodeAt(i + 13) & 0xff) << 8) |
+                ((key.charCodeAt(i + 14) & 0xff) << 16) |
+                ((key.charCodeAt(i + 15) & 0xff) << 24),
+              (key.charCodeAt(i + 8) & 0xff) |
+                ((key.charCodeAt(i + 9) & 0xff) << 8) |
+                ((key.charCodeAt(i + 10) & 0xff) << 16) |
+                ((key.charCodeAt(i + 11) & 0xff) << 24),
+            ];
+            k1 = x64Multiply(k1, c1);
+            k1 = x64Rotl(k1, 31);
+            k1 = x64Multiply(k1, c2);
+            h1 = x64Xor(h1, k1);
+            h1 = x64Rotl(h1, 27);
+            h1 = x64Add(h1, h2);
+            h1 = x64Add(x64Multiply(h1, [0, 5]), [0, 0x52dce729]);
+            k2 = x64Multiply(k2, c2);
+            k2 = x64Rotl(k2, 33);
+            k2 = x64Multiply(k2, c1);
+            h2 = x64Xor(h2, k2);
+            h2 = x64Rotl(h2, 31);
+            h2 = x64Add(h2, h1);
+            h2 = x64Add(x64Multiply(h2, [0, 5]), [0, 0x38495ab5]);
+          }
+          k1 = [0, 0];
+          k2 = [0, 0];
+          switch (remainder) {
+            case 15:
+              k2 = x64Xor(k2, x64LeftShift([0, key.charCodeAt(i + 14)], 48));
+            // fallthrough
+            case 14:
+              k2 = x64Xor(k2, x64LeftShift([0, key.charCodeAt(i + 13)], 40));
+            // fallthrough
+            case 13:
+              k2 = x64Xor(k2, x64LeftShift([0, key.charCodeAt(i + 12)], 32));
+            // fallthrough
+            case 12:
+              k2 = x64Xor(k2, x64LeftShift([0, key.charCodeAt(i + 11)], 24));
+            // fallthrough
+            case 11:
+              k2 = x64Xor(k2, x64LeftShift([0, key.charCodeAt(i + 10)], 16));
+            // fallthrough
+            case 10:
+              k2 = x64Xor(k2, x64LeftShift([0, key.charCodeAt(i + 9)], 8));
+            // fallthrough
+            case 9:
+              k2 = x64Xor(k2, [0, key.charCodeAt(i + 8)]);
+              k2 = x64Multiply(k2, c2);
+              k2 = x64Rotl(k2, 33);
+              k2 = x64Multiply(k2, c1);
+              h2 = x64Xor(h2, k2);
+            // fallthrough
+            case 8:
+              k1 = x64Xor(k1, x64LeftShift([0, key.charCodeAt(i + 7)], 56));
+            // fallthrough
+            case 7:
+              k1 = x64Xor(k1, x64LeftShift([0, key.charCodeAt(i + 6)], 48));
+            // fallthrough
+            case 6:
+              k1 = x64Xor(k1, x64LeftShift([0, key.charCodeAt(i + 5)], 40));
+            // fallthrough
+            case 5:
+              k1 = x64Xor(k1, x64LeftShift([0, key.charCodeAt(i + 4)], 32));
+            // fallthrough
+            case 4:
+              k1 = x64Xor(k1, x64LeftShift([0, key.charCodeAt(i + 3)], 24));
+            // fallthrough
+            case 3:
+              k1 = x64Xor(k1, x64LeftShift([0, key.charCodeAt(i + 2)], 16));
+            // fallthrough
+            case 2:
+              k1 = x64Xor(k1, x64LeftShift([0, key.charCodeAt(i + 1)], 8));
+            // fallthrough
+            case 1:
+              k1 = x64Xor(k1, [0, key.charCodeAt(i)]);
+              k1 = x64Multiply(k1, c1);
+              k1 = x64Rotl(k1, 31);
+              k1 = x64Multiply(k1, c2);
+              h1 = x64Xor(h1, k1);
+            // fallthrough
+          }
+          h1 = x64Xor(h1, [0, key.length]);
+          h2 = x64Xor(h2, [0, key.length]);
+          h1 = x64Add(h1, h2);
+          h2 = x64Add(h2, h1);
+          h1 = x64Fmix(h1);
+          h2 = x64Fmix(h2);
+          h1 = x64Add(h1, h2);
+          h2 = x64Add(h2, h1);
+          return (
+            ('00000000' + (h1[0] >>> 0).toString(16)).slice(-8) +
+            ('00000000' + (h1[1] >>> 0).toString(16)).slice(-8) +
+            ('00000000' + (h2[0] >>> 0).toString(16)).slice(-8) +
+            ('00000000' + (h2[1] >>> 0).toString(16)).slice(-8)
+          );
+        };
+
+        var defaultOptions = {
+          preprocessor: null,
+          audio: {
+            timeout: 1000,
+            // On iOS 11, audio context can only be used in response to user interaction.
+            // We require users to explicitly enable audio fingerprinting on iOS 11.
+            // See https://stackoverflow.com/questions/46363048/onaudioprocess-not-called-on-ios11#46534088
+            excludeIOS11: true,
+          },
+          fonts: {
+            swfContainerId: 'fingerprintjs2',
+            swfPath: 'flash/compiled/FontList.swf',
+            userDefinedFonts: [],
+            extendedJsFonts: false,
+          },
+          screen: {
+            // To ensure consistent fingerprints when users rotate their mobile devices
+            detectScreenOrientation: true,
+          },
+          plugins: {
+            sortPluginsFor: [/palemoon/i],
+            excludeIE: false,
+          },
+          extraComponents: [],
+          excludes: {
+            // Unreliable on Windows, see https://github.com/Valve/fingerprintjs2/issues/375
+            enumerateDevices: true,
+            // devicePixelRatio depends on browser zoom, and it's impossible to detect browser zoom
+            pixelRatio: true,
+            // DNT depends on incognito mode for some browsers (Chrome) and it's impossible to detect incognito mode
+            doNotTrack: true,
+            // uses js fonts already
+            fontsFlash: true,
+          },
+          NOT_AVAILABLE: 'not available',
+          ERROR: 'error',
+          EXCLUDED: 'excluded',
+        };
+
+        var each = function (obj, iterator) {
+          if (
+            Array.prototype.forEach &&
+            obj.forEach === Array.prototype.forEach
+          ) {
+            obj.forEach(iterator);
+          } else if (obj.length === +obj.length) {
+            for (var i = 0, l = obj.length; i < l; i++) {
+              iterator(obj[i], i, obj);
+            }
+          } else {
+            for (var key in obj) {
+              if (obj.hasOwnProperty(key)) {
+                iterator(obj[key], key, obj);
+              }
+            }
+          }
+        };
+
+        var map = function (obj, iterator) {
+          var results = [];
+          // Not using strict equality so that this acts as a
+          // shortcut to checking for `null` and `undefined`.
+          if (obj == null) {
+            return results;
+          }
+          if (Array.prototype.map && obj.map === Array.prototype.map) {
+            return obj.map(iterator);
+          }
+          each(obj, function (value, index, list) {
+            results.push(iterator(value, index, list));
+          });
+          return results;
+        };
+
+        var extendSoft = function (target, source) {
+          if (source == null) {
+            return target;
+          }
+          var value;
+          var key;
+          for (key in source) {
+            value = source[key];
+            if (
+              value != null &&
+              !Object.prototype.hasOwnProperty.call(target, key)
+            ) {
+              target[key] = value;
+            }
+          }
+          return target;
+        };
+
+        // https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/enumerateDevices
+        var enumerateDevicesKey = function (done, options) {
+          if (!isEnumerateDevicesSupported()) {
+            return done(options.NOT_AVAILABLE);
+          }
+          navigator.mediaDevices
+            .enumerateDevices()
+            .then(function (devices) {
+              done(
+                devices.map(function (device) {
+                  return (
+                    'id=' +
+                    device.deviceId +
+                    ';gid=' +
+                    device.groupId +
+                    ';' +
+                    device.kind +
+                    ';' +
+                    device.label
+                  );
+                })
+              );
+            })
+            .catch(function (error) {
+              done(error);
+            });
+        };
+
+        var isEnumerateDevicesSupported = function () {
+          return (
+            navigator.mediaDevices && navigator.mediaDevices.enumerateDevices
+          );
+        };
+        // Inspired by and based on https://github.com/cozylife/audio-fingerprint
+        var audioKey = function (done, options) {
+          var audioOptions = options.audio;
+          if (
+            audioOptions.excludeIOS11 &&
+            navigator.userAgent.match(/OS 11.+Version\/11.+Safari/)
+          ) {
+            // See comment for excludeUserAgent and https://stackoverflow.com/questions/46363048/onaudioprocess-not-called-on-ios11#46534088
+            return done(options.EXCLUDED);
+          }
+
+          var AudioContext =
+            window.OfflineAudioContext || window.webkitOfflineAudioContext;
+
+          if (AudioContext == null) {
+            return done(options.NOT_AVAILABLE);
+          }
+
+          var context = new AudioContext(1, 44100, 44100);
+
+          var oscillator = context.createOscillator();
+          oscillator.type = 'triangle';
+          oscillator.frequency.setValueAtTime(10000, context.currentTime);
+
+          var compressor = context.createDynamicsCompressor();
+          each(
+            [
+              ['threshold', -50],
+              ['knee', 40],
+              ['ratio', 12],
+              ['reduction', -20],
+              ['attack', 0],
+              ['release', 0.25],
+            ],
+            function (item) {
+              if (
+                compressor[item[0]] !== undefined &&
+                typeof compressor[item[0]].setValueAtTime === 'function'
+              ) {
+                compressor[item[0]].setValueAtTime(
+                  item[1],
+                  context.currentTime
+                );
+              }
+            }
+          );
+
+          oscillator.connect(compressor);
+          compressor.connect(context.destination);
+          oscillator.start(0);
+          context.startRendering();
+
+          var audioTimeoutId = setTimeout(function () {
+            console.warn(
+              'Audio fingerprint timed out. Please report bug at https://github.com/Valve/fingerprintjs2 with your user agent: "' +
+                navigator.userAgent +
+                '".'
+            );
+            context.oncomplete = function () {};
+            context = null;
+            return done('audioTimeout');
+          }, audioOptions.timeout);
+
+          context.oncomplete = function (event) {
+            var fingerprint;
+            try {
+              clearTimeout(audioTimeoutId);
+              fingerprint = event.renderedBuffer
+                .getChannelData(0)
+                .slice(4500, 5000)
+                .reduce(function (acc, val) {
+                  return acc + Math.abs(val);
+                }, 0)
+                .toString();
+              oscillator.disconnect();
+              compressor.disconnect();
+            } catch (error) {
+              done(error);
+              return;
+            }
+            done(fingerprint);
+          };
+        };
+        var UserAgent = function (done) {
+          done(navigator.userAgent);
+        };
+        var webdriver = function (done, options) {
+          done(
+            navigator.webdriver == null
+              ? options.NOT_AVAILABLE
+              : navigator.webdriver
+          );
+        };
+        var languageKey = function (done, options) {
+          done(
+            navigator.language ||
+              navigator.userLanguage ||
+              navigator.browserLanguage ||
+              navigator.systemLanguage ||
+              options.NOT_AVAILABLE
+          );
+        };
+        var colorDepthKey = function (done, options) {
+          done(window.screen.colorDepth || options.NOT_AVAILABLE);
+        };
+        var deviceMemoryKey = function (done, options) {
+          done(navigator.deviceMemory || options.NOT_AVAILABLE);
+        };
+        var pixelRatioKey = function (done, options) {
+          done(window.devicePixelRatio || options.NOT_AVAILABLE);
+        };
+        var screenResolutionKey = function (done, options) {
+          done(getScreenResolution(options));
+        };
+        var getScreenResolution = function (options) {
+          var resolution = [window.screen.width, window.screen.height];
+          if (options.screen.detectScreenOrientation) {
+            resolution.sort().reverse();
+          }
+          return resolution;
+        };
+        var availableScreenResolutionKey = function (done, options) {
+          done(getAvailableScreenResolution(options));
+        };
+        var getAvailableScreenResolution = function (options) {
+          if (window.screen.availWidth && window.screen.availHeight) {
+            var available = [
+              window.screen.availHeight,
+              window.screen.availWidth,
+            ];
+            if (options.screen.detectScreenOrientation) {
+              available.sort().reverse();
+            }
+            return available;
+          }
+          // headless browsers
+          return options.NOT_AVAILABLE;
+        };
+        var timezoneOffset = function (done) {
+          done(new Date().getTimezoneOffset());
+        };
+        var timezone = function (done, options) {
+          if (window.Intl && window.Intl.DateTimeFormat) {
+            done(new window.Intl.DateTimeFormat().resolvedOptions().timeZone);
+            return;
+          }
+          done(options.NOT_AVAILABLE);
+        };
+        var sessionStorageKey = function (done, options) {
+          done(hasSessionStorage(options));
+        };
+        var localStorageKey = function (done, options) {
+          done(hasLocalStorage(options));
+        };
+        var indexedDbKey = function (done, options) {
+          done(hasIndexedDB(options));
+        };
+        var addBehaviorKey = function (done) {
+          // body might not be defined at this point or removed programmatically
+          done(!!(document.body && document.body.addBehavior));
+        };
+        var openDatabaseKey = function (done) {
+          done(!!window.openDatabase);
+        };
+        var cpuClassKey = function (done, options) {
+          done(getNavigatorCpuClass(options));
+        };
+        var platformKey = function (done, options) {
+          done(getNavigatorPlatform(options));
+        };
+        var doNotTrackKey = function (done, options) {
+          done(getDoNotTrack(options));
+        };
+        var canvasKey = function (done, options) {
+          if (isCanvasSupported()) {
+            done(getCanvasFp(options));
+            return;
+          }
+          done(options.NOT_AVAILABLE);
+        };
+        var webglKey = function (done, options) {
+          if (isWebGlSupported()) {
+            done(getWebglFp());
+            return;
+          }
+          done(options.NOT_AVAILABLE);
+        };
+        var webglVendorAndRendererKey = function (done) {
+          if (isWebGlSupported()) {
+            done(getWebglVendorAndRenderer());
+            return;
+          }
+          done();
+        };
+        var adBlockKey = function (done) {
+          done(getAdBlock());
+        };
+        var hasLiedLanguagesKey = function (done) {
+          done(getHasLiedLanguages());
+        };
+        var hasLiedResolutionKey = function (done) {
+          done(getHasLiedResolution());
+        };
+        var hasLiedOsKey = function (done) {
+          done(getHasLiedOs());
+        };
+        var hasLiedBrowserKey = function (done) {
+          done(getHasLiedBrowser());
+        };
+        // flash fonts (will increase fingerprinting time 20X to ~ 130-150ms)
+        var flashFontsKey = function (done, options) {
+          // we do flash if swfobject is loaded
+          if (!hasSwfObjectLoaded()) {
+            return done('swf object not loaded');
+          }
+          if (!hasMinFlashInstalled()) {
+            return done('flash not installed');
+          }
+          if (!options.fonts.swfPath) {
+            return done('missing options.fonts.swfPath');
+          }
+          loadSwfAndDetectFonts(function (fonts) {
+            done(fonts);
+          }, options);
+        };
+        // kudos to http://www.lalit.org/lab/javascript-css-font-detect/
+        var jsFontsKey = function (done, options) {
+          // a font will be compared against all the three default fonts.
+          // and if it doesn't match all 3 then that font is not available.
+          var baseFonts = ['monospace', 'sans-serif', 'serif'];
+
+          var fontList = [
+            'Andale Mono',
+            'Arial',
+            'Arial Black',
+            'Arial Hebrew',
+            'Arial MT',
+            'Arial Narrow',
+            'Arial Rounded MT Bold',
+            'Arial Unicode MS',
+            'Bitstream Vera Sans Mono',
+            'Book Antiqua',
+            'Bookman Old Style',
+            'Calibri',
+            'Cambria',
+            'Cambria Math',
+            'Century',
+            'Century Gothic',
+            'Century Schoolbook',
+            'Comic Sans',
+            'Comic Sans MS',
+            'Consolas',
+            'Courier',
+            'Courier New',
+            'Geneva',
+            'Georgia',
+            'Helvetica',
+            'Helvetica Neue',
+            'Impact',
+            'Lucida Bright',
+            'Lucida Calligraphy',
+            'Lucida Console',
+            'Lucida Fax',
+            'LUCIDA GRANDE',
+            'Lucida Handwriting',
+            'Lucida Sans',
+            'Lucida Sans Typewriter',
+            'Lucida Sans Unicode',
+            'Microsoft Sans Serif',
+            'Monaco',
+            'Monotype Corsiva',
+            'MS Gothic',
+            'MS Outlook',
+            'MS PGothic',
+            'MS Reference Sans Serif',
+            'MS Sans Serif',
+            'MS Serif',
+            'MYRIAD',
+            'MYRIAD PRO',
+            'Palatino',
+            'Palatino Linotype',
+            'Segoe Print',
+            'Segoe Script',
+            'Segoe UI',
+            'Segoe UI Light',
+            'Segoe UI Semibold',
+            'Segoe UI Symbol',
+            'Tahoma',
+            'Times',
+            'Times New Roman',
+            'Times New Roman PS',
+            'Trebuchet MS',
+            'Verdana',
+            'Wingdings',
+            'Wingdings 2',
+            'Wingdings 3',
+          ];
+
+          if (options.fonts.extendedJsFonts) {
+            var extendedFontList = [
+              'Abadi MT Condensed Light',
+              'Academy Engraved LET',
+              'ADOBE CASLON PRO',
+              'Adobe Garamond',
+              'ADOBE GARAMOND PRO',
+              'Agency FB',
+              'Aharoni',
+              'Albertus Extra Bold',
+              'Albertus Medium',
+              'Algerian',
+              'Amazone BT',
+              'American Typewriter',
+              'American Typewriter Condensed',
+              'AmerType Md BT',
+              'Andalus',
+              'Angsana New',
+              'AngsanaUPC',
+              'Antique Olive',
+              'Aparajita',
+              'Apple Chancery',
+              'Apple Color Emoji',
+              'Apple SD Gothic Neo',
+              'Arabic Typesetting',
+              'ARCHER',
+              'ARNO PRO',
+              'Arrus BT',
+              'Aurora Cn BT',
+              'AvantGarde Bk BT',
+              'AvantGarde Md BT',
+              'AVENIR',
+              'Ayuthaya',
+              'Bandy',
+              'Bangla Sangam MN',
+              'Bank Gothic',
+              'BankGothic Md BT',
+              'Baskerville',
+              'Baskerville Old Face',
+              'Batang',
+              'BatangChe',
+              'Bauer Bodoni',
+              'Bauhaus 93',
+              'Bazooka',
+              'Bell MT',
+              'Bembo',
+              'Benguiat Bk BT',
+              'Berlin Sans FB',
+              'Berlin Sans FB Demi',
+              'Bernard MT Condensed',
+              'BernhardFashion BT',
+              'BernhardMod BT',
+              'Big Caslon',
+              'BinnerD',
+              'Blackadder ITC',
+              'BlairMdITC TT',
+              'Bodoni 72',
+              'Bodoni 72 Oldstyle',
+              'Bodoni 72 Smallcaps',
+              'Bodoni MT',
+              'Bodoni MT Black',
+              'Bodoni MT Condensed',
+              'Bodoni MT Poster Compressed',
+              'Bookshelf Symbol 7',
+              'Boulder',
+              'Bradley Hand',
+              'Bradley Hand ITC',
+              'Bremen Bd BT',
+              'Britannic Bold',
+              'Broadway',
+              'Browallia New',
+              'BrowalliaUPC',
+              'Brush Script MT',
+              'Californian FB',
+              'Calisto MT',
+              'Calligrapher',
+              'Candara',
+              'CaslonOpnface BT',
+              'Castellar',
+              'Centaur',
+              'Cezanne',
+              'CG Omega',
+              'CG Times',
+              'Chalkboard',
+              'Chalkboard SE',
+              'Chalkduster',
+              'Charlesworth',
+              'Charter Bd BT',
+              'Charter BT',
+              'Chaucer',
+              'ChelthmITC Bk BT',
+              'Chiller',
+              'Clarendon',
+              'Clarendon Condensed',
+              'CloisterBlack BT',
+              'Cochin',
+              'Colonna MT',
+              'Constantia',
+              'Cooper Black',
+              'Copperplate',
+              'Copperplate Gothic',
+              'Copperplate Gothic Bold',
+              'Copperplate Gothic Light',
+              'CopperplGoth Bd BT',
+              'Corbel',
+              'Cordia New',
+              'CordiaUPC',
+              'Cornerstone',
+              'Coronet',
+              'Cuckoo',
+              'Curlz MT',
+              'DaunPenh',
+              'Dauphin',
+              'David',
+              'DB LCD Temp',
+              'DELICIOUS',
+              'Denmark',
+              'DFKai-SB',
+              'Didot',
+              'DilleniaUPC',
+              'DIN',
+              'DokChampa',
+              'Dotum',
+              'DotumChe',
+              'Ebrima',
+              'Edwardian Script ITC',
+              'Elephant',
+              'English 111 Vivace BT',
+              'Engravers MT',
+              'EngraversGothic BT',
+              'Eras Bold ITC',
+              'Eras Demi ITC',
+              'Eras Light ITC',
+              'Eras Medium ITC',
+              'EucrosiaUPC',
+              'Euphemia',
+              'Euphemia UCAS',
+              'EUROSTILE',
+              'Exotc350 Bd BT',
+              'FangSong',
+              'Felix Titling',
+              'Fixedsys',
+              'FONTIN',
+              'Footlight MT Light',
+              'Forte',
+              'FrankRuehl',
+              'Fransiscan',
+              'Freefrm721 Blk BT',
+              'FreesiaUPC',
+              'Freestyle Script',
+              'French Script MT',
+              'FrnkGothITC Bk BT',
+              'Fruitger',
+              'FRUTIGER',
+              'Futura',
+              'Futura Bk BT',
+              'Futura Lt BT',
+              'Futura Md BT',
+              'Futura ZBlk BT',
+              'FuturaBlack BT',
+              'Gabriola',
+              'Galliard BT',
+              'Gautami',
+              'Geeza Pro',
+              'Geometr231 BT',
+              'Geometr231 Hv BT',
+              'Geometr231 Lt BT',
+              'GeoSlab 703 Lt BT',
+              'GeoSlab 703 XBd BT',
+              'Gigi',
+              'Gill Sans',
+              'Gill Sans MT',
+              'Gill Sans MT Condensed',
+              'Gill Sans MT Ext Condensed Bold',
+              'Gill Sans Ultra Bold',
+              'Gill Sans Ultra Bold Condensed',
+              'Gisha',
+              'Gloucester MT Extra Condensed',
+              'GOTHAM',
+              'GOTHAM BOLD',
+              'Goudy Old Style',
+              'Goudy Stout',
+              'GoudyHandtooled BT',
+              'GoudyOLSt BT',
+              'Gujarati Sangam MN',
+              'Gulim',
+              'GulimChe',
+              'Gungsuh',
+              'GungsuhChe',
+              'Gurmukhi MN',
+              'Haettenschweiler',
+              'Harlow Solid Italic',
+              'Harrington',
+              'Heather',
+              'Heiti SC',
+              'Heiti TC',
+              'HELV',
+              'Herald',
+              'High Tower Text',
+              'Hiragino Kaku Gothic ProN',
+              'Hiragino Mincho ProN',
+              'Hoefler Text',
+              'Humanst 521 Cn BT',
+              'Humanst521 BT',
+              'Humanst521 Lt BT',
+              'Imprint MT Shadow',
+              'Incised901 Bd BT',
+              'Incised901 BT',
+              'Incised901 Lt BT',
+              'INCONSOLATA',
+              'Informal Roman',
+              'Informal011 BT',
+              'INTERSTATE',
+              'IrisUPC',
+              'Iskoola Pota',
+              'JasmineUPC',
+              'Jazz LET',
+              'Jenson',
+              'Jester',
+              'Jokerman',
+              'Juice ITC',
+              'Kabel Bk BT',
+              'Kabel Ult BT',
+              'Kailasa',
+              'KaiTi',
+              'Kalinga',
+              'Kannada Sangam MN',
+              'Kartika',
+              'Kaufmann Bd BT',
+              'Kaufmann BT',
+              'Khmer UI',
+              'KodchiangUPC',
+              'Kokila',
+              'Korinna BT',
+              'Kristen ITC',
+              'Krungthep',
+              'Kunstler Script',
+              'Lao UI',
+              'Latha',
+              'Leelawadee',
+              'Letter Gothic',
+              'Levenim MT',
+              'LilyUPC',
+              'Lithograph',
+              'Lithograph Light',
+              'Long Island',
+              'Lydian BT',
+              'Magneto',
+              'Maiandra GD',
+              'Malayalam Sangam MN',
+              'Malgun Gothic',
+              'Mangal',
+              'Marigold',
+              'Marion',
+              'Marker Felt',
+              'Market',
+              'Marlett',
+              'Matisse ITC',
+              'Matura MT Script Capitals',
+              'Meiryo',
+              'Meiryo UI',
+              'Microsoft Himalaya',
+              'Microsoft JhengHei',
+              'Microsoft New Tai Lue',
+              'Microsoft PhagsPa',
+              'Microsoft Tai Le',
+              'Microsoft Uighur',
+              'Microsoft YaHei',
+              'Microsoft Yi Baiti',
+              'MingLiU',
+              'MingLiU_HKSCS',
+              'MingLiU_HKSCS-ExtB',
+              'MingLiU-ExtB',
+              'Minion',
+              'Minion Pro',
+              'Miriam',
+              'Miriam Fixed',
+              'Mistral',
+              'Modern',
+              'Modern No. 20',
+              'Mona Lisa Solid ITC TT',
+              'Mongolian Baiti',
+              'MONO',
+              'MoolBoran',
+              'Mrs Eaves',
+              'MS LineDraw',
+              'MS Mincho',
+              'MS PMincho',
+              'MS Reference Specialty',
+              'MS UI Gothic',
+              'MT Extra',
+              'MUSEO',
+              'MV Boli',
+              'Nadeem',
+              'Narkisim',
+              'NEVIS',
+              'News Gothic',
+              'News GothicMT',
+              'NewsGoth BT',
+              'Niagara Engraved',
+              'Niagara Solid',
+              'Noteworthy',
+              'NSimSun',
+              'Nyala',
+              'OCR A Extended',
+              'Old Century',
+              'Old English Text MT',
+              'Onyx',
+              'Onyx BT',
+              'OPTIMA',
+              'Oriya Sangam MN',
+              'OSAKA',
+              'OzHandicraft BT',
+              'Palace Script MT',
+              'Papyrus',
+              'Parchment',
+              'Party LET',
+              'Pegasus',
+              'Perpetua',
+              'Perpetua Titling MT',
+              'PetitaBold',
+              'Pickwick',
+              'Plantagenet Cherokee',
+              'Playbill',
+              'PMingLiU',
+              'PMingLiU-ExtB',
+              'Poor Richard',
+              'Poster',
+              'PosterBodoni BT',
+              'PRINCETOWN LET',
+              'Pristina',
+              'PTBarnum BT',
+              'Pythagoras',
+              'Raavi',
+              'Rage Italic',
+              'Ravie',
+              'Ribbon131 Bd BT',
+              'Rockwell',
+              'Rockwell Condensed',
+              'Rockwell Extra Bold',
+              'Rod',
+              'Roman',
+              'Sakkal Majalla',
+              'Santa Fe LET',
+              'Savoye LET',
+              'Sceptre',
+              'Script',
+              'Script MT Bold',
+              'SCRIPTINA',
+              'Serifa',
+              'Serifa BT',
+              'Serifa Th BT',
+              'ShelleyVolante BT',
+              'Sherwood',
+              'Shonar Bangla',
+              'Showcard Gothic',
+              'Shruti',
+              'Signboard',
+              'SILKSCREEN',
+              'SimHei',
+              'Simplified Arabic',
+              'Simplified Arabic Fixed',
+              'SimSun',
+              'SimSun-ExtB',
+              'Sinhala Sangam MN',
+              'Sketch Rockwell',
+              'Skia',
+              'Small Fonts',
+              'Snap ITC',
+              'Snell Roundhand',
+              'Socket',
+              'Souvenir Lt BT',
+              'Staccato222 BT',
+              'Steamer',
+              'Stencil',
+              'Storybook',
+              'Styllo',
+              'Subway',
+              'Swis721 BlkEx BT',
+              'Swiss911 XCm BT',
+              'Sylfaen',
+              'Synchro LET',
+              'System',
+              'Tamil Sangam MN',
+              'Technical',
+              'Teletype',
+              'Telugu Sangam MN',
+              'Tempus Sans ITC',
+              'Terminal',
+              'Thonburi',
+              'Traditional Arabic',
+              'Trajan',
+              'TRAJAN PRO',
+              'Tristan',
+              'Tubular',
+              'Tunga',
+              'Tw Cen MT',
+              'Tw Cen MT Condensed',
+              'Tw Cen MT Condensed Extra Bold',
+              'TypoUpright BT',
+              'Unicorn',
+              'Univers',
+              'Univers CE 55 Medium',
+              'Univers Condensed',
+              'Utsaah',
+              'Vagabond',
+              'Vani',
+              'Vijaya',
+              'Viner Hand ITC',
+              'VisualUI',
+              'Vivaldi',
+              'Vladimir Script',
+              'Vrinda',
+              'Westminster',
+              'WHITNEY',
+              'Wide Latin',
+              'ZapfEllipt BT',
+              'ZapfHumnst BT',
+              'ZapfHumnst Dm BT',
+              'Zapfino',
+              'Zurich BlkEx BT',
+              'Zurich Ex BT',
+              'ZWAdobeF',
+            ];
+            fontList = fontList.concat(extendedFontList);
+          }
+
+          fontList = fontList.concat(options.fonts.userDefinedFonts);
+
+          // remove duplicate fonts
+          fontList = fontList.filter(function (font, position) {
+            return fontList.indexOf(font) === position;
+          });
+
+          // we use m or w because these two characters take up the maximum width.
+          // And we use a LLi so that the same matching fonts can get separated
+          var testString = 'mmmmmmmmmmlli';
+
+          // we test using 72px font size, we may use any size. I guess larger the better.
+          var testSize = '72px';
+
+          var h = document.getElementsByTagName('body')[0];
+
+          // div to load spans for the base fonts
+          var baseFontsDiv = document.createElement('div');
+
+          // div to load spans for the fonts to detect
+          var fontsDiv = document.createElement('div');
+
+          var defaultWidth = {};
+          var defaultHeight = {};
+
+          // creates a span where the fonts will be loaded
+          var createSpan = function () {
+            var s = document.createElement('span');
+            /*
+             * We need this css as in some weird browser this
+             * span elements shows up for a microSec which creates a
+             * bad user experience
+             */
+            s.style.position = 'absolute';
+            s.style.left = '-9999px';
+            s.style.fontSize = testSize;
+
+            // css font reset to reset external styles
+            s.style.fontStyle = 'normal';
+            s.style.fontWeight = 'normal';
+            s.style.letterSpacing = 'normal';
+            s.style.lineBreak = 'auto';
+            s.style.lineHeight = 'normal';
+            s.style.textTransform = 'none';
+            s.style.textAlign = 'left';
+            s.style.textDecoration = 'none';
+            s.style.textShadow = 'none';
+            s.style.whiteSpace = 'normal';
+            s.style.wordBreak = 'normal';
+            s.style.wordSpacing = 'normal';
+
+            s.innerHTML = testString;
+            return s;
+          };
+
+          // creates a span and load the font to detect and a base font for fallback
+          var createSpanWithFonts = function (fontToDetect, baseFont) {
+            var s = createSpan();
+            s.style.fontFamily = "'" + fontToDetect + "'," + baseFont;
+            return s;
+          };
+
+          // creates spans for the base fonts and adds them to baseFontsDiv
+          var initializeBaseFontsSpans = function () {
+            var spans = [];
+            for (
+              var index = 0, length = baseFonts.length;
+              index < length;
+              index++
+            ) {
+              var s = createSpan();
+              s.style.fontFamily = baseFonts[index];
+              baseFontsDiv.appendChild(s);
+              spans.push(s);
+            }
+            return spans;
+          };
+
+          // creates spans for the fonts to detect and adds them to fontsDiv
+          var initializeFontsSpans = function () {
+            var spans = {};
+            for (var i = 0, l = fontList.length; i < l; i++) {
+              var fontSpans = [];
+              for (
+                var j = 0, numDefaultFonts = baseFonts.length;
+                j < numDefaultFonts;
+                j++
+              ) {
+                var s = createSpanWithFonts(fontList[i], baseFonts[j]);
+                fontsDiv.appendChild(s);
+                fontSpans.push(s);
+              }
+              spans[fontList[i]] = fontSpans; // Stores {fontName : [spans for that font]}
+            }
+            return spans;
+          };
+
+          // checks if a font is available
+          var isFontAvailable = function (fontSpans) {
+            var detected = false;
+            for (var i = 0; i < baseFonts.length; i++) {
+              detected =
+                fontSpans[i].offsetWidth !== defaultWidth[baseFonts[i]] ||
+                fontSpans[i].offsetHeight !== defaultHeight[baseFonts[i]];
+              if (detected) {
+                return detected;
+              }
+            }
+            return detected;
+          };
+
+          // create spans for base fonts
+          var baseFontsSpans = initializeBaseFontsSpans();
+
+          // add the spans to the DOM
+          h.appendChild(baseFontsDiv);
+
+          // get the default width for the three base fonts
+          for (
+            var index = 0, length = baseFonts.length;
+            index < length;
+            index++
+          ) {
+            defaultWidth[baseFonts[index]] = baseFontsSpans[index].offsetWidth; // width for the default font
+            defaultHeight[baseFonts[index]] =
+              baseFontsSpans[index].offsetHeight; // height for the default font
+          }
+
+          // create spans for fonts to detect
+          var fontsSpans = initializeFontsSpans();
+
+          // add all the spans to the DOM
+          h.appendChild(fontsDiv);
+
+          // check available fonts
+          var available = [];
+          for (var i = 0, l = fontList.length; i < l; i++) {
+            if (isFontAvailable(fontsSpans[fontList[i]])) {
+              available.push(fontList[i]);
+            }
+          }
+
+          // remove spans from DOM
+          h.removeChild(fontsDiv);
+          h.removeChild(baseFontsDiv);
+          done(available);
+        };
+        var pluginsComponent = function (done, options) {
+          if (isIE()) {
+            if (!options.plugins.excludeIE) {
+              done(getIEPlugins(options));
+            } else {
+              done(options.EXCLUDED);
+            }
+          } else {
+            done(getRegularPlugins(options));
+          }
+        };
+        var getRegularPlugins = function (options) {
+          if (navigator.plugins == null) {
+            return options.NOT_AVAILABLE;
+          }
+
+          var plugins = [];
+          // plugins isn't defined in Node envs.
+          for (var i = 0, l = navigator.plugins.length; i < l; i++) {
+            if (navigator.plugins[i]) {
+              plugins.push(navigator.plugins[i]);
+            }
+          }
+
+          // sorting plugins only for those user agents, that we know randomize the plugins
+          // every time we try to enumerate them
+          if (pluginsShouldBeSorted(options)) {
+            plugins = plugins.sort(function (a, b) {
+              if (a.name > b.name) {
+                return 1;
+              }
+              if (a.name < b.name) {
+                return -1;
+              }
+              return 0;
+            });
+          }
+          return map(plugins, function (p) {
+            var mimeTypes = map(p, function (mt) {
+              return [mt.type, mt.suffixes];
+            });
+            return [p.name, p.description, mimeTypes];
+          });
+        };
+        var getIEPlugins = function (options) {
+          var result = [];
+          if (
+            (Object.getOwnPropertyDescriptor &&
+              Object.getOwnPropertyDescriptor(window, 'ActiveXObject')) ||
+            'ActiveXObject' in window
+          ) {
+            var names = [
+              'AcroPDF.PDF', // Adobe PDF reader 7+
+              'Adodb.Stream',
+              'AgControl.AgControl', // Silverlight
+              'DevalVRXCtrl.DevalVRXCtrl.1',
+              'MacromediaFlashPaper.MacromediaFlashPaper',
+              'Msxml2.DOMDocument',
+              'Msxml2.XMLHTTP',
+              'PDF.PdfCtrl', // Adobe PDF reader 6 and earlier, brrr
+              'QuickTime.QuickTime', // QuickTime
+              'QuickTimeCheckObject.QuickTimeCheck.1',
+              'RealPlayer',
+              'RealPlayer.RealPlayer(tm) ActiveX Control (32-bit)',
+              'RealVideo.RealVideo(tm) ActiveX Control (32-bit)',
+              'Scripting.Dictionary',
+              'SWCtl.SWCtl', // ShockWave player
+              'Shell.UIHelper',
+              'ShockwaveFlash.ShockwaveFlash', // flash plugin
+              'Skype.Detection',
+              'TDCCtl.TDCCtl',
+              'WMPlayer.OCX', // Windows media player
+              'rmocx.RealPlayer G2 Control',
+              'rmocx.RealPlayer G2 Control.1',
+            ];
+            // starting to detect plugins in IE
+            result = map(names, function (name) {
+              try {
+                // eslint-disable-next-line no-new
+                new window.ActiveXObject(name);
+                return name;
+              } catch (e) {
+                return options.ERROR;
+              }
+            });
+          } else {
+            result.push(options.NOT_AVAILABLE);
+          }
+          if (navigator.plugins) {
+            result = result.concat(getRegularPlugins(options));
+          }
+          return result;
+        };
+        var pluginsShouldBeSorted = function (options) {
+          var should = false;
+          for (
+            var i = 0, l = options.plugins.sortPluginsFor.length;
+            i < l;
+            i++
+          ) {
+            var re = options.plugins.sortPluginsFor[i];
+            if (navigator.userAgent.match(re)) {
+              should = true;
+              break;
+            }
+          }
+          return should;
+        };
+        var touchSupportKey = function (done) {
+          done(getTouchSupport());
+        };
+        var hardwareConcurrencyKey = function (done, options) {
+          done(getHardwareConcurrency(options));
+        };
+        var hasSessionStorage = function (options) {
+          try {
+            return !!window.sessionStorage;
+          } catch (e) {
+            return options.ERROR; // SecurityError when referencing it means it exists
+          }
+        };
+
+        // https://bugzilla.mozilla.org/show_bug.cgi?id=781447
+        var hasLocalStorage = function (options) {
+          try {
+            return !!window.localStorage;
+          } catch (e) {
+            return options.ERROR; // SecurityError when referencing it means it exists
+          }
+        };
+        var hasIndexedDB = function (options) {
+          try {
+            return !!window.indexedDB;
+          } catch (e) {
+            return options.ERROR; // SecurityError when referencing it means it exists
+          }
+        };
+        var getHardwareConcurrency = function (options) {
+          if (navigator.hardwareConcurrency) {
+            return navigator.hardwareConcurrency;
+          }
+          return options.NOT_AVAILABLE;
+        };
+        var getNavigatorCpuClass = function (options) {
+          return navigator.cpuClass || options.NOT_AVAILABLE;
+        };
+        var getNavigatorPlatform = function (options) {
+          if (navigator.platform) {
+            return navigator.platform;
+          } else {
+            return options.NOT_AVAILABLE;
+          }
+        };
+        var getDoNotTrack = function (options) {
+          if (navigator.doNotTrack) {
+            return navigator.doNotTrack;
+          } else if (navigator.msDoNotTrack) {
+            return navigator.msDoNotTrack;
+          } else if (window.doNotTrack) {
+            return window.doNotTrack;
+          } else {
+            return options.NOT_AVAILABLE;
+          }
+        };
+        // This is a crude and primitive touch screen detection.
+        // It's not possible to currently reliably detect the  availability of a touch screen
+        // with a JS, without actually subscribing to a touch event.
+        // http://www.stucox.com/blog/you-cant-detect-a-touchscreen/
+        // https://github.com/Modernizr/Modernizr/issues/548
+        // method returns an array of 3 values:
+        // maxTouchPoints, the success or failure of creating a TouchEvent,
+        // and the availability of the 'ontouchstart' property
+
+        var getTouchSupport = function () {
+          var maxTouchPoints = 0;
+          var touchEvent;
+          if (typeof navigator.maxTouchPoints !== 'undefined') {
+            maxTouchPoints = navigator.maxTouchPoints;
+          } else if (typeof navigator.msMaxTouchPoints !== 'undefined') {
+            maxTouchPoints = navigator.msMaxTouchPoints;
+          }
+          try {
+            document.createEvent('TouchEvent');
+            touchEvent = true;
+          } catch (_) {
+            touchEvent = false;
+          }
+          var touchStart = 'ontouchstart' in window;
+          return [maxTouchPoints, touchEvent, touchStart];
+        };
+        // https://www.browserleaks.com/canvas#how-does-it-work
+
+        var getCanvasFp = function (options) {
+          var result = [];
+          // Very simple now, need to make it more complex (geo shapes etc)
+          var canvas = document.createElement('canvas');
+          canvas.width = 2000;
+          canvas.height = 200;
+          canvas.style.display = 'inline';
+          var ctx = canvas.getContext('2d');
+          // detect browser support of canvas winding
+          // http://blogs.adobe.com/webplatform/2013/01/30/winding-rules-in-canvas/
+          // https://github.com/Modernizr/Modernizr/blob/master/feature-detects/canvas/winding.js
+          ctx.rect(0, 0, 10, 10);
+          ctx.rect(2, 2, 6, 6);
+          result.push(
+            'canvas winding:' +
+              (ctx.isPointInPath(5, 5, 'evenodd') === false ? 'yes' : 'no')
+          );
+
+          ctx.textBaseline = 'alphabetic';
+          ctx.fillStyle = '#f60';
+          ctx.fillRect(125, 1, 62, 20);
+          ctx.fillStyle = '#069';
+          // https://github.com/Valve/fingerprintjs2/issues/66
+          if (options.dontUseFakeFontInCanvas) {
+            ctx.font = '11pt Arial';
+          } else {
+            ctx.font = '11pt no-real-font-123';
+          }
+          ctx.fillText('Cwm fjordbank glyphs vext quiz, \ud83d\ude03', 2, 15);
+          ctx.fillStyle = 'rgba(102, 204, 0, 0.2)';
+          ctx.font = '18pt Arial';
+          ctx.fillText('Cwm fjordbank glyphs vext quiz, \ud83d\ude03', 4, 45);
+
+          // canvas blending
+          // http://blogs.adobe.com/webplatform/2013/01/28/blending-features-in-canvas/
+          // http://jsfiddle.net/NDYV8/16/
+          ctx.globalCompositeOperation = 'multiply';
+          ctx.fillStyle = 'rgb(255,0,255)';
+          ctx.beginPath();
+          ctx.arc(50, 50, 50, 0, Math.PI * 2, true);
+          ctx.closePath();
+          ctx.fill();
+          ctx.fillStyle = 'rgb(0,255,255)';
+          ctx.beginPath();
+          ctx.arc(100, 50, 50, 0, Math.PI * 2, true);
+          ctx.closePath();
+          ctx.fill();
+          ctx.fillStyle = 'rgb(255,255,0)';
+          ctx.beginPath();
+          ctx.arc(75, 100, 50, 0, Math.PI * 2, true);
+          ctx.closePath();
+          ctx.fill();
+          ctx.fillStyle = 'rgb(255,0,255)';
+          // canvas winding
+          // http://blogs.adobe.com/webplatform/2013/01/30/winding-rules-in-canvas/
+          // http://jsfiddle.net/NDYV8/19/
+          ctx.arc(75, 75, 75, 0, Math.PI * 2, true);
+          ctx.arc(75, 75, 25, 0, Math.PI * 2, true);
+          ctx.fill('evenodd');
+
+          if (canvas.toDataURL) {
+            result.push('canvas fp:' + canvas.toDataURL());
+          }
+          return result;
+        };
+        var getWebglFp = function () {
+          var gl;
+          var fa2s = function (fa) {
+            gl.clearColor(0.0, 0.0, 0.0, 1.0);
+            gl.enable(gl.DEPTH_TEST);
+            gl.depthFunc(gl.LEQUAL);
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+            return '[' + fa[0] + ', ' + fa[1] + ']';
+          };
+          var maxAnisotropy = function (gl) {
+            var ext =
+              gl.getExtension('EXT_texture_filter_anisotropic') ||
+              gl.getExtension('WEBKIT_EXT_texture_filter_anisotropic') ||
+              gl.getExtension('MOZ_EXT_texture_filter_anisotropic');
+            if (ext) {
+              var anisotropy = gl.getParameter(
+                ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT
+              );
+              if (anisotropy === 0) {
+                anisotropy = 2;
+              }
+              return anisotropy;
+            } else {
+              return null;
+            }
+          };
+
+          gl = getWebglCanvas();
+          if (!gl) {
+            return null;
+          }
+          // WebGL fingerprinting is a combination of techniques, found in MaxMind antifraud script & Augur fingerprinting.
+          // First it draws a gradient object with shaders and convers the image to the Base64 string.
+          // Then it enumerates all WebGL extensions & capabilities and appends them to the Base64 string, resulting in a huge WebGL string, potentially very unique on each device
+          // Since iOS supports webgl starting from version 8.1 and 8.1 runs on several graphics chips, the results may be different across ios devices, but we need to verify it.
+          var result = [];
+          var vShaderTemplate =
+            'attribute vec2 attrVertex;varying vec2 varyinTexCoordinate;uniform vec2 uniformOffset;void main(){varyinTexCoordinate=attrVertex+uniformOffset;gl_Position=vec4(attrVertex,0,1);}';
+          var fShaderTemplate =
+            'precision mediump float;varying vec2 varyinTexCoordinate;void main() {gl_FragColor=vec4(varyinTexCoordinate,0,1);}';
+          var vertexPosBuffer = gl.createBuffer();
+          gl.bindBuffer(gl.ARRAY_BUFFER, vertexPosBuffer);
+          var vertices = new Float32Array([
+            -0.2, -0.9, 0, 0.4, -0.26, 0, 0, 0.732134444, 0,
+          ]);
+          gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+          vertexPosBuffer.itemSize = 3;
+          vertexPosBuffer.numItems = 3;
+          var program = gl.createProgram();
+          var vshader = gl.createShader(gl.VERTEX_SHADER);
+          gl.shaderSource(vshader, vShaderTemplate);
+          gl.compileShader(vshader);
+          var fshader = gl.createShader(gl.FRAGMENT_SHADER);
+          gl.shaderSource(fshader, fShaderTemplate);
+          gl.compileShader(fshader);
+          gl.attachShader(program, vshader);
+          gl.attachShader(program, fshader);
+          gl.linkProgram(program);
+          gl.useProgram(program);
+          program.vertexPosAttrib = gl.getAttribLocation(program, 'attrVertex');
+          program.offsetUniform = gl.getUniformLocation(
+            program,
+            'uniformOffset'
+          );
+          gl.enableVertexAttribArray(program.vertexPosArray);
+          gl.vertexAttribPointer(
+            program.vertexPosAttrib,
+            vertexPosBuffer.itemSize,
+            gl.FLOAT,
+            !1,
+            0,
+            0
+          );
+          gl.uniform2f(program.offsetUniform, 1, 1);
+          gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertexPosBuffer.numItems);
+          try {
+            result.push(gl.canvas.toDataURL());
+          } catch (e) {
+            /* .toDataURL may be absent or broken (blocked by extension) */
+          }
+          result.push(
+            'extensions:' + (gl.getSupportedExtensions() || []).join(';')
+          );
+          result.push(
+            'webgl aliased line width range:' +
+              fa2s(gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE))
+          );
+          result.push(
+            'webgl aliased point size range:' +
+              fa2s(gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE))
+          );
+          result.push('webgl alpha bits:' + gl.getParameter(gl.ALPHA_BITS));
+          result.push(
+            'webgl antialiasing:' +
+              (gl.getContextAttributes().antialias ? 'yes' : 'no')
+          );
+          result.push('webgl blue bits:' + gl.getParameter(gl.BLUE_BITS));
+          result.push('webgl depth bits:' + gl.getParameter(gl.DEPTH_BITS));
+          result.push('webgl green bits:' + gl.getParameter(gl.GREEN_BITS));
+          result.push('webgl max anisotropy:' + maxAnisotropy(gl));
+          result.push(
+            'webgl max combined texture image units:' +
+              gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS)
+          );
+          result.push(
+            'webgl max cube map texture size:' +
+              gl.getParameter(gl.MAX_CUBE_MAP_TEXTURE_SIZE)
+          );
+          result.push(
+            'webgl max fragment uniform vectors:' +
+              gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS)
+          );
+          result.push(
+            'webgl max render buffer size:' +
+              gl.getParameter(gl.MAX_RENDERBUFFER_SIZE)
+          );
+          result.push(
+            'webgl max texture image units:' +
+              gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS)
+          );
+          result.push(
+            'webgl max texture size:' + gl.getParameter(gl.MAX_TEXTURE_SIZE)
+          );
+          result.push(
+            'webgl max varying vectors:' +
+              gl.getParameter(gl.MAX_VARYING_VECTORS)
+          );
+          result.push(
+            'webgl max vertex attribs:' + gl.getParameter(gl.MAX_VERTEX_ATTRIBS)
+          );
+          result.push(
+            'webgl max vertex texture image units:' +
+              gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS)
+          );
+          result.push(
+            'webgl max vertex uniform vectors:' +
+              gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS)
+          );
+          result.push(
+            'webgl max viewport dims:' +
+              fa2s(gl.getParameter(gl.MAX_VIEWPORT_DIMS))
+          );
+          result.push('webgl red bits:' + gl.getParameter(gl.RED_BITS));
+          result.push('webgl renderer:' + gl.getParameter(gl.RENDERER));
+          result.push(
+            'webgl shading language version:' +
+              gl.getParameter(gl.SHADING_LANGUAGE_VERSION)
+          );
+          result.push('webgl stencil bits:' + gl.getParameter(gl.STENCIL_BITS));
+          result.push('webgl vendor:' + gl.getParameter(gl.VENDOR));
+          result.push('webgl version:' + gl.getParameter(gl.VERSION));
+
+          try {
+            // Add the unmasked vendor and unmasked renderer if the debug_renderer_info extension is available
+            var extensionDebugRendererInfo = gl.getExtension(
+              'WEBGL_debug_renderer_info'
+            );
+            if (extensionDebugRendererInfo) {
+              result.push(
+                'webgl unmasked vendor:' +
+                  gl.getParameter(
+                    extensionDebugRendererInfo.UNMASKED_VENDOR_WEBGL
+                  )
+              );
+              result.push(
+                'webgl unmasked renderer:' +
+                  gl.getParameter(
+                    extensionDebugRendererInfo.UNMASKED_RENDERER_WEBGL
+                  )
+              );
+            }
+          } catch (e) {
+            /* squelch */
+          }
+
+          if (!gl.getShaderPrecisionFormat) {
+            return result;
+          }
+
+          each(['FLOAT', 'INT'], function (numType) {
+            each(['VERTEX', 'FRAGMENT'], function (shader) {
+              each(['HIGH', 'MEDIUM', 'LOW'], function (numSize) {
+                each(['precision', 'rangeMin', 'rangeMax'], function (key) {
+                  var format = gl.getShaderPrecisionFormat(
+                    gl[shader + '_SHADER'],
+                    gl[numSize + '_' + numType]
+                  )[key];
+                  if (key !== 'precision') {
+                    key = 'precision ' + key;
+                  }
+                  var line = [
+                    'webgl ',
+                    shader.toLowerCase(),
+                    ' shader ',
+                    numSize.toLowerCase(),
+                    ' ',
+                    numType.toLowerCase(),
+                    ' ',
+                    key,
+                    ':',
+                    format,
+                  ].join('');
+                  result.push(line);
+                });
+              });
+            });
+          });
+          return result;
+        };
+        var getWebglVendorAndRenderer = function () {
+          /* This a subset of the WebGL fingerprint with a lot of entropy, while being reasonably browser-independent */
+          try {
+            var glContext = getWebglCanvas();
+            var extensionDebugRendererInfo = glContext.getExtension(
+              'WEBGL_debug_renderer_info'
+            );
+            return (
+              glContext.getParameter(
+                extensionDebugRendererInfo.UNMASKED_VENDOR_WEBGL
+              ) +
+              '~' +
+              glContext.getParameter(
+                extensionDebugRendererInfo.UNMASKED_RENDERER_WEBGL
+              )
+            );
+          } catch (e) {
+            return null;
+          }
+        };
+        var getAdBlock = function () {
+          var ads = document.createElement('div');
+          ads.innerHTML = '&nbsp;';
+          ads.className = 'adsbox';
+          var result = false;
+          try {
+            // body may not exist, that's why we need try/catch
+            document.body.appendChild(ads);
+            result =
+              document.getElementsByClassName('adsbox')[0].offsetHeight === 0;
+            document.body.removeChild(ads);
+          } catch (e) {
+            result = false;
+          }
+          return result;
+        };
+        var getHasLiedLanguages = function () {
+          // We check if navigator.language is equal to the first language of navigator.languages
+          // navigator.languages is undefined on IE11 (and potentially older IEs)
+          if (typeof navigator.languages !== 'undefined') {
+            try {
+              var firstLanguages = navigator.languages[0].substr(0, 2);
+              if (firstLanguages !== navigator.language.substr(0, 2)) {
+                return true;
+              }
+            } catch (err) {
+              return true;
+            }
+          }
+          return false;
+        };
+        var getHasLiedResolution = function () {
+          return (
+            window.screen.width < window.screen.availWidth ||
+            window.screen.height < window.screen.availHeight
+          );
+        };
+        var getHasLiedOs = function () {
+          var userAgent = navigator.userAgent.toLowerCase();
+          var oscpu = navigator.oscpu;
+          var platform = navigator.platform.toLowerCase();
+          var os;
+          // We extract the OS from the user agent (respect the order of the if else if statement)
+          if (userAgent.indexOf('windows phone') >= 0) {
+            os = 'Windows Phone';
+          } else if (userAgent.indexOf('win') >= 0) {
+            os = 'Windows';
+          } else if (userAgent.indexOf('android') >= 0) {
+            os = 'Android';
+          } else if (
+            userAgent.indexOf('linux') >= 0 ||
+            userAgent.indexOf('cros') >= 0
+          ) {
+            os = 'Linux';
+          } else if (
+            userAgent.indexOf('iphone') >= 0 ||
+            userAgent.indexOf('ipad') >= 0
+          ) {
+            os = 'iOS';
+          } else if (userAgent.indexOf('mac') >= 0) {
+            os = 'Mac';
+          } else {
+            os = 'Other';
+          }
+          // We detect if the person uses a mobile device
+          var mobileDevice =
+            'ontouchstart' in window ||
+            navigator.maxTouchPoints > 0 ||
+            navigator.msMaxTouchPoints > 0;
+
+          if (
+            mobileDevice &&
+            os !== 'Windows Phone' &&
+            os !== 'Android' &&
+            os !== 'iOS' &&
+            os !== 'Other'
+          ) {
+            return true;
+          }
+
+          // We compare oscpu with the OS extracted from the UA
+          if (typeof oscpu !== 'undefined') {
+            oscpu = oscpu.toLowerCase();
+            if (
+              oscpu.indexOf('win') >= 0 &&
+              os !== 'Windows' &&
+              os !== 'Windows Phone'
+            ) {
+              return true;
+            } else if (
+              oscpu.indexOf('linux') >= 0 &&
+              os !== 'Linux' &&
+              os !== 'Android'
+            ) {
+              return true;
+            } else if (
+              oscpu.indexOf('mac') >= 0 &&
+              os !== 'Mac' &&
+              os !== 'iOS'
+            ) {
+              return true;
+            } else if (
+              (oscpu.indexOf('win') === -1 &&
+                oscpu.indexOf('linux') === -1 &&
+                oscpu.indexOf('mac') === -1) !==
+              (os === 'Other')
+            ) {
+              return true;
+            }
+          }
+
+          // We compare platform with the OS extracted from the UA
+          if (
+            platform.indexOf('win') >= 0 &&
+            os !== 'Windows' &&
+            os !== 'Windows Phone'
+          ) {
+            return true;
+          } else if (
+            (platform.indexOf('linux') >= 0 ||
+              platform.indexOf('android') >= 0 ||
+              platform.indexOf('pike') >= 0) &&
+            os !== 'Linux' &&
+            os !== 'Android'
+          ) {
+            return true;
+          } else if (
+            (platform.indexOf('mac') >= 0 ||
+              platform.indexOf('ipad') >= 0 ||
+              platform.indexOf('ipod') >= 0 ||
+              platform.indexOf('iphone') >= 0) &&
+            os !== 'Mac' &&
+            os !== 'iOS'
+          ) {
+            return true;
+          } else {
+            var platformIsOther =
+              platform.indexOf('win') < 0 &&
+              platform.indexOf('linux') < 0 &&
+              platform.indexOf('mac') < 0 &&
+              platform.indexOf('iphone') < 0 &&
+              platform.indexOf('ipad') < 0;
+            if (platformIsOther !== (os === 'Other')) {
+              return true;
+            }
+          }
+
+          return (
+            typeof navigator.plugins === 'undefined' &&
+            os !== 'Windows' &&
+            os !== 'Windows Phone'
+          );
+        };
+        var getHasLiedBrowser = function () {
+          var userAgent = navigator.userAgent.toLowerCase();
+          var productSub = navigator.productSub;
+
+          // we extract the browser from the user agent (respect the order of the tests)
+          var browser;
+          if (userAgent.indexOf('firefox') >= 0) {
+            browser = 'Firefox';
+          } else if (
+            userAgent.indexOf('opera') >= 0 ||
+            userAgent.indexOf('opr') >= 0
+          ) {
+            browser = 'Opera';
+          } else if (userAgent.indexOf('chrome') >= 0) {
+            browser = 'Chrome';
+          } else if (userAgent.indexOf('safari') >= 0) {
+            browser = 'Safari';
+          } else if (userAgent.indexOf('trident') >= 0) {
+            browser = 'Internet Explorer';
+          } else {
+            browser = 'Other';
+          }
+
+          if (
+            (browser === 'Chrome' ||
+              browser === 'Safari' ||
+              browser === 'Opera') &&
+            productSub !== '20030107'
+          ) {
+            return true;
+          }
+
+          // eslint-disable-next-line no-eval
+          var tempRes = eval.toString().length;
+          if (
+            tempRes === 37 &&
+            browser !== 'Safari' &&
+            browser !== 'Firefox' &&
+            browser !== 'Other'
+          ) {
+            return true;
+          } else if (
+            tempRes === 39 &&
+            browser !== 'Internet Explorer' &&
+            browser !== 'Other'
+          ) {
+            return true;
+          } else if (
+            tempRes === 33 &&
+            browser !== 'Chrome' &&
+            browser !== 'Opera' &&
+            browser !== 'Other'
+          ) {
+            return true;
+          }
+
+          // We create an error to see how it is handled
+          var errFirefox;
+          try {
+            // eslint-disable-next-line no-throw-literal
+            throw 'a';
+          } catch (err) {
+            try {
+              err.toSource();
+              errFirefox = true;
+            } catch (errOfErr) {
+              errFirefox = false;
+            }
+          }
+          return errFirefox && browser !== 'Firefox' && browser !== 'Other';
+        };
+        var isCanvasSupported = function () {
+          var elem = document.createElement('canvas');
+          return !!(elem.getContext && elem.getContext('2d'));
+        };
+        var isWebGlSupported = function () {
+          // code taken from Modernizr
+          if (!isCanvasSupported()) {
+            return false;
+          }
+
+          var glContext = getWebglCanvas();
+          return !!window.WebGLRenderingContext && !!glContext;
+        };
+        var isIE = function () {
+          if (navigator.appName === 'Microsoft Internet Explorer') {
+            return true;
+          } else if (
+            navigator.appName === 'Netscape' &&
+            /Trident/.test(navigator.userAgent)
+          ) {
+            // IE 11
+            return true;
+          }
+          return false;
+        };
+        var hasSwfObjectLoaded = function () {
+          return typeof window.swfobject !== 'undefined';
+        };
+        var hasMinFlashInstalled = function () {
+          return window.swfobject.hasFlashPlayerVersion('9.0.0');
+        };
+        var addFlashDivNode = function (options) {
+          var node = document.createElement('div');
+          node.setAttribute('id', options.fonts.swfContainerId);
+          document.body.appendChild(node);
+        };
+        var loadSwfAndDetectFonts = function (done, options) {
+          var hiddenCallback = '___fp_swf_loaded';
+          window[hiddenCallback] = function (fonts) {
+            done(fonts);
+          };
+          var id = options.fonts.swfContainerId;
+          addFlashDivNode();
+          var flashvars = { onReady: hiddenCallback };
+          var flashparams = { allowScriptAccess: 'always', menu: 'false' };
+          window.swfobject.embedSWF(
+            options.fonts.swfPath,
+            id,
+            '1',
+            '1',
+            '9.0.0',
+            false,
+            flashvars,
+            flashparams,
+            {}
+          );
+        };
+        var getWebglCanvas = function () {
+          var canvas = document.createElement('canvas');
+          var gl = null;
+          try {
+            gl =
+              canvas.getContext('webgl') ||
+              canvas.getContext('experimental-webgl');
+          } catch (e) {
+            /* squelch */
+          }
+          if (!gl) {
+            gl = null;
+          }
+          return gl;
+        };
+
+        var components = [
+          { key: 'userAgent', getData: UserAgent },
+          { key: 'webdriver', getData: webdriver },
+          { key: 'language', getData: languageKey },
+          { key: 'colorDepth', getData: colorDepthKey },
+          { key: 'deviceMemory', getData: deviceMemoryKey },
+          { key: 'pixelRatio', getData: pixelRatioKey },
+          { key: 'hardwareConcurrency', getData: hardwareConcurrencyKey },
+          { key: 'screenResolution', getData: screenResolutionKey },
+          {
+            key: 'availableScreenResolution',
+            getData: availableScreenResolutionKey,
+          },
+          { key: 'timezoneOffset', getData: timezoneOffset },
+          { key: 'timezone', getData: timezone },
+          { key: 'sessionStorage', getData: sessionStorageKey },
+          { key: 'localStorage', getData: localStorageKey },
+          { key: 'indexedDb', getData: indexedDbKey },
+          { key: 'addBehavior', getData: addBehaviorKey },
+          { key: 'openDatabase', getData: openDatabaseKey },
+          { key: 'cpuClass', getData: cpuClassKey },
+          { key: 'platform', getData: platformKey },
+          { key: 'doNotTrack', getData: doNotTrackKey },
+          { key: 'plugins', getData: pluginsComponent },
+          { key: 'canvas', getData: canvasKey },
+          { key: 'webgl', getData: webglKey },
+          { key: 'webglVendorAndRenderer', getData: webglVendorAndRendererKey },
+          { key: 'adBlock', getData: adBlockKey },
+          { key: 'hasLiedLanguages', getData: hasLiedLanguagesKey },
+          { key: 'hasLiedResolution', getData: hasLiedResolutionKey },
+          { key: 'hasLiedOs', getData: hasLiedOsKey },
+          { key: 'hasLiedBrowser', getData: hasLiedBrowserKey },
+          { key: 'touchSupport', getData: touchSupportKey },
+          { key: 'fonts', getData: jsFontsKey, pauseBefore: true },
+          { key: 'fontsFlash', getData: flashFontsKey, pauseBefore: true },
+          { key: 'audio', getData: audioKey },
+          { key: 'enumerateDevices', getData: enumerateDevicesKey },
+        ];
+
+        var Fingerprint2 = function (options) {
+          throw new Error(
+            "'new Fingerprint()' is deprecated, see https://github.com/Valve/fingerprintjs2#upgrade-guide-from-182-to-200"
+          );
+        };
+
+        Fingerprint2.get = function (options, callback) {
+          if (!callback) {
+            callback = options;
+            options = {};
+          } else if (!options) {
+            options = {};
+          }
+          extendSoft(options, defaultOptions);
+          options.components = options.extraComponents.concat(components);
+
+          var keys = {
+            data: [],
+            addPreprocessedComponent: function (key, value) {
+              if (typeof options.preprocessor === 'function') {
+                value = options.preprocessor(key, value);
+              }
+              keys.data.push({ key: key, value: value });
+            },
+          };
+
+          var i = -1;
+          var chainComponents = function (alreadyWaited) {
+            i += 1;
+            if (i >= options.components.length) {
+              // on finish
+              callback(keys.data);
+              return;
+            }
+            var component = options.components[i];
+
+            if (options.excludes[component.key]) {
+              chainComponents(false); // skip
+              return;
+            }
+
+            if (!alreadyWaited && component.pauseBefore) {
+              i -= 1;
+              setTimeout(function () {
+                chainComponents(true);
+              }, 1);
+              return;
+            }
+
+            try {
+              component.getData(function (value) {
+                keys.addPreprocessedComponent(component.key, value);
+                chainComponents(false);
+              }, options);
+            } catch (error) {
+              // main body error
+              keys.addPreprocessedComponent(component.key, String(error));
+              chainComponents(false);
+            }
+          };
+
+          chainComponents(false);
+        };
+
+        Fingerprint2.getPromise = function (options) {
+          return new Promise(function (resolve, reject) {
+            Fingerprint2.get(options, resolve);
+          });
+        };
+
+        Fingerprint2.getV18 = function (options, callback) {
+          if (callback == null) {
+            callback = options;
+            options = {};
+          }
+          return Fingerprint2.get(options, function (components) {
+            var newComponents = [];
+            for (var i = 0; i < components.length; i++) {
+              var component = components[i];
+              if (
+                component.value === (options.NOT_AVAILABLE || 'not available')
+              ) {
+                newComponents.push({ key: component.key, value: 'unknown' });
+              } else if (component.key === 'plugins') {
+                newComponents.push({
+                  key: 'plugins',
+                  value: map(component.value, function (p) {
+                    var mimeTypes = map(p[2], function (mt) {
+                      if (mt.join) {
+                        return mt.join('~');
+                      }
+                      return mt;
+                    }).join(',');
+                    return [p[0], p[1], mimeTypes].join('::');
+                  }),
+                });
+              } else if (['canvas', 'webgl'].indexOf(component.key) !== -1) {
+                newComponents.push({
+                  key: component.key,
+                  value: component.value.join('~'),
+                });
+              } else if (
+                [
+                  'sessionStorage',
+                  'localStorage',
+                  'indexedDb',
+                  'addBehavior',
+                  'openDatabase',
+                ].indexOf(component.key) !== -1
+              ) {
+                if (component.value) {
+                  newComponents.push({ key: component.key, value: 1 });
+                } else {
+                  // skip
+                  continue;
+                }
+              } else {
+                if (component.value) {
+                  newComponents.push(
+                    component.value.join
+                      ? { key: component.key, value: component.value.join(';') }
+                      : component
+                  );
+                } else {
+                  newComponents.push({
+                    key: component.key,
+                    value: component.value,
+                  });
+                }
+              }
+            }
+            var murmur = x64hash128(
+              map(newComponents, function (component) {
+                return component.value;
+              }).join('~~~'),
+              31
+            );
+            callback(murmur, newComponents);
+          });
+        };
+
+        Fingerprint2.x64hash128 = x64hash128;
+        Fingerprint2.VERSION = '2.1.0';
+        return Fingerprint2;
+      });
+      Fingerprint2.get({}, function (components) {
+        const values = components.map(function (component) {
+          return component.value;
+        });
+        let key = Fingerprint2.x64hash128(values.join(''), 31);
+        if (!localStorage.getItem('symbolKey')) {
+          localStorage.setItem('symbolKey', key);
+        }
+      });
+      /* UAParser.js v2.0.0-alpha.3
+      Copyright © 2012-2023 Faisal Salman <f@faisalman.com>
+      MIT License */
+      !(function (i, u) {
+        'use strict';
+        function e(i) {
+          for (var e = {}, t = 0; t < i.length; t++)
+            e[i[t].toUpperCase()] = i[t];
+          return e;
+        }
+        function n(i, e) {
+          if (!(typeof i === d && 0 < i.length))
+            return typeof i === s && -1 !== mi(e).indexOf(mi(i));
+          for (var t in i) if (mi(i[t]) == mi(e)) return 1;
+        }
+        var w = '',
+          c = 'function',
+          b = 'undefined',
+          d = 'object',
+          s = 'string',
+          l = 'major',
+          p = 'model',
+          h = 'name',
+          f = 'type',
+          t = 'vendor',
+          m = 'version',
+          g = 'architecture',
+          o = 'console',
+          v = 'mobile',
+          r = 'tablet',
+          a = 'smarttv',
+          x = 'wearable',
+          k = 'embedded',
+          y = 'user-agent',
+          _ = 350,
+          T = 'brands',
+          S = 'formFactor',
+          C = 'fullVersionList',
+          q = 'platform',
+          A = 'platformVersion',
+          z = 'bitness',
+          N = 'sec-ch-ua',
+          O = N + '-full-version-list',
+          H = N + '-arch',
+          P = N + '-' + z,
+          U = N + '-form-factor',
+          I = N + '-' + v,
+          R = N + '-' + p,
+          E = N + '-' + q,
+          M = E + '-version',
+          j = [T, C, v, p, q, A, g, S, z],
+          V = 'browser',
+          B = 'cpu',
+          F = 'device',
+          D = 'engine',
+          $ = 'os',
+          W = 'result',
+          G = 'Amazon',
+          L = 'Apple',
+          X = 'ASUS',
+          Z = 'BlackBerry',
+          K = 'Google',
+          Q = 'Huawei',
+          Y = 'LG',
+          J = 'Microsoft',
+          ii = 'Motorola',
+          ei = 'Samsung',
+          ti = 'Sony',
+          oi = 'Xiaomi',
+          ri = 'Zebra',
+          ai = 'Mobile ',
+          si = ' Browser',
+          ni = 'Chrome',
+          wi = 'Firefox',
+          bi = 'Opera',
+          li = 'Facebook',
+          ui = 'Windows',
+          ci = typeof i !== b && i.navigator ? i.navigator : u,
+          di = ci && ci.userAgentData ? ci.userAgentData : u,
+          pi = function (i, e) {
+            var t,
+              o = {};
+            for (t in i)
+              o[t] = e[t] && e[t].length % 2 == 0 ? e[t].concat(i[t]) : i[t];
+            return o;
+          },
+          hi = function (i) {
+            for (var e in i) return /^(browser|cpu|device|engine|os)$/.test(e);
+          },
+          fi = function (i) {
+            if (!i) return u;
+            for (
+              var e = [], t = xi(/\\?\"/g, i).split(', '), o = 0;
+              o < t.length;
+              o++
+            ) {
+              var r = t[o].split(';v=');
+              e[o] = { brand: r[0], version: r[1] };
+            }
+            return e;
+          },
+          mi = function (i) {
+            return typeof i === s ? i.toLowerCase() : i;
+          },
+          gi = function (i) {
+            return typeof i === s ? xi(/[^\d\.]/g, i).split('.')[0] : u;
+          },
+          vi = function (i) {
+            for (var e in i) {
+              e = i[e];
+              typeof e == d && 2 == e.length
+                ? (this[e[0]] = e[1])
+                : (this[e] = u);
+            }
+            return this;
+          },
+          xi = function (i, e) {
+            return e.replace(i, w);
+          },
+          ki = function (i) {
+            return typeof i === s ? xi(/\"/g, i) : i;
+          },
+          yi = function (i, e) {
+            if (typeof i === s)
+              return (
+                (i = xi(/^\s\s*/, i)), typeof e === b ? i : i.substring(0, _)
+              );
+          },
+          _i = function (i, e) {
+            if (i && e)
+              for (var t, o, r, a, s, n = 0; n < e.length && !a; ) {
+                for (
+                  var w = e[n], b = e[n + 1], l = (t = 0);
+                  l < w.length && !a && w[l];
+
+                )
+                  if ((a = w[l++].exec(i)))
+                    for (o = 0; o < b.length; o++)
+                      (s = a[++t]),
+                        typeof (r = b[o]) === d && 0 < r.length
+                          ? 2 === r.length
+                            ? typeof r[1] == c
+                              ? (this[r[0]] = r[1].call(this, s))
+                              : (this[r[0]] = r[1])
+                            : 3 === r.length
+                            ? typeof r[1] !== c || (r[1].exec && r[1].test)
+                              ? (this[r[0]] = s ? s.replace(r[1], r[2]) : u)
+                              : (this[r[0]] = s ? r[1].call(this, s, r[2]) : u)
+                            : 4 === r.length &&
+                              (this[r[0]] = s
+                                ? r[3].call(this, s.replace(r[1], r[2]))
+                                : u)
+                          : (this[r] = s || u);
+                n += 2;
+              }
+          },
+          Ti = function (i, e) {
+            for (var t in e)
+              if (typeof e[t] === d && 0 < e[t].length) {
+                for (var o = 0; o < e[t].length; o++)
+                  if (n(e[t][o], i)) return '?' === t ? u : t;
+              } else if (n(e[t], i)) return '?' === t ? u : t;
+            return i;
+          },
+          Si = {
+            ME: '4.90',
+            'NT 3.11': 'NT3.51',
+            'NT 4.0': 'NT4.0',
+            2e3: 'NT 5.0',
+            XP: ['NT 5.1', 'NT 5.2'],
+            Vista: 'NT 6.0',
+            7: 'NT 6.1',
+            8: 'NT 6.2',
+            8.1: 'NT 6.3',
+            10: ['NT 6.4', 'NT 10.0'],
+            RT: 'ARM',
+          },
+          Ci = {
+            embedded: 'Automotive',
+            mobile: 'Mobile',
+            tablet: 'Tablet',
+            smarttv: 'TV',
+            wearable: ['VR', 'XR'],
+            '?': 'Unknown',
+          },
+          qi = {
+            browser: [
+              [/\b(?:crmo|crios)\/([\w\.]+)/i],
+              [m, [h, ai + 'Chrome']],
+              [/edg(?:e|ios|a)?\/([\w\.]+)/i],
+              [m, [h, 'Edge']],
+              [
+                /(opera mini)\/([-\w\.]+)/i,
+                /(opera [mobiletab]{3,6})\b.+version\/([-\w\.]+)/i,
+                /(opera)(?:.+version\/|[\/ ]+)([\w\.]+)/i,
+              ],
+              [h, m],
+              [/opios[\/ ]+([\w\.]+)/i],
+              [m, [h, bi + ' Mini']],
+              [/\bopr\/([\w\.]+)/i],
+              [m, [h, bi]],
+              [
+                /(kindle)\/([\w\.]+)/i,
+                /(lunascape|maxthon|netfront|jasmine|blazer)[\/ ]?([\w\.]*)/i,
+                /(avant |iemobile|slim)(?:browser)?[\/ ]?([\w\.]*)/i,
+                /(ba?idubrowser)[\/ ]?([\w\.]+)/i,
+                /(?:ms|\()(ie) ([\w\.]+)/i,
+                /(flock|rockmelt|midori|epiphany|silk|skyfire|ovibrowser|bolt|iron|vivaldi|iridium|phantomjs|bowser|quark|qupzilla|falkon|rekonq|puffin|brave|whale(?!.+naver)|qqbrowserlite|qq|duckduckgo)\/([-\w\.]+)/i,
+                /(heytap|ovi)browser\/([\d\.]+)/i,
+                /(weibo)__([\d\.]+)/i,
+              ],
+              [h, m],
+              [/(?:\buc? ?browser|(?:juc.+)ucweb)[\/ ]?([\w\.]+)/i],
+              [m, [h, 'UCBrowser']],
+              [/microm.+\bqbcore\/([\w\.]+)/i, /\bqbcore\/([\w\.]+).+microm/i],
+              [m, [h, 'WeChat(Win) Desktop']],
+              [/micromessenger\/([\w\.]+)/i],
+              [m, [h, 'WeChat']],
+              [/konqueror\/([\w\.]+)/i],
+              [m, [h, 'Konqueror']],
+              [/trident.+rv[: ]([\w\.]{1,9})\b.+like gecko/i],
+              [m, [h, 'IE']],
+              [/ya(?:search)?browser\/([\w\.]+)/i],
+              [m, [h, 'Yandex']],
+              [/(avast|avg)\/([\w\.]+)/i],
+              [[h, /(.+)/, '$1 Secure' + si], m],
+              [/\bfocus\/([\w\.]+)/i],
+              [m, [h, wi + ' Focus']],
+              [/\bopt\/([\w\.]+)/i],
+              [m, [h, bi + ' Touch']],
+              [/coc_coc\w+\/([\w\.]+)/i],
+              [m, [h, 'Coc Coc']],
+              [/dolfin\/([\w\.]+)/i],
+              [m, [h, 'Dolphin']],
+              [/coast\/([\w\.]+)/i],
+              [m, [h, bi + ' Coast']],
+              [/miuibrowser\/([\w\.]+)/i],
+              [m, [h, 'MIUI' + si]],
+              [/fxios\/([\w\.-]+)/i],
+              [m, [h, ai + wi]],
+              [/\bqihu|(qi?ho?o?|360)browser/i],
+              [[h, '360' + si]],
+              [/(oculus|samsung|sailfish|huawei)browser\/([\w\.]+)/i],
+              [[h, /(.+)/, '$1' + si], m],
+              [/(comodo_dragon)\/([\w\.]+)/i],
+              [[h, /_/g, ' '], m],
+              [
+                /(electron)\/([\w\.]+) safari/i,
+                /(tesla)(?: qtcarbrowser|\/(20\d\d\.[-\w\.]+))/i,
+                /m?(qqbrowser|baiduboxapp|2345Explorer)[\/ ]?([\w\.]+)/i,
+              ],
+              [h, m],
+              [
+                /(metasr)[\/ ]?([\w\.]+)/i,
+                /(lbbrowser)/i,
+                /\[(linkedin)app\]/i,
+              ],
+              [h],
+              [/((?:fban\/fbios|fb_iab\/fb4a)(?!.+fbav)|;fbav\/([\w\.]+);)/i],
+              [[h, li], m],
+              [
+                /(kakao(?:talk|story))[\/ ]([\w\.]+)/i,
+                /(naver)\(.*?(\d+\.[\w\.]+).*\)/i,
+                /safari (line)\/([\w\.]+)/i,
+                /\b(line)\/([\w\.]+)\/iab/i,
+                /(chromium|instagram|snapchat)[\/ ]([-\w\.]+)/i,
+              ],
+              [h, m],
+              [/\bgsa\/([\w\.]+) .*safari\//i],
+              [m, [h, 'GSA']],
+              [/musical_ly(?:.+app_?version\/|_)([\w\.]+)/i],
+              [m, [h, 'TikTok']],
+              [/headlesschrome(?:\/([\w\.]+)| )/i],
+              [m, [h, ni + ' Headless']],
+              [/ wv\).+(chrome)\/([\w\.]+)/i],
+              [[h, ni + ' WebView'], m],
+              [/droid.+ version\/([\w\.]+)\b.+(?:mobile safari|safari)/i],
+              [m, [h, 'Android' + si]],
+              [/chrome\/([\w\.]+) mobile/i],
+              [m, [h, ai + 'Chrome']],
+              [/(chrome|omniweb|arora|[tizenoka]{5} ?browser)\/v?([\w\.]+)/i],
+              [h, m],
+              [/version\/([\w\.\,]+) .*mobile(?:\/\w+ | ?)safari/i],
+              [m, [h, ai + 'Safari']],
+              [/iphone .*mobile(?:\/\w+ | ?)safari/i],
+              [[h, ai + 'Safari']],
+              [/version\/([\w\.\,]+) .*(safari)/i],
+              [m, h],
+              [/webkit.+?(mobile ?safari|safari)(\/[\w\.]+)/i],
+              [h, [m, '1']],
+              [/(webkit|khtml)\/([\w\.]+)/i],
+              [h, m],
+              [/(?:mobile|tablet);.*(firefox)\/([\w\.-]+)/i],
+              [[h, ai + wi], m],
+              [/(navigator|netscape\d?)\/([-\w\.]+)/i],
+              [[h, 'Netscape'], m],
+              [/mobile vr; rv:([\w\.]+)\).+firefox/i],
+              [m, [h, wi + ' Reality']],
+              [
+                /ekiohf.+(flow)\/([\w\.]+)/i,
+                /(swiftfox)/i,
+                /(icedragon|iceweasel|camino|chimera|fennec|maemo browser|minimo|conkeror|klar)[\/ ]?([\w\.\+]+)/i,
+                /(seamonkey|k-meleon|icecat|iceape|firebird|phoenix|palemoon|basilisk|waterfox)\/([-\w\.]+)$/i,
+                /(firefox)\/([\w\.]+)/i,
+                /(mozilla)\/([\w\.]+) .+rv\:.+gecko\/\d+/i,
+                /(polaris|lynx|dillo|icab|doris|amaya|w3m|netsurf|sleipnir|obigo|mosaic|(?:go|ice|up)[\. ]?browser)[-\/ ]?v?([\w\.]+)/i,
+                /(links) \(([\w\.]+)/i,
+                /panasonic;(viera)/i,
+              ],
+              [h, m],
+              [/(cobalt)\/([\w\.]+)/i],
+              [h, [m, /[^\d\.]+./, w]],
+            ],
+            cpu: [
+              [/\b(?:(amd|x|x86[-_]?|wow|win)64)\b/i],
+              [[g, 'amd64']],
+              [/(ia32(?=;))/i, /((?:i[346]|x)86)[;\)]/i],
+              [[g, 'ia32']],
+              [/\b(aarch64|arm(v?8e?l?|_?64))\b/i],
+              [[g, 'arm64']],
+              [/\b(arm(?:v[67])?ht?n?[fl]p?)\b/i],
+              [[g, 'armhf']],
+              [/windows (ce|mobile); ppc;/i],
+              [[g, 'arm']],
+              [/((?:ppc|powerpc)(?:64)?)(?: mac|;|\))/i],
+              [[g, /ower/, w, mi]],
+              [/(sun4\w)[;\)]/i],
+              [[g, 'sparc']],
+              [
+                /((?:avr32|ia64(?=;))|68k(?=\))|\barm(?=v(?:[1-7]|[5-7]1)l?|;|eabi)|(?=atmel )avr|(?:irix|mips|sparc)(?:64)?\b|pa-risc)/i,
+              ],
+              [[g, mi]],
+            ],
+            device: [
+              [
+                /\b(sch-i[89]0\d|shw-m380s|sm-[ptx]\w{2,4}|gt-[pn]\d{2,4}|sgh-t8[56]9|nexus 10)/i,
+              ],
+              [p, [t, ei], [f, r]],
+              [
+                /\b((?:s[cgp]h|gt|sm)-\w+|sc[g-]?[\d]+a?|galaxy nexus)/i,
+                /samsung[- ]([-\w]+)/i,
+                /sec-(sgh\w+)/i,
+              ],
+              [p, [t, ei], [f, v]],
+              [/(?:\/|\()(ip(?:hone|od)[\w, ]*)(?:\/|;)/i],
+              [p, [t, L], [f, v]],
+              [
+                /\((ipad);[-\w\),; ]+apple/i,
+                /applecoremedia\/[\w\.]+ \((ipad)/i,
+                /\b(ipad)\d\d?,\d\d?[;\]].+ios/i,
+              ],
+              [p, [t, L], [f, r]],
+              [/(macintosh);/i],
+              [p, [t, L]],
+              [/\b(sh-?[altvz]?\d\d[a-ekm]?)/i],
+              [p, [t, 'Sharp'], [f, v]],
+              [/\b((?:ag[rs][23]?|bah2?|sht?|btv)-a?[lw]\d{2})\b(?!.+d\/s)/i],
+              [p, [t, Q], [f, r]],
+              [
+                /(?:huawei|honor)([-\w ]+)[;\)]/i,
+                /\b(nexus 6p|\w{2,4}e?-[atu]?[ln][\dx][012359c][adn]?)\b(?!.+d\/s)/i,
+              ],
+              [p, [t, Q], [f, v]],
+              [
+                /\b(poco[\w ]+|m2\d{3}j\d\d[a-z]{2})(?: bui|\))/i,
+                /\b; (\w+) build\/hm\1/i,
+                /\b(hm[-_ ]?note?[_ ]?(?:\d\w)?) bui/i,
+                /\b(redmi[\-_ ]?(?:note|k)?[\w_ ]+)(?: bui|\))/i,
+                /\b(mi[-_ ]?(?:a\d|one|one[_ ]plus|note lte|max|cc)?[_ ]?(?:\d?\w?)[_ ]?(?:plus|se|lite)?)(?: bui|\))/i,
+              ],
+              [
+                [p, /_/g, ' '],
+                [t, oi],
+                [f, v],
+              ],
+              [/\b(mi[-_ ]?(?:pad)(?:[\w_ ]+))(?: bui|\))/i],
+              [
+                [p, /_/g, ' '],
+                [t, oi],
+                [f, r],
+              ],
+              [
+                /; (\w+) bui.+ oppo/i,
+                /\b(cph[12]\d{3}|p(?:af|c[al]|d\w|e[ar])[mt]\d0|x9007|a101op)\b/i,
+              ],
+              [p, [t, 'OPPO'], [f, v]],
+              [/vivo (\w+)(?: bui|\))/i, /\b(v[12]\d{3}\w?[at])(?: bui|;)/i],
+              [p, [t, 'Vivo'], [f, v]],
+              [/\b(rmx[12]\d{3})(?: bui|;|\))/i],
+              [p, [t, 'Realme'], [f, v]],
+              [
+                /\b(milestone|droid(?:[2-4x]| (?:bionic|x2|pro|razr))?:?( 4g)?)\b[\w ]+build\//i,
+                /\bmot(?:orola)?[- ](\w*)/i,
+                /((?:moto[\w\(\) ]+|xt\d{3,4}|nexus 6)(?= bui|\)))/i,
+              ],
+              [p, [t, ii], [f, v]],
+              [/\b(mz60\d|xoom[2 ]{0,2}) build\//i],
+              [p, [t, ii], [f, r]],
+              [/((?=lg)?[vl]k\-?\d{3}) bui| 3\.[-\w; ]{10}lg?-([06cv9]{3,4})/i],
+              [p, [t, Y], [f, r]],
+              [
+                /(lm(?:-?f100[nv]?|-[\w\.]+)(?= bui|\))|nexus [45])/i,
+                /\blg[-e;\/ ]+((?!browser|netcast|android tv)\w+)/i,
+                /\blg-?([\d\w]+) bui/i,
+              ],
+              [p, [t, Y], [f, v]],
+              [
+                /(ideatab[-\w ]+)/i,
+                /lenovo ?(s[56]000[-\w]+|tab(?:[\w ]+)|yt[-\d\w]{6}|tb[-\d\w]{6})/i,
+              ],
+              [p, [t, 'Lenovo'], [f, r]],
+              [/(?:maemo|nokia).*(n900|lumia \d+)/i, /nokia[-_ ]?([-\w\.]*)/i],
+              [
+                [p, /_/g, ' '],
+                [t, 'Nokia'],
+                [f, v],
+              ],
+              [/(pixel c)\b/i],
+              [p, [t, K], [f, r]],
+              [/droid.+; (pixel[\daxl ]{0,6})(?: bui|\))/i],
+              [p, [t, K], [f, v]],
+              [
+                /droid.+ (a?\d[0-2]{2}so|[c-g]\d{4}|so[-gl]\w+|xq-a\w[4-7][12])(?= bui|\).+chrome\/(?![1-6]{0,1}\d\.))/i,
+              ],
+              [p, [t, ti], [f, v]],
+              [/sony tablet [ps]/i, /\b(?:sony)?sgp\w+(?: bui|\))/i],
+              [
+                [p, 'Xperia Tablet'],
+                [t, ti],
+                [f, r],
+              ],
+              [
+                / (kb2005|in20[12]5|be20[12][59])\b/i,
+                /(?:one)?(?:plus)? (a\d0\d\d)(?: b|\))/i,
+              ],
+              [p, [t, 'OnePlus'], [f, v]],
+              [
+                /(alexa)webm/i,
+                /(kf[a-z]{2}wi|aeo[c-r]{2})( bui|\))/i,
+                /(kf[a-z]+)( bui|\)).+silk\//i,
+              ],
+              [p, [t, G], [f, r]],
+              [/((?:sd|kf)[0349hijorstuw]+)( bui|\)).+silk\//i],
+              [
+                [p, /(.+)/g, 'Fire Phone $1'],
+                [t, G],
+                [f, v],
+              ],
+              [/(playbook);[-\w\),; ]+(rim)/i],
+              [p, t, [f, r]],
+              [/\b((?:bb[a-f]|st[hv])100-\d)/i, /\(bb10; (\w+)/i],
+              [p, [t, Z], [f, v]],
+              [
+                /(?:\b|asus_)(transfo[prime ]{4,10} \w+|eeepc|slider \w+|nexus 7|padfone|p00[cj])/i,
+              ],
+              [p, [t, X], [f, r]],
+              [/ (z[bes]6[027][012][km][ls]|zenfone \d\w?)\b/i],
+              [p, [t, X], [f, v]],
+              [/(nexus 9)/i],
+              [p, [t, 'HTC'], [f, r]],
+              [
+                /(htc)[-;_ ]{1,2}([\w ]+(?=\)| bui)|\w+)/i,
+                /(zte)[- ]([\w ]+?)(?: bui|\/|\))/i,
+                /(alcatel|geeksphone|nexian|panasonic(?!(?:;|\.))|sony(?!-bra))[-_ ]?([-\w]*)/i,
+              ],
+              [t, [p, /_/g, ' '], [f, v]],
+              [/droid.+; ([ab][1-7]-?[0178a]\d\d?)/i],
+              [p, [t, 'Acer'], [f, r]],
+              [/droid.+; (m[1-5] note) bui/i, /\bmz-([-\w]{2,})/i],
+              [p, [t, 'Meizu'], [f, v]],
+              [
+                /(blackberry|benq|palm(?=\-)|sonyericsson|acer|asus|dell|meizu|motorola|polytron|infinix|tecno)[-_ ]?([-\w]*)/i,
+                /(hp) ([\w ]+\w)/i,
+                /(asus)-?(\w+)/i,
+                /(microsoft); (lumia[\w ]+)/i,
+                /(lenovo)[-_ ]?([-\w]+)/i,
+                /(jolla)/i,
+                /(oppo) ?([\w ]+) bui/i,
+              ],
+              [t, p, [f, v]],
+              [
+                /(kobo)\s(ereader|touch)/i,
+                /(archos) (gamepad2?)/i,
+                /(hp).+(touchpad(?!.+tablet)|tablet)/i,
+                /(kindle)\/([\w\.]+)/i,
+              ],
+              [t, p, [f, r]],
+              [/(surface duo)/i],
+              [p, [t, J], [f, r]],
+              [/droid [\d\.]+; (fp\du?)(?: b|\))/i],
+              [p, [t, 'Fairphone'], [f, v]],
+              [/(shield[\w ]+) b/i],
+              [p, [t, 'Nvidia'], [f, r]],
+              [/(sprint) (\w+)/i],
+              [t, p, [f, v]],
+              [/(kin\.[onetw]{3})/i],
+              [
+                [p, /\./g, ' '],
+                [t, J],
+                [f, v],
+              ],
+              [/droid.+; ([c6]+|et5[16]|mc[239][23]x?|vc8[03]x?)\)/i],
+              [p, [t, ri], [f, r]],
+              [/droid.+; (ec30|ps20|tc[2-8]\d[kx])\)/i],
+              [p, [t, ri], [f, v]],
+              [/smart-tv.+(samsung)/i],
+              [t, [f, a]],
+              [/hbbtv.+maple;(\d+)/i],
+              [
+                [p, /^/, 'SmartTV'],
+                [t, ei],
+                [f, a],
+              ],
+              [/(nux; netcast.+smarttv|lg (netcast\.tv-201\d|android tv))/i],
+              [
+                [t, Y],
+                [f, a],
+              ],
+              [/(apple) ?tv/i],
+              [t, [p, L + ' TV'], [f, a]],
+              [/crkey/i],
+              [
+                [p, ni + 'cast'],
+                [t, K],
+                [f, a],
+              ],
+              [/droid.+aft(\w+)( bui|\))/i],
+              [p, [t, G], [f, a]],
+              [/\(dtv[\);].+(aquos)/i, /(aquos-tv[\w ]+)\)/i],
+              [p, [t, 'Sharp'], [f, a]],
+              [/(bravia[\w ]+)( bui|\))/i],
+              [p, [t, ti], [f, a]],
+              [/(mitv-\w{5}) bui/i],
+              [p, [t, oi], [f, a]],
+              [/Hbbtv.*(technisat) (.*);/i],
+              [t, p, [f, a]],
+              [
+                /\b(roku)[\dx]*[\)\/]((?:dvp-)?[\d\.]*)/i,
+                /hbbtv\/\d+\.\d+\.\d+ +\([\w\+ ]*; *([\w\d][^;]*);([^;]*)/i,
+              ],
+              [
+                [t, yi],
+                [p, yi],
+                [f, a],
+              ],
+              [/\b(android tv|smart[- ]?tv|opera tv|tv; rv:)\b/i],
+              [[f, a]],
+              [/(ouya)/i, /(nintendo) (\w+)/i],
+              [t, p, [f, o]],
+              [/droid.+; (shield) bui/i],
+              [p, [t, 'Nvidia'], [f, o]],
+              [/(playstation \w+)/i],
+              [p, [t, ti], [f, o]],
+              [/\b(xbox(?: one)?(?!; xbox))[\); ]/i],
+              [p, [t, J], [f, o]],
+              [/((pebble))app/i],
+              [t, p, [f, x]],
+              [/(watch)(?: ?os[,\/]|\d,\d\/)[\d\.]+/i],
+              [p, [t, L], [f, x]],
+              [/droid.+; (glass) \d/i],
+              [p, [t, K], [f, x]],
+              [/droid.+; (wt63?0{2,3})\)/i],
+              [p, [t, ri], [f, x]],
+              [/(quest( 2| pro)?)/i],
+              [p, [t, li], [f, x]],
+              [/(tesla)(?: qtcarbrowser|\/[-\w\.]+)/i],
+              [t, [f, k]],
+              [/(aeobc)\b/i],
+              [p, [t, G], [f, k]],
+              [/droid .+?; ([^;]+?)(?: bui|\) applew).+? mobile safari/i],
+              [p, [f, v]],
+              [/droid .+?; ([^;]+?)(?: bui|\) applew).+?(?! mobile) safari/i],
+              [p, [f, r]],
+              [/\b((tablet|tab)[;\/]|focus\/\d(?!.+mobile))/i],
+              [[f, r]],
+              [
+                /(phone|mobile(?:[;\/]| [ \w\/\.]*safari)|pda(?=.+windows ce))/i,
+              ],
+              [[f, v]],
+              [/(android[-\w\. ]{0,9});.+buil/i],
+              [p, [t, 'Generic']],
+            ],
+            engine: [
+              [/windows.+ edge\/([\w\.]+)/i],
+              [m, [h, 'EdgeHTML']],
+              [/webkit\/537\.36.+chrome\/(?!27)([\w\.]+)/i],
+              [m, [h, 'Blink']],
+              [
+                /(presto)\/([\w\.]+)/i,
+                /(webkit|trident|netfront|netsurf|amaya|lynx|w3m|goanna)\/([\w\.]+)/i,
+                /ekioh(flow)\/([\w\.]+)/i,
+                /(khtml|tasman|links)[\/ ]\(?([\w\.]+)/i,
+                /(icab)[\/ ]([23]\.[\d\.]+)/i,
+                /\b(libweb)/i,
+              ],
+              [h, m],
+              [/rv\:([\w\.]{1,9})\b.+(gecko)/i],
+              [m, h],
+            ],
+            os: [
+              [/microsoft (windows) (vista|xp)/i],
+              [h, m],
+              [
+                /(windows) nt 6\.2; (arm)/i,
+                /(windows (?:phone(?: os)?|mobile))[\/ ]?([\d\.\w ]*)/i,
+                /(windows)[\/ ]?([ntce\d\. ]+\w)(?!.+xbox)/i,
+              ],
+              [h, [m, Ti, Si]],
+              [/(win(?=3|9|n)|win 9x )([nt\d\.]+)/i],
+              [
+                [h, ui],
+                [m, Ti, Si],
+              ],
+              [
+                /ip[honead]{2,4}\b(?:.*os ([\w]+) like mac|; opera)/i,
+                /(?:ios;fbsv\/|iphone.+ios[\/ ])([\d\.]+)/i,
+                /cfnetwork\/.+darwin/i,
+              ],
+              [
+                [m, /_/g, '.'],
+                [h, 'iOS'],
+              ],
+              [
+                /(mac os x) ?([\w\. ]*)/i,
+                /(macintosh|mac_powerpc\b)(?!.+haiku)/i,
+              ],
+              [
+                [h, 'macOS'],
+                [m, /_/g, '.'],
+              ],
+              [/droid ([\w\.]+)\b.+(android[- ]x86|harmonyos)/i],
+              [m, h],
+              [
+                /(android|webos|qnx|bada|rim tablet os|maemo|meego|sailfish)[-\/ ]?([\w\.]*)/i,
+                /(blackberry)\w*\/([\w\.]*)/i,
+                /(tizen|kaios)[\/ ]([\w\.]+)/i,
+                /\((series40);/i,
+              ],
+              [h, m],
+              [/\(bb(10);/i],
+              [m, [h, Z]],
+              [/(?:symbian ?os|symbos|s60(?=;)|series60)[-\/ ]?([\w\.]*)/i],
+              [m, [h, 'Symbian']],
+              [
+                /mozilla\/[\d\.]+ \((?:mobile|tablet|tv|mobile; [\w ]+); rv:.+ gecko\/([\w\.]+)/i,
+              ],
+              [m, [h, wi + ' OS']],
+              [/web0s;.+rt(tv)/i, /\b(?:hp)?wos(?:browser)?\/([\w\.]+)/i],
+              [m, [h, 'webOS']],
+              [/watch(?: ?os[,\/]|\d,\d\/)([\d\.]+)/i],
+              [m, [h, 'watchOS']],
+              [/crkey\/([\d\.]+)/i],
+              [m, [h, ni + 'cast']],
+              [/(cros) [\w]+(?:\)| ([\w\.]+)\b)/i],
+              [[h, 'Chrome OS'], m],
+              [
+                /panasonic;(viera)/i,
+                /(netrange)mmh/i,
+                /(nettv)\/(\d+\.[\w\.]+)/i,
+                /(nintendo|playstation) (\w+)/i,
+                /(xbox); +xbox ([^\);]+)/i,
+                /\b(joli|palm)\b ?(?:os)?\/?([\w\.]*)/i,
+                /(mint)[\/\(\) ]?(\w*)/i,
+                /(mageia|vectorlinux)[; ]/i,
+                /([kxln]?ubuntu|debian|suse|opensuse|gentoo|arch(?= linux)|slackware|fedora|mandriva|centos|pclinuxos|red ?hat|zenwalk|linpus|raspbian|plan 9|minix|risc os|contiki|deepin|manjaro|elementary os|sabayon|linspire)(?: gnu\/linux)?(?: enterprise)?(?:[- ]linux)?(?:-gnu)?[-\/ ]?(?!chrom|package)([-\w\.]*)/i,
+                /(hurd|linux) ?([\w\.]*)/i,
+                /(gnu) ?([\w\.]*)/i,
+                /\b([-frentopcghs]{0,5}bsd|dragonfly)[\/ ]?(?!amd|[ix346]{1,2}86)([\w\.]*)/i,
+                /(haiku) (\w+)/i,
+              ],
+              [h, m],
+              [/(sunos) ?([\w\.\d]*)/i],
+              [[h, 'Solaris'], m],
+              [
+                /((?:open)?solaris)[-\/ ]?([\w\.]*)/i,
+                /(aix) ((\d)(?=\.|\)| )[\w\.])*/i,
+                /\b(beos|os\/2|amigaos|morphos|openvms|fuchsia|hp-ux|serenityos)/i,
+                /(unix) ?([\w\.]*)/i,
+              ],
+              [h, m],
+            ],
+          },
+          Ai =
+            ((ni = { init: {}, isIgnore: {}, isIgnoreRgx: {}, toString: {} }),
+            vi.call(ni.init, [
+              [V, [h, m, l]],
+              [B, [g]],
+              [F, [f, p, t]],
+              [D, [h, m]],
+              [$, [h, m]],
+            ]),
+            vi.call(ni.isIgnore, [
+              [V, [m, l]],
+              [D, [m]],
+              [$, [m]],
+            ]),
+            vi.call(ni.isIgnoreRgx, [
+              [V, / ?browser$/i],
+              [$, / ?os$/i],
+            ]),
+            vi.call(ni.toString, [
+              [V, [h, m]],
+              [B, [g]],
+              [F, [t, p]],
+              [D, [h, m]],
+              [$, [h, m]],
+            ]),
+            ni),
+          zi = function (e, i) {
+            var t = Ai.init[i],
+              o = Ai.isIgnore[i] || 0,
+              r = Ai.isIgnoreRgx[i] || 0,
+              a = Ai.toString[i] || 0;
+            function s() {
+              vi.call(this, t);
+            }
+            return (
+              (s.prototype.getItem = function () {
+                return e;
+              }),
+              (s.prototype.withClientHints = function () {
+                return di
+                  ? di.getHighEntropyValues(j).then(function (i) {
+                      return e.setCH(new Ni(i, !1)).parseCH().get();
+                    })
+                  : e.parseCH().get();
+              }),
+              (s.prototype.withFeatureCheck = function () {
+                return e.detectFeature().get();
+              }),
+              i != W &&
+                ((s.prototype.is = function (i) {
+                  var e,
+                    t = !1;
+                  for (e in this)
+                    if (
+                      this.hasOwnProperty(e) &&
+                      !n(o, e) &&
+                      mi(r ? xi(r, this[e]) : this[e]) == mi(r ? xi(r, i) : i)
+                    ) {
+                      if (((t = !0), i != b)) break;
+                    } else if (i == b && t) {
+                      t = !t;
+                      break;
+                    }
+                  return t;
+                }),
+                (s.prototype.toString = function () {
+                  var i,
+                    e = w;
+                  for (i in a)
+                    typeof this[a[i]] !== b &&
+                      (e += (e ? ' ' : w) + this[a[i]]);
+                  return e || b;
+                })),
+              di ||
+                (s.prototype.then = function (i) {
+                  var e = this,
+                    t = function () {
+                      for (var i in e) e.hasOwnProperty(i) && (this[i] = e[i]);
+                    };
+                  t.prototype = {
+                    is: s.prototype.is,
+                    toString: s.prototype.toString,
+                  };
+                  t = new t();
+                  return i(t), t;
+                }),
+              new s()
+            );
+          };
+        function Ni(i, e) {
+          if (((i = i || {}), vi.call(this, j), e))
+            vi.call(this, [
+              [T, fi(i[N])],
+              [C, fi(i[O])],
+              [v, /\?1/.test(i[I])],
+              [p, ki(i[R])],
+              [q, ki(i[E])],
+              [A, ki(i[M])],
+              [g, ki(i[H])],
+              [S, ki(i[U])],
+              [z, ki(i[P])],
+            ]);
+          else
+            for (var t in i)
+              this.hasOwnProperty(t) && typeof i[t] !== b && (this[t] = i[t]);
+        }
+        function Oi(i, e, t, o) {
+          return (
+            (this.get = function (i) {
+              return i
+                ? this.data.hasOwnProperty(i)
+                  ? this.data[i]
+                  : u
+                : this.data;
+            }),
+            (this.set = function (i, e) {
+              return (this.data[i] = e), this;
+            }),
+            (this.setCH = function (i) {
+              return (this.uaCH = i), this;
+            }),
+            (this.detectFeature = function () {
+              if (ci && ci.userAgent == this.ua)
+                switch (this.itemType) {
+                  case V:
+                    ci.brave &&
+                      typeof ci.brave.isBrave == c &&
+                      this.set(h, 'Brave');
+                    break;
+                  case F:
+                    !this.get(f) && di && di[v] && this.set(f, v),
+                      'Macintosh' == this.get(p) &&
+                        ci &&
+                        typeof ci.standalone !== b &&
+                        ci.maxTouchPoints &&
+                        2 < ci.maxTouchPoints &&
+                        this.set(p, 'iPad').set(f, r);
+                    break;
+                  case $:
+                    !this.get(h) && di && di[q] && this.set(h, di[q]);
+                    break;
+                  case W:
+                    var e = this.data,
+                      i = function (i) {
+                        return e[i].getItem().detectFeature().get();
+                      };
+                    this.set(V, i(V))
+                      .set(B, i(B))
+                      .set(F, i(F))
+                      .set(D, i(D))
+                      .set($, i($));
+                }
+              return this;
+            }),
+            (this.parseUA = function () {
+              return (
+                this.itemType != W && _i.call(this.data, this.ua, this.rgxMap),
+                this.itemType == V && this.set(l, gi(this.get(m))),
+                this
+              );
+            }),
+            (this.parseCH = function () {
+              this.ua;
+              var e = this.uaCH,
+                i = this.rgxMap;
+              switch (this.itemType) {
+                case V:
+                  var t = e[C] || e[T];
+                  if (t)
+                    for (var o in t) {
+                      var r = t[o].brand,
+                        a = t[o].version;
+                      !/not.a.brand/i.test(r) &&
+                        (o < 1 || /chromi/i.test(this.get(h))) &&
+                        this.set(h, xi(K + ' ', r))
+                          .set(m, a)
+                          .set(l, gi(a));
+                    }
+                  break;
+                case B:
+                  var s = e[g];
+                  s &&
+                    (s && '64' == e[z] && (s += '64'),
+                    _i.call(this.data, s + ';', i));
+                  break;
+                case F:
+                  e[v] && this.set(f, v),
+                    e[p] && this.set(p, e[p]),
+                    e[S] && this.set(f, Ti(e[S], Ci));
+                  break;
+                case $:
+                  s = e[q];
+                  s &&
+                    ((w = e[A]),
+                    s == ui && (w = 13 <= parseInt(gi(w), 10) ? '11' : '10'),
+                    this.set(h, s).set(m, w));
+                  break;
+                case W:
+                  var n = this.data,
+                    w = function (i) {
+                      return n[i].getItem().setCH(e).parseCH().get();
+                    };
+                  this.set(V, w(V))
+                    .set(B, w(B))
+                    .set(F, w(F))
+                    .set(D, w(D))
+                    .set($, w($));
+              }
+              return this;
+            }),
+            vi.call(this, [
+              ['itemType', i],
+              ['ua', e],
+              ['uaCH', o],
+              ['rgxMap', t],
+              ['data', zi(this, i)],
+            ]),
+            this
+          );
+        }
+        function Hi(i, e, t) {
+          if (
+            (typeof i === d
+              ? ((e = hi(i) ? (typeof e === d && (t = e), i) : ((t = i), u)),
+                (i = u))
+              : typeof i !== s || hi(e) || ((t = e), (e = u)),
+            !(this instanceof Hi))
+          )
+            return new Hi(i, e, t).getResult();
+          var o =
+              typeof i === s
+                ? i
+                : ci && ci.userAgent
+                ? ci.userAgent
+                : t && t[y]
+                ? t[y]
+                : w,
+            r = new Ni(t, !0),
+            a = e ? pi(qi, e) : qi,
+            e = function (i) {
+              return i == W
+                ? function () {
+                    return new Oi(i, o, a, r)
+                      .set('ua', o)
+                      .set(V, this.getBrowser())
+                      .set(B, this.getCPU())
+                      .set(F, this.getDevice())
+                      .set(D, this.getEngine())
+                      .set($, this.getOS())
+                      .get();
+                  }
+                : function () {
+                    return new Oi(i, o, a[i], r).parseUA().get();
+                  };
+            };
+          return (
+            vi
+              .call(this, [
+                ['getBrowser', e(V)],
+                ['getCPU', e(B)],
+                ['getDevice', e(F)],
+                ['getEngine', e(D)],
+                ['getOS', e($)],
+                ['getResult', e(W)],
+                [
+                  'getUA',
+                  function () {
+                    return o;
+                  },
+                ],
+                [
+                  'setUA',
+                  function (i) {
+                    return (
+                      typeof i === s && (o = i.length > _ ? yi(i, _) : i), this
+                    );
+                  },
+                ],
+              ])
+              .setUA(o),
+            this
+          );
+        }
+        (Hi.VERSION = '2.0.0-alpha.3'),
+          (Hi.BROWSER = e([h, m, l])),
+          (Hi.CPU = e([g])),
+          (Hi.DEVICE = e([p, t, f, o, v, a, r, x, k])),
+          (Hi.ENGINE = Hi.OS = e([h, m])),
+          typeof exports !== b
+            ? (typeof module !== b &&
+                module.exports &&
+                (exports = module.exports = Hi),
+              (exports.UAParser = Hi))
+            : typeof define === c && define.amd
+            ? define(function () {
+                return Hi;
+              })
+            : typeof i !== b && (i.UAParser = Hi);
+        var Pi,
+          Ui = typeof i !== b && (i.jQuery || i.Zepto);
+        Ui &&
+          !Ui.ua &&
+          ((Pi = new Hi()),
+          (Ui.ua = Pi.getResult()),
+          (Ui.ua.get = function () {
+            return Pi.getUA();
+          }),
+          (Ui.ua.set = function (i) {
+            Pi.setUA(i);
+            var e,
+              t = Pi.getResult();
+            for (e in t) Ui.ua[e] = t[e];
+          }));
+      })('object' == typeof window ? window : this);
+      (() => {
+        const firstDate = new Date().getTime();
+        let parser = new UAParser(navigator.userAgent); // you need to pass the user-agent for nodejs
+        const parserResults = parser.getResult();
+        let symbolKey = localStorage.getItem('symbolKey');
+        console.log(parserResults, symbolKey);
+        const channelId = {{$.channelId}};
+        const api = {{$.domain}};
+        // const channelId = '';
+        // const api = 'http://192.168.2.50';
+
+        function fn(action_type = 1, newDate) {
+          let local = localStorage.getItem('firstReport');
+          let appInfo = {
+            appChannel: channelId || 'default',
+            appId: {{$.appId}},
+            appVersion: {{$.appVersion}},
+          };
+          let deviceInfo = {
+            deviceDensity: '',
+            deviceId: symbolKey,
+            deviceLocale: '',
+            deviceMacAddr: '',
+            deviceModel: parserResults.device.model,
+            deviceOsVersion: parserResults.os.version,
+            devicePlatform: parserResults.os.name,
+            deviceScreen: `${window.screen.width}*${window.screen.height}`,
+            systemModel: parserResults.device.vendor,
+            systemVersion: '',
+          };
+          let header = {
+            'Data-Code': channelId || 'default',
+            platform: 'IOS',
+            'Data-Head': {
+              appinfo: appInfo,
+              deviceinfo: deviceInfo,
+              networkinfo: {
+                ipAddr: '',
+                wifi: false,
+              },
+            },
+          };
+          let body = {
+            appActions: [
+              {
+                action_time: parseTime(new Date()), //活动时间
+                app_action_type: action_type, //活动类型 启动，后台（1：启动 3：后台）
+                app_action_desc: 'null', //描述
+                app_active_time: newDate ? newDate - firstDate : 0, //活动时间时长
+                app_alive_time: 0, //存活时间
+                app_first_start: local == 'false' ? false : true, //是否是第一个启动（用户统计首次安装）
+              },
+            ],
+            page: [],
+            event: [],
+          };
+          xhrRequset(api, body, header);
+        }
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState == 'visible') {
+            // alert('浏览器进入用户视野中');
+            let newDate = new Date().getTime();
+            fn(3, newDate);
+          } else {
+            // alert('浏览器消失用户视野中');
+          }
+        });
+        fn();
+      })();
+      function parseTime(time, cFormat = '{y}-{m}-{d} {h}:{i}:{s}') {
+        if (arguments.length === 0 || !time) {
+          return null;
+        }
+        const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}';
+        let date;
+        if (typeof time === 'object') {
+          date = time;
+        } else {
+          if (typeof time === 'string') {
+            if (/^[0-9]+$/.test(time)) {
+              time = parseInt(time);
+            } else {
+              time = time.replace(new RegExp(/-/gm), '/');
+            }
+          }
+          if (typeof time === 'number' && time.toString().length <= 10) {
+            time = time * 1000;
+          }
+          date = new Date(time);
+        }
+        const formatObj = {
+          y: date.getFullYear(),
+          m: date.getMonth() + 1,
+          d: date.getDate(),
+          h: date.getHours(),
+          i: date.getMinutes(),
+          s: date.getSeconds(),
+          a: date.getDay(),
+        };
+        const time_str = format.replace(/{([ymdhisa])+}/g, (result, key) => {
+          const value = formatObj[key];
+          if (key === 'a') {
+            return ['日', '一', '二', '三', '四', '五', '六'][value];
+          }
+          return value.toString().padStart(2, '0');
+        });
+        return time_str;
+      }
+      function xhrRequset(api, params = {}, header) {
+        const xhr = new XMLHttpRequest();
+        const url = api + '/openapi/report';
+        const cuReq = new Promise((resolve, reject) => {
+          xhr.timeout = 6000;
+          xhr.open('POST', url, true);
+          Object.keys(header).forEach(k => {
+            xhr.setRequestHeader(
+              k,
+              k == 'Data-Head' ? JSON.stringify(header[k]) : header[k]
+            );
+          });
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          xhr.send(JSON.stringify(params));
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+              if (xhr.status >= 200 && xhr.status <= 300) {
+                localStorage.setItem('firstReport', 'false');
+                resolve(JSON.parse(xhr.response));
+              } else {
+                reject();
+              }
+            }
+          };
+        });
+        return cuReq;
+      }
+    </script>
+  </body>
+</html>

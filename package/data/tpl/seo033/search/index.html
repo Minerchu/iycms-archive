@@ -1,0 +1,50 @@
+<import file="/public/header.html" data="'search'" />
+<!--========== Header ==============-->
+
+<!-- breadcrumb -->
+
+
+
+    <div class="gen-breadcrumb" style="background-image: url('/static/images/background/asset-25.jpeg');">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-12">
+                    <nav aria-label="breadcrumb">
+                        <div class="gen-breadcrumb-title">
+                            <h1>
+                                {{$.U.Keyword}}
+                            </h1>
+                        </div>
+                        <div class="gen-breadcrumb-container">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item ">共<span id="cusSearTot" style="color: #e50916;"></span>个搜索结果
+                                </li>
+                            </ol>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb -->
+
+    <!-- Section-1 Start -->
+    <!-- cms_ad -->
+    <div class="container" style="margin-top: 10px;">
+        <import file="../libs/web/ads/index.html" data="topBanner" />
+    </div>
+    <section class="gen-section-padding-3">
+        <div class="container">
+            <div class="row">
+                <import file="/public/search/search1.html" />
+            </div>
+        </div>
+    </section>
+    <!-- Section-1 End -->
+
+    <!-- cms_ad -->
+    <div class="container" style="margin-top: 10px;">
+        <import file="../libs/web/ads/index.html" data="bottomBanner" />
+    </div>
+    <!-- footer start -->
+    <import file="/public/footer.html" data="nohome" />

@@ -1,0 +1,34 @@
+<import file="/public/header.html" data="'search'" />
+<div class="s_header">
+	<goForm action="/search/index.html" onkeyup="if(event.keyCode === 13){return true}" class="cmsMyForm">
+		<div class="search-box">
+			<input placeholder="{{esp " 输入影片搜索"}}" type="text" class="ant-input search-input" value="{{$.U.Keyword}}"
+				name="keyword" />
+			<img src="/static/image/other/search3.svg" />
+		</div>
+	</goForm>
+	<button class="searchcancel" type="button">
+		<goLink href="javascript:window.history.go(-1);">{{esp "取 消"}}</goLink>
+	</button>
+</div>
+<section class="content mrgt72">
+	<div style="background-color: #fff;margin-bottom: 10px;">
+		<import file="../libs/web/ads/index.html" data="topBanner" />
+
+	</div>
+
+	<div class="section-box">
+		<div class="jh-Tabs">
+			<div class="item searchon">{{esp "影片"}}</div>
+			<!-- {{/*<div class="item">
+					<goLink href="/search/star.html" args="{keyword:$.U.Keyword}">{{esp "明星"}}</goLink>
+				</div>*/}} -->
+		</div>
+
+		<import file="/public/search/search1.html" />
+
+	</div>
+	<import file="../libs/web/ads/index.html" data="bottomBanner" />
+</section>
+
+<import file="/public/footer.html" data="'noHome'" />

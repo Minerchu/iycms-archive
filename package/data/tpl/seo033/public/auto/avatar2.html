@@ -1,0 +1,64 @@
+<getUserInfo name="$Info">
+    <div class="gen-account-holder">
+        <if data="$Info.Open">
+            <if data="$Info.IsLogin">
+                <if data="$Info.Info.HeadImg">
+                    <a href="/memberUser" style="height: 45px;
+                        width: 45px;
+                        line-height: 45px;
+                        text-align: center;
+                        color: var(--white-color);
+                        display: inline-block;
+                        border-radius: 90px;"><img
+                            style="width: 40px;height: 40px;object-fit:cover;border-radius: 75px;"
+                            src="{{$Info.Info.HeadImg}}"></a>
+                    <else />
+                    <a href="/memberUser" id="gen-user-btn"><i
+                            class="fa fa-user"></i></a>
+                </if>
+                <else />
+                <a class="meme_pc" id="meme_pc_login" style="
+                    height: 45px;
+                    width: 45px;
+                    line-height: 45px;
+                    text-align: center;
+                    background: var(--primary-color);
+                    color: var(--white-color);
+                    display: inline-block;
+                    border-radius: 75px;
+                "><i class="fa fa-user"></i></a>
+
+                <a class="meme_h5" href="{{$.G.MemberPath}}/login" id="gen-user-btn"><i
+                        class="fa fa-user"></i></a>
+            </if>
+            <else />
+            <style>
+                header#gen-header .gen-search-form {
+                    right: -96px !important;
+                }
+
+                @media screen and (max-width: 768px) {
+                    .gen-search-form.gen-form-show {
+                        transform: translateX(-70%) !important;
+                    }
+                }
+            </style>
+        </if>
+        <!-- <a href="javascript:void(0)" id="gen-user-btn"><i class="fa fa-user"></i></a> -->
+        <div class="gen-account-menu">
+            <ul class="gen-account-menu">
+                <!-- Pms Menu -->
+                <li>
+                    <a href="register.html"><i class="fa fa-user"></i>
+                        个人中心 </a>
+                </li>
+                <li>
+                    <a href="log-in.html"><i class="fas fa-sign-in-alt"></i>
+                        退出登录 </a>
+                </li>
+
+                <!-- Library Menu -->
+            </ul>
+        </div>
+    </div>
+</getUserInfo>

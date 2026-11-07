@@ -1,0 +1,223 @@
+<link rel="stylesheet" href="/libs/member/css/layui.min.css" />
+<link rel="stylesheet" href="/libs/member/css/layuicus.css" />
+<link rel="stylesheet" href="/libs/member/css/index.min.css" />
+<script src="/libs/member/js/layui.min.js"></script>
+<script src="/libs/commJs/md5.js"></script>
+<script src="/libs/commJs/axios.js"></script>
+<script src="/libs/commJs/http.js"></script>
+<script src="/libs/member/js/index.js"></script>
+
+<div id="cmstem_login">
+    <img onclick="closeTemLogin()" class="cmstem_log_close_img" src="/iyplayer/default/images/layui/close.svg">
+    <div class="layuicms-tab layuicms-tab-brief" lay-filter="docDemoTabBrief">
+        <ul class="layuicms-tab-title" id="tem_log_res_tit">
+            <if data="$.G.SmsOpen">
+                <li>短信<span class="cmstem_acc_log">登录</span><span class="cmstem_acc_res">注册</span>
+                </li>
+            </if>
+            <if data="$.G.EmailOpen">
+                <li>邮箱<span class="cmstem_acc_log">登录</span><span class="cmstem_acc_res">注册</span>
+                </li>
+            </if>
+            <li>账号<span class="cmstem_acc_log">登录</span><span class="cmstem_acc_res">注册</span>
+            </li>
+        </ul>
+        <div class="layuicms-tab-content" id="tem_log_res_cont">
+            <if data="$.G.SmsOpen">
+                <div class="layuicms-tab-item ">
+                    <form class="layuicms-form" lay-filter="formIphBox">
+                        <div class="layuicms-form-item">
+                            <div class="layuicms-input-block">
+                                <input id="temMemIphone" type="number" name="phone" required placeholder="请输入手机号"
+                                    lay-verify="required|phone" lay-verType="tips" autocomplete="off"
+                                    class="layuicms-input">
+                                <i class="cmstem_inp_requ">*</i>
+                                <img class="tem_inp_icon" src="/libs/commIcon/account.svg" alt="">
+                            </div>
+                        </div>
+                        <div class="layuicms-form-item cmstem_vali_code">
+                            <div class="layuicms-input-block">
+                                <input type="number" name="code" required placeholder="请输入验证码"
+                                    lay-verify="required|number" lay-verType="tips" autocomplete="off"
+                                    class="layuicms-input">
+                                <i class="cmstem_inp_requ">*</i>
+                                <img class="tem_inp_icon" src="/libs/commIcon/code.svg" alt="">
+                            </div>
+                            <button disabled="true" onclick="memberBoxOpt.sendIphoneCode()" id="temMemIphoneCode"
+                                type="button" class="layuicms-btn layuicms-btn-radius layuicms-btn-disabled"><i
+                                    class="layuicms-icon layuicms-anim layuicms-anim-rotate layuicms-anim-loop layuicms-icon-loading"
+                                    style="display: none;"></i>
+                                <span>发送验证码</span></button>
+                            <button disabled="true" id="temMemIphoneCodeSend" type="button"
+                                class="layuicms-btn layuicms-btn-radius layuicms-btn-disabled"><span
+                                    id="temMemIphoneCodeSec"></span>s后失效</button>
+                        </div>
+                        <if data="$.G.Info.Agent">
+                            <div class="layuicms-form-item tem_res_agent_code">
+                                <div class="layuicms-input-block">
+                                    <input type="text" name="inviteCode" required placeholder="邀请码" autocomplete="off"
+                                        class="layuicms-input">
+                                    <img class="tem_inp_icon" src="/libs/commIcon/code.svg" alt="">
+                                </div>
+                            </div>
+                        </if>
+                        <button class="tem_login_btn layuicms-btn" lay-submit lay-filter="temLoginformIph">
+                            <i class="layuicms-icon layuicms-anim layuicms-anim-rotate layuicms-anim-loop layuicms-icon-loading"
+                                style="display: none;"></i><span class="cmstem_acc_log">登录</span><span
+                                class="cmstem_acc_res">注册</span></button>
+
+                        <div class="layuicms-form-item cmstem_user_agreement">
+                            <div class="layuicms-input-block ">
+                                <input lay-filter="temCheckAgree" type="radio" name="agreement" value="true"
+                                    title="同意《个人信息保护政策》《服务政策》">
+                            </div>
+                        </div>
+
+                        <p class="cmstem_login_noacc">
+                            还没有账号？去 <span class="cmstem_go_fra cmstem_acc_log" onclick="temGoRes()">注册</span> <span
+                                class="cmstem_go_fra cmstem_acc_res" onclick="temGoLog()">登录</span>
+                        </p>
+                    </form>
+                </div>
+            </if>
+            <if data="$.G.EmailOpen">
+                <div class="layuicms-tab-item ">
+                    <form class="layuicms-form" lay-filter="formEmaBox">
+                        <div class="layuicms-form-item">
+                            <div class="layuicms-input-block">
+                                <input id="temMemEmail" type="text" name="email" required placeholder="请输入邮箱"
+                                    lay-verify="required|email" lay-verType="tips" autocomplete="off"
+                                    class="layuicms-input">
+                                <i class="cmstem_inp_requ">*</i>
+                                <img class="tem_inp_icon" src="/libs/commIcon/account.svg" alt="">
+                            </div>
+                        </div>
+                        <div class="layuicms-form-item cmstem_vali_code">
+                            <div class="layuicms-input-block">
+                                <input type="number" name="code" required placeholder="请输入验证码"
+                                    lay-verify="required|number" lay-verType="tips" autocomplete="off"
+                                    class="layuicms-input">
+                                <i class="cmstem_inp_requ">*</i>
+                                <img class="tem_inp_icon" src="/libs/commIcon/code.svg" alt="">
+                            </div>
+                            <button disabled="true" onclick="memberBoxOpt.sendEmailCode()" id="temMemEmailCode"
+                                type="button" class="layuicms-btn layuicms-btn-radius layuicms-btn-disabled">
+                                <i class="layuicms-icon layuicms-anim layuicms-anim-rotate layuicms-anim-loop layuicms-icon-loading"
+                                    style="display: none;"></i>
+                                <span>发送验证码</span></button>
+                            <button disabled="true" id="temMemEmailCodeSend" type="button"
+                                class="layuicms-btn layuicms-btn-radius layuicms-btn-disabled"><span
+                                    id="temMemEmailCodeSec"></span>s后失效</button>
+                        </div>
+                        <if data="$.G.Info.Agent">
+                            <div class="layuicms-form-item tem_res_agent_code">
+                                <div class="layuicms-input-block">
+                                    <input type="text" name="inviteCode" required placeholder="邀请码" autocomplete="off"
+                                        class="layuicms-input">
+                                    <img class="tem_inp_icon" src="/libs/commIcon/code.svg" alt="">
+                                </div>
+                            </div>
+                        </if>
+                        <button class="tem_login_btn layuicms-btn" lay-submit lay-filter="temLoginformEma">
+                            <i class="layuicms-icon layuicms-anim layuicms-anim-rotate layuicms-anim-loop layuicms-icon-loading"
+                                style="display: none;"></i><span class="cmstem_acc_log">登录</span><span
+                                class="cmstem_acc_res">注册</span></button>
+
+                        <div class="layuicms-form-item cmstem_user_agreement">
+                            <div class="layuicms-input-block ">
+                                <input lay-filter="temCheckAgree" type="radio" name="agreement" value="true"
+                                    title="同意《个人信息保护政策》《服务政策》">
+                            </div>
+                        </div>
+
+                        <p class="cmstem_login_noacc">
+                            还没有账号？去 <span class="cmstem_go_fra cmstem_acc_log" onclick="temGoRes()">注册</span> <span
+                                class="cmstem_go_fra cmstem_acc_res" onclick="temGoLog()">登录</span>
+                        </p>
+                    </form>
+                </div>
+            </if>
+            <div class="layuicms-tab-item">
+                <form class="layuicms-form" lay-filter="formAccBox">
+                    <div class="layuicms-form-item">
+                        <div class="layuicms-input-block">
+                            <input type="text" name="userName" required placeholder="请输入账号" lay-verify="username"
+                                lay-verType="tips" autocomplete="off" class="layuicms-input">
+                            <i class="cmstem_inp_requ">*</i>
+                            <img class="tem_inp_icon" src="/libs/commIcon/account.svg" alt="">
+                        </div>
+                    </div>
+                    <div class="layuicms-form-item">
+                        <div class="layuicms-input-block">
+                            <input type="password" name="password" required placeholder="请输入密码" lay-verify="password"
+                                lay-verType="tips" autocomplete="off" class="layuicms-input">
+                            <i class="cmstem_inp_requ">*</i>
+                            <img class="tem_inp_icon" src="/libs/commIcon/pass.svg" alt="">
+                        </div>
+                    </div>
+                    <div class="cmstem_acc_res_firpass">
+
+                    </div>
+                    <if data="$.G.Info.Agent">
+                        <div class="layuicms-form-item tem_res_agent_code">
+                            <div class="layuicms-input-block">
+                                <input type="text" name="inviteCode" required placeholder="邀请码" autocomplete="off"
+                                    class="layuicms-input">
+                                <img class="tem_inp_icon" src="/libs/commIcon/code.svg" alt="">
+                            </div>
+                        </div>
+                    </if>
+                    <button class="tem_login_btn layuicms-btn" lay-submit lay-filter="temLoginformAcc">
+                        <i class="layuicms-icon layuicms-anim layuicms-anim-rotate layuicms-anim-loop layuicms-icon-loading"
+                            style="display: none;"></i><span class="cmstem_acc_log">登录</span><span
+                            class="cmstem_acc_res">注册</span></button>
+
+                    <div class="layuicms-form-item cmstem_user_agreement">
+                        <div class="layuicms-input-block ">
+                            <input lay-filter="temCheckAgree" type="radio" name="agreement" value="true"
+                                title="同意《个人信息保护政策》《服务政策》">
+                        </div>
+                    </div>
+
+                    <p class="cmstem_login_noacc">
+                        还没有账号？去 <span class="cmstem_go_fra cmstem_acc_log" onclick="temGoRes()">注册</span> <span
+                            class="cmstem_go_fra cmstem_acc_res" onclick="temGoLog()">登录</span>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 是否开启会员 -->
+<getUserInfo name="$Info">
+    <if data="$Info.Open">
+        <if data="$Info.IsLogin">
+            <script>
+                temUserInfo = {{ $Info }};
+                sessionStorage.removeItem('tem_mem_no_log')
+            </script>
+            <else />
+            <script>
+                if (sessionStorage.getItem('tem_mem_no_log') === '1') {
+                    temRemoveToken()
+                    sessionStorage.removeItem('tem_mem_no_log')
+                } else if (temGetCookie("Token")) {
+                    sessionStorage.setItem('tem_mem_no_log', 1)
+                }
+            </script>
+        </if>
+        <style>
+            .cms_charging_mode_div_vip,
+            .cms_charging_mode_div_gold,
+            .cms_charging_lin_div_vip,
+            .cms_charging_lin_div_gold {
+                display: block;
+            }
+        </style>
+        <else />
+        <script>
+            temRemoveToken()
+        </script>
+    </if>
+</getUserInfo>

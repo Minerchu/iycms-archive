@@ -1,0 +1,747 @@
+<import file="/public/headerVod.html" data="'vodplayer'" />
+<script src="/static/js/jquery.qrcode.min013.js"></script>
+
+<style type="text/css">
+  .iframe-container {
+    padding-top: 56.25%;
+    position: static;
+  }
+
+  .iframe-container iframe {
+    position: absolute;
+    height: 100%;
+
+    top: 0;
+    left: 0;
+  }
+
+  @media (max-width: 767px) {
+    .cms_overflow {
+      overflow-y: auto;
+    }
+
+  }
+
+  .cms_play_container {
+    max-width: 100%;
+    overflow: auto;
+  }
+
+  @media screen and (min-width: 769px) {
+    .cms-seo013-h5-none {
+      display: block !important;
+    }
+  }
+</style>
+
+<script>
+  var cmsScrollIndex = null
+  $(".nav-menu-search").click(function () {
+    // $(".nav-search").addClass("block");
+  });
+  $(document).scroll(function () {
+    var H = $(document).scrollTop();
+    if (H > 20) {
+      $(".header-content").addClass("header-bg");
+    } else {
+      $(".header-content").removeClass("header-bg");
+    }
+    if (H > 140) {
+      $(".header-content").addClass("header-bg");
+      $(".search-dh").append($(".search-box"));
+      $(".nav-menu-search").click(function () {
+        // $(".nav-search").addClass("block");
+      });
+    } else {
+      $(".header-content").removeClass("header-bg");
+      $(".search-main").append($(".search-box"));
+
+    }
+  });
+</script>
+
+
+
+<div style="height: 100%; width: 100%; margin-top: -30px; " class="cms_overflow">
+  <getVideoDetail name="$info" id="$.U.Id">
+
+
+
+    <main id="main" class="wrapper">
+      <div class="player-block">
+        <div class="content">
+          <div class="section-box " style="margin-bottom: 10px;margin-top: 10px;">
+            <import file="../libs/web/ads/index.html" data="topBanner" />
+          </div>
+        </div>
+        <div class="content">
+          <div style="margin-bottom: 10px;" style="margin-bottom: 80px;" class="player-box-main">
+            <import file="../libs/web/ads/index.html" data="playerUp" />
+          </div>
+          <div class="player-box">
+            <!-- 播放组件 -->
+
+            <div class="player-box-main">
+
+              <a class="play_call_back"
+                style="display: none; position: absolute;width: 28px;height: 28px;z-index:99;top:34px;left: 16px;"
+                href="javascript:history.go(-1);">
+                <img style="width: 100%;height: 100%;" src="/static/image/shangyiye.svg" />
+              </a>
+
+              <div class="player-wrapper">
+                <style>
+                  .player-wrapper {
+                    height: 60%;
+                  }
+
+                  @media screen and (max-width: 768px) {
+                    .player-wrapper {
+                      height: 40%;
+                    }
+                  }
+                </style>
+                <showPlayer vid="$.U.Id" lineId="$.U.LineId" />
+
+              </div>
+
+            </div>
+
+          </div>
+          <div style="margin-bottom: 10px;" class="player-box-main">
+            <import file="../libs/web/ads/index.html" data="playerDown" />
+          </div>
+          <!-- 影片详情 -->
+          <div class="player-info">
+            <div class="video-info">
+              <div class="video-info-box">
+                <div class="video-info-header">
+
+                  <h1 class="page-title">
+                    <goLink href="/vod/detail.html" args="{id:$info.Info.ID,type_id:$.U.TypeId}"
+                      title="{{$info.Info.Name}}">
+                      {{$info.Info.Name}}
+                    </goLink>
+                  </h1>
+
+
+
+                  <div class="video-info-aux">
+                    <goLink href="/vod/index.html" args="{type_id:$.U.TypeId}" class="tag-link">
+                      <span class="video-tag-icon">
+                        <i class="icon-cate-dy"></i>
+                        {{$info.Info.Category.Name}}
+                      </span>
+                    </goLink>
+
+
+                    <foreach name="$cx" index="$i" data=".Info.Tag">
+                    <div class="tag-link">
+                      <span class="slash">/</span>
+                        <span class="slash">{{$cx.Name}}&nbsp;</span><i></i>
+                      </div>
+                    </foreach>
+
+                    <span class="tag-link">
+                      <showDateTime time="$info.Info.ReleaseDate" data="yy" />
+                    </span>
+
+                    <span class="tag-link">
+                      <foreach name="$cx" index="$i" data=".Info.Areas">
+                        <span>{{$cx.Name}}</span><i></i>
+                      </foreach>
+                    </span>
+                    <span class="tag-link">
+                      <foreach name="$cx" index="$i" data=".Info.Languages">
+                        <span>{{$cx.Name}}&nbsp;</span><i></i>
+                      </foreach>
+                    </span>
+
+                  </div>
+                </div>
+                <div class="video-info-main">
+                  <div class="video-info-items"><span class="video-info-itemtitle">剧情：</span>
+                    <div class="video-info-item video-info-content">
+                      <p class="zkjj_a" style="color: #d7dae1;">{{$info.Info.Introduce}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="video-player-handle">
+
+                <!-- <a href="javascript:;" class="btn-block-o handle-btn"
+                title="{{$info.Info.Name}}下一集"><i class="icon-next"></i>
+                <p class="block-name">下一集</p>
+              </a> -->
+
+                <div class="drop pc"><span class="btn-block-o handle-btn handle-more" title="拿起手机扫一扫">
+                    <i class="icon-qrcode">
+                    </i>
+                    <p class="block-name">用手机看</p>
+                  </span>
+
+                  <div class="drop-content handle-more-drop">
+                    <div class="drop-content-box">
+                      <div class="drop-content-items"><a class="btn-qrcode">
+                          <div class="qrcode-img" style="width: 100px;height: 100px;">
+
+                          </div>
+
+                          <div class="block-name">
+                            <p>使用 手机端浏览器 扫码观看</p>
+
+                            <script>
+                              const url = location.href
+
+                              setTimeout(() => {
+                                $(".qrcode-img").qrcode({
+                                  render: "canvas", // 渲染方式有table方式（IE兼容）和canvas方式
+                                  width: 90, //宽度 
+                                  height: 90, //高度 
+                                  text: utf16to8(url), //内容 
+                                  typeNumber: -1,//计算模式
+                                  correctLevel: 2,//二维码纠错级别
+                                  background: "#ffffff",//背景颜色
+                                  foreground: "#000000"  //二维码颜色
+
+                                });
+                              }, 0)
+                            </script>
+                            <strong>{{$info.Info.Name}}</strong>
+                          </div>
+                        </a></div>
+                    </div>
+                  </div>
+
+                  <div class="shortcuts-mobile-overlay"></div>
+                </div>
+
+                <div class="video-player-handle-more">
+
+                  <div class="btn-block-o handle-btn handle-share share-btn" title="分享{{$info.Info.Name}}给朋友一起看"
+                    data-clipboard-text="《{{$info.Info.Name}}》推荐给你一起看！" onclick="setShare()" id="cmsShare">
+                    <i class="icon-share"></i>
+                    <p class="block-name">分享</p>
+
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+            <div class="player-box-side"> <!-- 电脑集数列表-->
+              <div class="module-heading">
+                <h3 class="module-title" title="" style="color:#d7dae1 ;font-size: 16px !important;" >失败刷新或切换节点</h3>
+                <div class="module-tab module-player-tab  player-side-tab module-tab-drop"> <!--修改进入弹出选择节点-->
+                  <input type="hidden" name="tab" id="tab" class="module-tab-input">
+                  <label class="module-tab-name oldText" style="white-space: nowrap ;">
+
+                    <foreach name="$item" data="$info.Info.PlayLines">
+                      <foreach data=".Addr" name="$item1">
+                        <eqIf data="$item1.ID  $.U.LineId">
+                          {{$item.Name}}
+                        </eqIf>
+                      </foreach>
+                    </foreach>
+
+
+                    <span class="module-tab-value"></span><i class="icon-arrow-bottom-o"></i>
+                  </label>
+
+
+
+                  <div class="module-tab-items cms-seo013-h5-none" style="display: none;">
+                    <div class="module-tab-title" style="color: #fff;">播放节点列表<span class="close-drop"><i
+                          class="icon-close-o"></i></span>
+                    </div>
+                    <div class="module-tab-content">
+
+                      <foreach data="$info.Info.PlayLines" name="$item" index="$i">
+
+                        <a class="module-tab-item tab-item click" href="javascript:;" onclick="setText('{{$i}}')"><span
+                            data-dropdown-value="{{$item.Name}}">{{$item.Name}}</span></a>
+
+                      </foreach>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="shortcuts-mobile-overlay">
+
+                </div>
+              </div>
+              <!--播放列表-->
+
+              <div class="module-list module-player-list tab-list sort-list  selected   player-side-playlist tem_ref_dom">
+                <div class="module-tab module-sorttab">
+                  <input type="hidden" name="tab-sort" id="tab-sort" class="module-tab-input">
+                  <label class="module-tab-name"><i class="icon-sort"></i></label>
+                  <div class="module-tab-items">
+                    <div class="module-tab-title" style="color: #fff;">选集<span class="close-drop"><i
+                          class="icon-close-o"></i></span><a class="desc sort-button" href="javascript:void(0);"
+                        onclick="reverseSortItem(0)"><i class="icon-sort"></i>排序</a></div>
+                    <div class="module-tab-content">
+                      <div class="module-blocklist">
+                        <div class="sort-item" id="sort-item-2">
+
+                          <foreach name="$cx" index="$i" data="$info.Info.PlayLines">
+                            <eqIf data="$i 0">
+                              <foreach data=".Addr" name="$item" index="$index">
+
+                                <eqIf data="$.U.LineId $item.ID">
+                                  <goLink href="$.U.Path" class="selected" args="{line_id:$item.ID}"
+                                    title="播放{{$item.Name}}">
+                                    <span>{{$item.Name}}</span>
+                                  </goLink>
+                                  <else />
+                                  <goLink href="$.U.Path" args="{line_id:$item.ID}" title="播放{{$item.Name}}">
+                                    <span>{{$item.Name}}</span>
+                                  </goLink>
+                                </eqIf>
+
+                              </foreach>
+                            </eqIf>
+
+                          </foreach>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="shortcuts-mobile-overlay"></div>
+                <div class="module-blocklist scroll-box scroll-box-y">
+                  <div class="cms_play_container">
+                    <div class="scroll-content">
+                      <foreach name="$cx" index="$i" data="$info.Info.PlayLines">
+                        <eqIf data="$i 0">
+                          <foreach data=".Addr" name="$item" index="$index">
+                            <eqIf data="$.U.LineId $item.ID">
+                              <goLink href="$.U.Path" args="{line_id:$item.ID}" class="selected">
+                                <span>{{$item.Name}}</span>
+                                <script>
+                                  $(document).ready(function () {
+                                    $(".click").eq(Number("{{$i}}")).click()
+                                  })
+                                  setTimeout(() => {
+                                    var id = '{{$info.Info.ID}}'
+                                    var type_id = '{{$.U.TypeId}}'
+                                    var line_id = '{{$.U.LineId}}'
+                                    var url1 = '{{$.U.Path}}'
+                                    // console.log(url);
+                                    var item = {
+                                      id: id,
+                                      name: "{{$info.Info.Name}}",
+                                      imgUrl: "{{$info.Info.SurfacePlot}}",
+                                      tag: "{{$item.Name}}",
+                                      url: url1
+                                    }
+                                    const visitArr = JSON.parse(localStorage.getItem('visit'))
+                                    if (visitArr) {
+                                      visitArr.forEach((i, index) => {
+                                        if (i.id == id) {
+                                          visitArr.splice(index, 1)
+                                        }
+
+                                      })
+                                      var arr = visitArr
+                                      arr.unshift(item)
+                                      arr = arr.slice(0, 10)
+                                      const newArr = JSON.stringify(arr)
+                                      localStorage.setItem('visit', newArr)
+                                    } else {
+
+                                      const newArr = []
+                                      newArr.unshift(item)
+                                      localStorage.setItem('visit', JSON.stringify(newArr))
+                                    }
+                                  }, 100)
+                                  var cmsScrollIndex = '{{$i}}'
+                                </script>
+                                <eqIf data="$info.Info.Info.BuyMode 2">
+                                  <eqIf data="$item.ChargingMode 2">
+                                    <div class="cms_charging_lin_div_vip">
+                                      VIP
+                                    </div>
+                                  </eqIf>
+                                  <eqIf data="$item.ChargingMode 3">
+                                    <div class="cms_charging_lin_div_gold">
+                                      金币
+                                    </div>
+                                  </eqIf>
+                                </eqIf>
+                              </goLink>
+                              <else />
+                              <goLink href="$.U.Path" args="{line_id:$item.ID}">
+                                <span>{{$item.Name}}</span>
+                                <eqIf data="$info.Info.Info.BuyMode 2">
+                                  <eqIf data="$item.ChargingMode 2">
+                                    <div class="cms_charging_lin_div_vip">
+                                      VIP
+                                    </div>
+                                  </eqIf>
+                                  <eqIf data="$item.ChargingMode 3">
+                                    <div class="cms_charging_lin_div_gold">
+                                      金币
+                                    </div>
+                                  </eqIf>
+                                </eqIf>
+                              </goLink>
+                            </eqIf>
+                          </foreach>
+                        </eqIf>
+                      </foreach>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <foreach name="$cx" index="$a" data="$info.Info.PlayLines">
+                <gtIf data="$a 0">
+              <div class="module-list module-player-list tab-list sort-list     player-side-playlist">
+
+                <div class="module-tab module-sorttab"> <!--电脑端-->
+
+
+                  <input type="hidden" name="tab-sort" id="tab-sort" class="module-tab-input">
+                  <label class="module-tab-name"><i class="icon-sort"></i></label>
+                  <div class="module-tab-items">
+                    <div class="module-tab-title">选集<span class="close-drop"><i class="icon-close-o"></i></span>
+                      <a class="desc sort-button" href="javascript:void(0);" onclick="reverseSortItem(1)"><i
+                          class="icon-sort"></i>排序</a>
+                    </div>
+                    <div class="module-tab-content">
+                      <div class="module-blocklist">
+
+                        <div class="sort-item" id="sort-item-1">
+
+                          <foreach name="$cx" index="$i" data="$info.Info.PlayLines">
+                            <eqIf data="$i $a">
+                              <foreach data=".Addr" name="$item" index="$index">
+
+                                <eqIf data="$.U.LineId $item.ID">
+                                  <goLink href="$.U.Path" class="selected" args="{line_id:$item.ID}"
+                                    title="播放{{$item.Name}}">
+                                    <span>{{$item.Name}}</span>
+                                    <eqIf data="$info.Info.Info.BuyMode 2">
+                                      <eqIf data="$item.ChargingMode 2">
+                                        <div class="cms_charging_lin_div_vip">
+                                          VIP
+                                        </div>
+                                      </eqIf>
+                                      <eqIf data="$item.ChargingMode 3">
+                                        <div class="cms_charging_lin_div_gold">
+                                          金币
+                                        </div>
+                                      </eqIf>
+                                    </eqIf>
+                                  </goLink>
+                                  <else />
+                                  <goLink href="$.U.Path" args="{line_id:$item.ID}" title="播放{{$item.Name}}">
+                                    <span>{{$item.Name}}</span>
+                                    <eqIf data="$info.Info.Info.BuyMode 2">
+                                      <eqIf data="$item.ChargingMode 2">
+                                        <div class="cms_charging_lin_div_vip">
+                                          VIP
+                                        </div>
+                                      </eqIf>
+                                      <eqIf data="$item.ChargingMode 3">
+                                        <div class="cms_charging_lin_div_gold">
+                                          金币
+                                        </div>
+                                      </eqIf>
+                                    </eqIf>
+                                  </goLink>
+                                </eqIf>
+
+                              </foreach>
+                            </eqIf>
+
+                          </foreach>
+
+
+                          <!-- <a onclick="topLine(event)" href="node-1-num-1.html" class="selected"
+                          title="播放GT赛车：极速狂飙HD中字"><span>HD中字1233</span>
+
+                          <div class="playon"><i></i><i></i><i></i><i></i></div>
+                        </a> -->
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="shortcuts-mobile-overlay"></div>
+                <div class="module-blocklist scroll-box scroll-box-y">
+                  <div class="cms_play_container">
+                    <div class="scroll-content">
+
+                      <foreach name="$cx" index="$i" data="$info.Info.PlayLines">
+                        <eqIf data="$i $a">
+                          <foreach data=".Addr" name="$item" index="$index">
+                            <eqIf data="$.U.LineId $item.ID">
+                              <goLink href="$.U.Path" args="{line_id:$item.ID}" class="selected">
+                                <span>{{$item.Name}}</span>
+                                <eqIf data="$info.Info.Info.BuyMode 2">
+                                  <eqIf data="$item.ChargingMode 2">
+                                    <div class="cms_charging_lin_div_vip">
+                                      VIP
+                                    </div>
+                                  </eqIf>
+                                  <eqIf data="$item.ChargingMode 3">
+                                    <div class="cms_charging_lin_div_gold">
+                                      金币
+                                    </div>
+                                  </eqIf>
+                                </eqIf>
+                                <script>
+                                  $(document).ready(function () {
+                                    $(".click").eq(Number("{{$i}}")).click()
+                                  })
+                                  setTimeout(() => {
+                                    var id = '{{$info.Info.ID}}'
+                                    var type_id = '{{$.U.TypeId}}'
+                                    var line_id = '{{$.U.LineId}}'
+                                    var url1 = '{{$.U.Path}}'
+                                    // console.log(url);
+                                    var item = {
+                                      id: id,
+                                      name: "{{$info.Info.Name}}",
+                                      imgUrl: "{{$info.Info.SurfacePlot}}",
+                                      tag: "{{$item.Name}}",
+                                      url: url1
+                                    }
+                                    const visitArr = JSON.parse(localStorage.getItem('visit'))
+                                    if (visitArr) {
+                                      visitArr.forEach((i, index) => {
+                                        if (i.id == id) {
+                                          visitArr.splice(index, 1)
+                                        }
+
+                                      })
+                                      var arr = visitArr
+                                      arr.unshift(item)
+                                      arr = arr.slice(0, 10)
+                                      const newArr = JSON.stringify(arr)
+                                      localStorage.setItem('visit', newArr)
+                                    } else {
+
+                                      const newArr = []
+                                      newArr.unshift(item)
+                                      localStorage.setItem('visit', JSON.stringify(newArr))
+                                    }
+                                  }, 100)
+                                  var cmsScrollIndex = '{{$i}}'
+                                </script>
+
+                              </goLink>
+
+                              <else />
+
+                              <goLink href="$.U.Path" args="{line_id:$item.ID}">
+                                <span>{{$item.Name}}</span>
+                                <eqIf data="$info.Info.Info.BuyMode 2">
+                                  <eqIf data="$item.ChargingMode 2">
+                                    <div class="cms_charging_lin_div_vip">
+                                      VIP
+                                    </div>
+                                  </eqIf>
+                                  <eqIf data="$item.ChargingMode 3">
+                                    <div class="cms_charging_lin_div_gold">
+                                      金币
+                                    </div>
+                                  </eqIf>
+                                </eqIf>
+                              </goLink>
+                            </eqIf>
+                          </foreach>
+                        </eqIf>
+                      </foreach>
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+            </gtIf>
+              </foreach>
+            </div>
+          </div>
+
+        </div>
+        <div id="output"></div>
+
+    </main>
+
+
+
+    <div class="content">
+      <a>&nbsp;</a>
+      <style>
+        .maxhight {
+          max-height: 500px;
+        }
+      </style>
+      <div class="module">
+        <!-- 随机推荐 -->
+        <getVideosList name="$List3" page="1" limit="$.G.Nums.VodGuessNum" random="true" categoryPid="$.U.TypeId"
+          categoryId="$.U.CateId">
+
+          <div class="module">
+            <div class="module-heading">
+              <h5 class="module-title"><b style="color:#fff
+              ;"> 猜你喜欢</b></h5>
+            </div>
+            <div class="module-list module-lines-list">
+              <gtIf data="$List3.Count 0">
+                <div class="module-items">
+                  <import file="/public/vodlist.html" data="$List3" />
+                </div>
+              </gtIf>
+            </div>
+          </div>
+        </getVideosList>
+
+      </div>
+      <div class="section-box " style="margin-bottom: 10px;">
+        <import file="../libs/web/ads/index.html" data="bottomBanner" />
+      </div>
+  </getVideoDetail>
+
+  <div class="shortcuts-box" style="display: none; ">
+    <div id="shortcuts-info" style="margin: 0 !important;">分享信息复制成功，分享给好朋友一起看～</div>
+  </div>
+</div>
+
+<import file="/public/footer.html" data="'noHome'" />
+
+
+
+<style>
+  #shortcuts-info {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+  }
+
+  .zkjj_a {
+    height: 143px !important;
+    overflow-y: auto;
+    padding-left: 5px;
+    /* display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis; */
+  }
+</style>
+
+<script>
+
+  //倒序
+  function reverseSortItem(index) {
+    const sortItem = document.querySelectorAll('.sort-item')[index];
+    if (sortItem) {
+      const firstChild = sortItem.firstElementChild;
+      const children = Array.from(sortItem.children);
+
+      for (let i = children.length - 1; i > 0; i--) {
+        sortItem.appendChild(children[i]);
+      }
+
+      if (firstChild) {
+        sortItem.appendChild(firstChild);
+      }
+    }
+  }
+
+  //修改手机端的线路显示
+  function setText(index) {
+    const newTextArr = document.querySelectorAll('.click')
+    newText = newTextArr[index].innerText
+    document.querySelector('.oldText').innerText = newText;
+  }
+  $(document).ready(function () {
+    $('.oldText').click(function () {
+      $('.module-tab-items').show()
+    })
+  })
+  //分享函数
+  function setShare() {
+    const dom = document.querySelector('#cmsShare')
+    let text = dom.getAttribute('data-clipboard-text');
+    let Url = location.href;
+    text = text + Url
+    // console.log(text);
+    dom.setAttribute('data-clipboard-text', Url);
+  }
+
+  function setScrollTop(index, dadClass, sonClass) {
+    //初始位置
+    // const firstTop = Math.ceil($('.cms_first_top').offset().top);
+
+    const itemDom = $(`.selected`)[4]
+
+    const containerDom = $(`.${dadClass}`)[index]
+    //赋值滚动条
+    var ua = navigator.userAgent || navigator.vendor || window.opera;
+
+    if (ua.indexOf("Mobile") > -1 || ua.indexOf("Android") > -1 || ua.indexOf("iPhone") > -1 || ua.indexOf("iPad") > -1) {
+
+      $(`.cms_play_container`)[index].scrollLeft = itemDom.offsetLeft - 15
+    } else {
+      containerDom.scrollTop = itemDom.offsetTop - 20
+    }
+
+  }
+
+
+
+
+  $(document).ready(() => {
+    if (cmsScrollIndex) {
+      setScrollTop(Number(cmsScrollIndex), "module-list", "selected",)
+    }
+
+
+
+  })
+</script>
+<div class="tem_ref_dom">
+  <script>
+    $(document).ready(() => {
+      if (cmsScrollIndex) {
+        setScrollTop(Number(cmsScrollIndex), "module-list", "selected",)
+      }
+      $(".qrcode-img").eq(0).html('')
+      $(".qrcode-img").qrcode({
+        render: "canvas", // 渲染方式有table方式（IE兼容）和canvas方式
+        width: 90, //宽度 
+        height: 90, //高度 
+        text: utf16to8(url), //内容 
+        typeNumber: -1,//计算模式
+        correctLevel: 2,//二维码纠错级别
+        background: "#ffffff",//背景颜色
+        foreground: "#000000"  //二维码颜色
+
+      });
+
+    })
+  </script>
+</div>
+<style>
+  @media screen and (max-width: 768px) {
+    .play_call_back {
+      display: block !important;
+    }
+  }
+
+  #temTitlesTime {
+    color: #000 !important;
+  }
+
+  #temTrailerTime {
+    color: #000 !important;
+  }
+</style>

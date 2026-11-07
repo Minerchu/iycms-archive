@@ -1,0 +1,1 @@
+import{R as e}from"./entry-9cc5c370.js";const a=t=>e({url:"/database/reduction_db",method:"post",timeout:0,data:{fileName:t,tableName:"111"}}),s=t=>e({url:"/tools/db/manage/v2/database/statement",method:"post",timeout:3e4,data:t}),r=t=>e({url:"/tools/db/manage/v2/database/import",method:"post",timeout:3e4,data:t});export{r as i,a as r,s};

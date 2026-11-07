@@ -1,0 +1,97 @@
+<section class="gen-section-padding-2 pt-0 pb-0">
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6">
+                <h4 class="gen-heading-title">热门推荐</h4>
+            </div>
+        </div>
+
+        <div class="home-singal-silder">
+            <div class="gen-nav-movies gen-banner-movies">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="slider slider-for">
+                            <!-- Slider Items -->
+                            <!-- big banner -->
+                            <foreach name="$item" index="$index" data=".List">
+                                <if data="$item.SurfacePlot">
+                                    <div class="slider-item"
+                                        style="background: url('{{$item.SurfacePlot}}');background-size: cover;">
+                                    <else />
+                                    <div class="slider-item"
+                                    style="background: url('/static/images/no_img.png');background-size: cover;">   
+                                </if>
+                                    <div class="gen-slick-slider h-100">
+                                        <div class="gen-movie-contain h-100">
+                                            <div class="container h-100">
+                                                <div class="row align-items-center h-100">
+                                                    <div class="col-lg-6">
+                                                        <div class="gen-movie-info">
+                                                            <h3>{{$item.Name}}</h3>
+                                                            <p>
+                                                                {{$item.Introduce}}
+                                                            </p>
+
+                                                        </div>
+                                                        <div class="gen-movie-action">
+                                                            <div class="gen-btn-container button-1">
+                                                                <goLink class="gen-button" href="/vod/player.html" tabindex="0" args="{type_id:$item.CategoryPid,cate_id:$item.CategoryChildId,id:$item.ID}">
+                                                                    <i aria-hidden="true" class="ion ion-play"></i>
+                                                                    <span class="text">Play Now</span>
+                                                                </goLink>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </foreach>
+                            <!-- Slider Items -->
+                        </div>
+                        <div class="slider slider-nav">
+                            <!-- small banner -->
+                            <foreach name="$item" index="$index" data=".List">
+                                <div class="slider-nav-contain">
+                                    <div class="gen-nav-img"
+                                    style="max-width: 365px; max-height: 205px; overflow: hidden;">
+                                    <if data="$item.SurfacePlot">
+                                        <img src="{{$item.SurfacePlot}}" alt="steamlab-image" style="width: 100%;" class="cmslazyload">
+                                    <else />
+                                         <img src="/static/images/no_img.png" alt="steamlab-image" style="width: 100%;" class="cmslazyload">
+                                    </if>
+                                    </div>
+                                    <div class="movie-info">
+                                        <h3>{{$item.Name}}</h3>
+                                        <div class="gen-movie-meta-holder">
+                                            <ul>
+                                                <li>
+                                                    <Number expression="$item.Duration / 60" /> mins
+                                                </li>
+                                                <li>
+                                                    <foreach name="$item1" index="$index1" data="$item.Category">
+                                                        <eqIf data="$index1 0">
+                                                            <else />
+                                                            <a >
+                                                                <span style="margin-left: 5px;">
+                                                                    {{$item1.Name}}
+                                                                </span>
+                                                            </a>
+                                                        </eqIf>
+                                                    </foreach>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </foreach>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

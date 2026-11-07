@@ -1,0 +1,54 @@
+<link rel="stylesheet" href="/static/css/swiper-bundle.min013.css" type="text/css">
+<script type="text/javascript" src="/static/js/swiper-bundle.min013.js"></script>
+<getVideosList name="$List" page="1" limit="10" banner="true" random="true">
+     <div class="swiper-container" style="margin-bottom: 20px;">
+          <div class="swiper-wrapper">
+               <getAdsList name="$List" position="">
+                    <foreach name="$item" index="$index" data="$List.List">
+                         <eqIf data="$item.Position 'banner'">
+                              <div class="swiper-slide cms_ad_banner">
+
+                                   <a href="{{$item.Link}}"  target="_blank">
+                                        <div style="background: url({{$item.Content}})" class="dymrslide banner">
+                                        </div>
+                                   </a>
+                              </div>
+                         </eqIf>
+                    </foreach>
+               </getAdsList>
+               <foreach name="$item" index="$index" data=".List">
+
+                    <div class="swiper-slide">
+                         <if data="$item.CycleImg">
+                              <goLink href="/vod/detail.html"
+                                   args="{id:$item.ID,type_id:$item.CategoryPid,cate_id:$item.CategoryChildId}">
+                                   <div style="background: url({{$item.CycleImg}})  " class="dymrslide banner">
+                                        <div class="txt-info">
+                                             <p class="name">{{$item.Name}}</p>
+                                        </div>
+                                   </div>
+                              </goLink>
+                              <else />
+                              <goLink href="/vod/detail.html"
+                                   args="{id:$item.ID,type_id:$item.CategoryPid,cate_id:$item.CategoryChildId}">
+                                   <div style="background: url({{$item.SurfacePlot}}) " class="dymrslide banner">
+                                        <div class="txt-info">
+                                             <p class="name">{{$item.Name}}</p>
+                                        </div>
+                                   </div>
+                              </goLink>
+                         </if>
+
+                    </div>
+               </foreach>
+          </div>
+     </div>
+</getVideosList>
+
+<style>
+     .banner {
+          background-size: cover !important;
+          background-repeat: no-repeat !important;
+          background-position: center !important;
+     }
+</style>

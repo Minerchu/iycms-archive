@@ -1,0 +1,117 @@
+.container {
+  box-shadow: 0px 0px 10px 0px rgb(67 67 67 / 40%);
+  margin-top: 48px;
+  border-radius: 4px;
+  overflow: hidden;
+  box-sizing: border-box;
+  height: 560px;
+  width: 720px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: url(../img/mainbg.png) no-repeat center center;
+}
+
+.container .header {
+  /* opacity: 0.8; */
+  height: 320px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 24px;
+  padding-left: 60px;
+  padding-right: 60px;
+}
+
+.header .headertop {
+  display: flex;
+  padding: 0px 20px;
+}
+
+.header .title,
+.rightnav {
+  font-family: MicrosoftYaHei;
+  font-size: 20px;
+  color: #4e4e4e;
+  letter-spacing: 2px;
+  font-weight: 400;
+  margin-left: 20px;
+}
+
+.container .headermain {
+  margin-top: 24px;
+}
+
+.headermain > h5 {
+  font-family: PingFangSC-Medium;
+  font-size: 36px;
+  color: #ffffff;
+  letter-spacing: 2px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.headermain > p {
+  font-family: PingFangSC-Medium;
+  font-size: 18px;
+  color: #ffffff;
+  letter-spacing: 1px;
+  font-weight: 500;
+  text-align: center;
+}
+.betton {
+  font-family: MicrosoftYaHeiLight;
+  font-size: 16px;
+  color: #4e4e4e;
+  letter-spacing: 1.6px;
+  font-weight: 200;
+  margin-top: 26px;
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+.main {
+  padding: 24px;
+  box-sizing: border-box;
+  /* height: 240px; */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.main .mainp {
+  font-family: PingFangSC-Medium;
+  font-size: 18px;
+  color: #333333;
+  letter-spacing: 1px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.main button {
+  background: #4b82fa;
+  border: solid 1px #4b82fa;
+  border-radius: 4px !important;
+  /* width: 140px; */
+  height: 40px;
+  margin: 0 auto;
+  margin-top: 46px;
+  margin-bottom: 40px;
+  font-family: PingFangSC-Regular;
+  font-size: 16px;
+  color: #ffffff;
+  letter-spacing: 1px;
+  font-weight: 400;
+}
+.main .path {
+  text-align: center;
+  font-family: PingFangSC-Regular;
+  font-size: 12px;
+  color: #666666;
+  font-weight: 400;
+}
+.btn {
+  --el-color-primary: #999999;
+  --el-button-hover-link-text-color: #78a2ff;
+}

@@ -1,0 +1,13 @@
+{
+  "list": [
+    { "lab": "爱影CMS", "val": "sda" },
+    { "lab": "苹果8", "val": "mc" },
+    { "lab": "苹果CMSV10", "val": "mc10" },
+    { "lab": "飞飞影视系统4.0(不支持json)", "val": "fei4" },
+    { "lab": "多米影视系统(不支持json)", "val": "fei5" },
+    { "lab": "海洋CMS(不支持json)", "val": "sea" },
+    { "lab": "赤兔CMS", "val": "ct" },
+    { "lab": "赞片CMS(不支持json)", "val": "zp" },
+    { "lab": "马克斯CMS(不支持json)", "val": "max" }
+  ]
+}

@@ -1,0 +1,61 @@
+<getVideosList name="$List" page="$.U.Page" limit="$.G.Nums.VodListNum" keyword="$.U.Keyword">
+
+    <eqIf data="$List.Count 0">
+        <div style="padding: 80px 0" class="query-empty">
+            <img src="/static/image/image/empty.png" alt="{{esp " 空状态"}}" />
+            <p>{{esp "暂无数据"}}</p>
+        </div>
+        <else />
+        <import file="/public/vodlist.html" data="$List" />
+        <div id="pagination" class="my-pagination web_page">
+            <showPage name="$item" page="$.U.Page" total="$List.Total" limit="$.G.Nums.VodListNum" count="5"
+                url="/search/index.html?{{$.U.Argument}}">
+                <div class="layui-box layui-laypage layui-laypage-molv">
+                    <goLink class="layui-laypage-prev" href="{{$item.First.Href}}">首页</goLink>
+                    <goLink class="layui-laypage-prev" href="{{$item.Prev.Href}}">上一页</goLink>
+                    <foreach name="$vo" index="$idx" data="$item.List">
+                        <eqIf data="$vo.Num $.U.Page">
+                            <span class="layui-laypage-curr">
+                                <em class="layui-laypage-em" style="background-color:#ff6f4b;"></em>
+                                <em>{{$vo.Num}}</em>
+                            </span>
+                            <else />
+                            <goLink href="{{$vo.Href}}">{{$vo.Num}}</goLink>
+                        </eqIf>
+                    </foreach>
+                    <goLink class="layui-laypage-next" href="{{$item.Next.Href}}">下一页</goLink>
+                    <goLink class="layui-laypage-last" href="{{$item.Last.Href}}">尾页</goLink>
+                </div>
+            </showPage>
+        </div>
+        <div id="pagination" class="my-pagination web_h5">
+            <showPage name="$item" page="$.U.Page" total="$List.Total" limit="$.G.Nums.VodListNum" count="3"
+                url="/search/index.html?{{$.U.Argument}}">
+                <div class="layui-box layui-laypage layui-laypage-molv">
+                    <goLink class="layui-laypage-frist" href="{{$item.First.Href}}">首页</goLink>
+                    <goLink class="layui-laypage-prev" href="{{$item.Prev.Href}}">上一页</goLink>
+                    <foreach name="$vo" index="$idx" data="$item.List">
+                        <eqIf data="$vo.Num $.U.Page">
+                            <span class="layui-laypage-curr">
+                                <em class="layui-laypage-em" style="background-color:#ff6f4b;"></em>
+                                <em>{{$vo.Num}}</em>
+                            </span>
+                            <else />
+                            <goLink href="{{$vo.Href}}">{{$vo.Num}}</goLink>
+                        </eqIf>
+                    </foreach>
+                    <goLink class="layui-laypage-next" href="{{$item.Next.Href}}">下一页</goLink>
+                    <goLink class="layui-laypage-last" href="{{$item.Last.Href}}">尾页</goLink>
+                </div>
+            </showPage>
+        </div>
+    </eqIf>
+</getVideosList>
+<script>
+    $(function () {
+		$(".lazyload").lazyload({
+			effect: "fadeIn",
+			placeholder: "/static/image/image/empty.png",
+		});
+	})
+</script>

@@ -1,0 +1,142 @@
+.content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 0;
+}
+
+
+.details {
+  padding: 1rem;
+}
+.layui-show{
+  flex-direction: row !important;
+}
+
+
+.content .details .playBtns{
+  background: #f6f6f6;
+  border: 1px solid rgb(204, 204, 204);
+  border-radius: 4px;
+  color: #333333;
+  font-size: 12px;
+  line-height: normal;
+  cursor: pointer;
+  padding: 10px 7.5px;
+  width: 60px;
+  text-align: center;
+}
+.content .details .playBtns:hover{
+  background: #ff5f00;
+  border: 1px solid #ff5f00;
+  color: #fff;
+}
+.content .details .playBtns.active{
+  background: #ff5f00;
+  border: 1px solid #ff5f00;
+  color: #fff;
+}
+
+
+
+.details .info {
+  display: flex;
+}
+
+.details .info img{
+  width: 185px;
+  border-radius: 4px;
+}
+
+.details .info .desc {
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 12px 0;
+}
+
+.details .info .desc .other {
+  font-size: 14px;
+}
+
+.details .info .desc .other label {
+  margin-right: 2rem;
+}
+
+.details .info .desc .playbtn {
+  cursor: pointer;
+  display: block;
+  width: 80px;
+  padding: 0;
+  font-size: 12px;
+  height: 30px;
+  line-height: 30px;
+  color: #fff;
+  background-image: linear-gradient(90deg, #feaf79 0%, #ff6947 100%);
+  border-radius: 1.5rem;
+  border:0;
+}
+
+.details .info .desc .title {
+  font-size: 24px;
+  color: #333333;
+  font-weight: 500;
+}
+
+
+.section-box {
+  padding: 1rem 0;
+  width: 1418px;
+  height: auto;
+  overflow: hidden;
+}
+
+.section-box .titleH3 {
+  font-size: 1.5rem;
+  color: #333333;
+  font-weight: 500;
+  padding: 0em 0 1.5rem;
+}
+
+.section-box .list-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+@media (min-width: 980px) {
+  .details{
+    width: 1400px;
+  }
+  .details .info .avator{
+    width: 185px;
+    min-width: 185px;
+  }
+}
+@media (max-width: 979px) {
+	.details .info .desc-img{
+		width:40vw;
+		aspect-ratio: 9/16;
+		max-height: calc(40vw * 16 / 9);
+	}
+	.details .info .desc{
+	    width: 50vw;
+		padding: 1rem 0 1rem 1rem;
+		gap:0;
+	}
+	.details .info .desc .title{
+		margin-bottom: 0.625em;
+	}
+	.details .info .desc label{
+	    display: block;
+	    margin-right: 0;
+	    white-space: nowrap;
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+		margin-bottom: 0.8em;
+	}
+  .details .info .avator{
+    width: 40vw;
+  }
+}

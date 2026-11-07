@@ -1,0 +1,28 @@
+    /* layui icon*/
+    .layuicms-icon-success:before {
+        display: inline-block;
+        content: '';
+        width: 24px;
+        height: 24px;
+        background: url('/iyads/icon/layui/success.svg') no-repeat center;
+        background-size: 100%;
+    }
+
+    .layuicms-icon-error:before {
+        display: inline-block;
+        content: '';
+        width: 24px;
+        height: 24px;
+        background: url('/iyads/icon/layui/error.svg') no-repeat center;
+        background-size: 100%;
+    }
+
+    .layuicms-icon-close:before {
+        /* content: ''; */
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        /* background: url('/iyads/icon/layui/close.svg') no-repeat fixed center; */
+        background-size: 100%;
+    }
+    

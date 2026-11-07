@@ -1,0 +1,227 @@
+<import file="/public/header.html" data="'textdetail'" />
+<!--========== Header ==============-->
+
+<!-- breadcrumb -->
+<getArticleDetail name="$info" id="$.U.Id">
+    <!-- <print data="$info.Info" mode="json" /> -->
+    <div class="gen-breadcrumb" style="background-image: url('/static/images/background/asset-25.jpeg');">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-12">
+                    <nav aria-label="breadcrumb">
+                        <div class="gen-breadcrumb-title">
+                            <h3>
+                                {{$info.Info.Name}}
+                            </h3>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb -->
+
+    <!-- blog single -->
+    <section class="gen-section-padding-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 col-md-12">
+                    <div class="gen-blog-post">
+                        <div class="gen-post-media">
+                            <if data="$info.Info.SurfacePlot">
+                                <img src="{{$info.Info.SurfacePlot}}" alt="blog-image" loading="lazy" class="cmslazyload">
+                            <else />
+                                <img src="/static/images/no_img.png" alt="blog-image" loading="lazy" class="cmslazyload">
+                            </if>
+                        </div>
+                        <div class="gen-blog-contain">
+                            <div class="gen-post-meta">
+                                <ul>
+                                    <li class="gen-post-meta" style="color: #cecfd1;"><a href="blog-single.html"><i
+                                                class="fa fa-calendar"></i>
+                                            <showDateTime time="$info.Info.UpdateAt" data="yy-mm-dd hh:ii" />
+                                        </a>
+                                    </li>
+
+                                    <li class="gen-post-author" style="color: #cecfd1;">
+                                        <i class="fas fa-eye"></i>{{$info.Info.Popularity}}
+                                    </li>
+                                </ul>
+                            </div>
+                            <p>
+                                <showHtml html="$info.Info.Content" />
+                            </p>
+                            <!-- <h2>Live streaming is growing fast</h2>
+                            <p>One of the main reasons you should care about live stream is simply due to its huge user
+                                base and growing popularity.nnThe potential to reach thousands (or more) of new
+                                customers with the click of a button is becoming a reality.nWhen tactics like search
+                                engine optimization and content marketing are taking up too much time and money, you
+                                need a new outlet to drive traffic. Using live-stream platforms is a nearly free way to
+                                drive tons of revenue for your business.</p>
+                            <div class="row mb-4">
+                                <div class="col-xl-6 col-md-6">
+                                    <div class="gen-img-main">
+                                        <img src="/images/background/asset-40.jpg" alt="streamlab-image">
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-md-6 mt-4 mt-md-0">
+                                    <div class="gen-img-main">
+                                        <img src="/images/background/asset-67.jpg" alt="streamlab-image">
+                                    </div>
+                                </div>
+                            </div>
+                            <h2>Engage your viewers in real time</h2>
+                            <p>Beyond these technical aspects, keeping your audience engaged is paramount to a
+                                productive live stream. Your audience enjoys your content from behind a screen, but that
+                                doesnu2019t mean live streaming has to be a one-way street. Encouraging dialogue with
+                                your audience is a must-have for any successful stream.</p>
+                            <h2>Rethink how youu2019ll tackle the next one</h2>
+                            <p>No doubt that all of this can feel daunting, so remember to take it bit by bit. Julie
+                                Starr, Director of Learning & Development at Convene, advises to not get bogged down
+                                with making tons of improvements every time. u201cAt Convene, we like to talk about
+                                u201cGetting 1% better every day,u2019u201d she says. u201cItu2019s important to keep
+                                the content fresh, and respond to the needs of your participants.</p> -->
+                                <div >
+                                    <gtIf data="$info.Pre.Id 0">
+                                        <div class="tim-prev" style="float: left;">
+                                            <goLink href="/text/detail.html" class="cms-text-pre"
+                                                args="{id:$info.Pre.Id,type_id:$info.Pre.CategoryPid}" title="上一篇">
+    
+    
+                                                <span class="cor5"
+                                                    style="display: flex; padding-bottom: 5px; align-items: center;">
+                                                    <div style="width: 18px; height: 18px; font-size: 0px;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                            <path
+                                                                d="M10.8284 12.0007L15.7782 16.9504L14.364 18.3646L8 12.0007L14.364 5.63672L15.7782 7.05093L10.8284 12.0007Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="cms-text-pre">
+                                                        上一篇
+                                                    </div>
+                                                </span>
+                                                <div class="tim-page cms-text-pre">{{$info.Pre.Name}}</div>
+                                            </goLink>
+                                        </div>
+                                    </gtIf>
+                                    <gtIf data="$info.Next.Id 0">
+                                        <div class="tim-next" style="float: right !important;">
+                                            <goLink href="/text/detail.html" class="cms-text-pre"
+                                                style="display: flex;align-items: end; flex-direction: column;"
+                                                args="{id:$info.Next.Id,type_id:$info.Next.CategoryPid}" title="下一篇">
+                                                <span class="cor5"
+                                                    style="display: flex;padding-bottom: 5px;align-items: center;">
+                                                    <div class="cms-text-pre">
+                                                        下一篇
+                                                    </div>
+                                                    <div style="width: 18px; height: 18px; font-size: 0px;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                            <path
+                                                                d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </div>
+    
+                                                </span>
+                                                <div class="tim-page cms-text-pre">{{$info.Next.Name}}</div>
+                                                <!-- <div class="tim-page">下一篇</div> -->
+                                            </goLink>
+                                        </div>
+                                    </gtIf>
+                                </div>
+                        </div>
+                    </div>
+                    <!-- <div class="comment-respond">
+                        <h3 class="comment-reply-title">Write a Reply or Comment </h3>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <form>
+                                    <p>Your email address will not be published. Required fields are marked </p>
+                                    <div class="row">
+                                        <div class="col-xl-4 col-md-4">
+                                            <p class="comment-form-author">
+                                                <input type="text" placeholder="*Enter Name">
+                                            </p>
+                                        </div>
+                                        <div class="col-xl-4 col-md-4">
+                                            <p class="comment-form-email">
+                                                <input type="text" placeholder="*Enter Email">
+                                            </p>
+                                        </div>
+                                        <div class="col-xl-4 col-md-4">
+                                            <p class="comment-form-url">
+                                                <input type="text" placeholder="*Enter Url">
+                                            </p>
+                                        </div>
+                                        <div class="col-xl-12">
+                                            <p class="comment-form-comment">
+                                                <textarea rows="6" cols="60"
+                                                    placeholder="Enter Your Comment"></textarea>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <input type="submit" value="Post comment">
+                                </form>
+                            </div>
+                        </div>
+                    </div> -->
+
+                </div>
+                <div class="col-xl-3 col-md-12 mt-4 mt-xl-0">
+                    <div class="widget widget_recent_entries">
+                        <h2 class="widget-title">最热资讯</h2>
+                        <ul>
+                            <getArticleList name="$List" limit="$.G.Nums.ArticleHotNum" order="1">
+                                <foreach data="$List.List" name="$item">
+                                    <li style="line-height: 100% !important; padding: 8px 0px; ">
+                                        <goLink href="/text/detail.html" args="{id:$item.Id}"
+                                            class="cms-text-hotText-rank-a">{{$item.Name}}
+                                        </goLink>
+                                    </li>
+                                </foreach>
+                            </getArticleList>
+
+                        </ul>
+                    </div>
+                    <getArticleList name="$List" limit="$.G.Nums.ArticleHotNum" page="1">
+                        <egtIf data="$List.Total 1">
+                            <div class="widget widget_archive">
+                                <h2 class="widget-title">最新资讯</h2>
+                                <ul>
+                                    <foreach data="$List.List" name="$item">
+                                        <li style="line-height: 100% !important; padding: 8px 0px; ">
+                                            <goLink href="/text/detail.html" args="{id:$item.Id}"
+                                                class="cms-text-hotText-rank-a">{{$item.Name}}
+                                            </goLink>
+                                        </li>
+                                    </foreach>
+                                </ul>
+                            </div>
+                        </egtIf>
+                    </getArticleList>
+                    <getArticleList name="$List" imit="$.G.Nums.ArticleGuessLikeNum" categoryPid="$.U.TypeId" page="1">
+                        <egtIf data="$List.Total 1">
+                            <div class="widget widget_meta">
+                                <h2 class="widget-title">猜你喜欢</h2>
+                                <ul>
+                                    <foreach data="$List.List" name="$item">
+                                        <li style="line-height: 100% !important; padding: 8px 0px; ">
+                                            <goLink href="/text/detail.html" args="{id:$item.Id}"
+                                                class="cms-text-hotText-rank-a">{{$item.Name}}
+                                            </goLink>
+                                        </li>
+                                    </foreach>
+                                </ul>
+                            </div>
+                        </egtIf>
+                    </getArticleList>
+                </div>
+            </div>
+        </div>
+    </section>
+</getArticleDetail>
+<!-- blog single -->
+
+<!-- footer start -->
+<import file="/public/footer.html" data="'nohome'" />

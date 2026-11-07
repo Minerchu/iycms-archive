@@ -1,0 +1,20 @@
+<if data=".Header">
+	<div class="table-hidden">
+		<table class="tb-parameter">
+			<tr height="40px" align="left">
+				<th class="parameter-line">字段名</th>
+				<th class="parameter-line" width="70px">字段类型</th>
+				<th class="parameter-line">字段说明</th>
+				<th class="parameter-line" width="70px">必填项</th>
+				<th class="parameter-line" width="60px">默认值</th>
+			</tr>
+			<foreach name="$Respitemdataheaditem" index="$Respitemdataheadindex" data=".Header">
+				<td class="parameter-line depth{{$Respitemdataheaditem.Depth}}">{{$Respitemdataheaditem.Key}}</td>
+				<td class="parameter-line">{{$Respitemdataheaditem.FileType}}</td>
+				<td class="parameter-line">{{$Respitemdataheaditem.Description}}</td>
+				<td class="parameter-line">{{$Respitemdataheaditem.Disabled}}</td>
+				<td class="parameter-line">{{$Respitemdataheaditem.Value}}</td>
+			</foreach>
+		</table>
+	</div>
+</if>

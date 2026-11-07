@@ -1,0 +1,363 @@
+p {
+  color: #ffffff !important;
+}
+/*隐藏全局滚动条*/
+::-webkit-scrollbar {
+  display: none !important;
+}
+.cms-seo033-h5header,
+.cms-seo033-pcheader {
+  display: none !important;
+}
+/*限制logo最小宽度*/
+.img-fluid.logo {
+  min-width: 100px;
+}
+/*导航栏轮播布局调整*/
+#navbarSupportedContent {
+  justify-content: end;
+}
+/*二级分类列表高度限制*/
+.sub-menu {
+  overflow-y: auto;
+  max-height: 50vh;
+}
+
+/* footer选中样式 */
+.cms-footer-nav-active {
+  color: var(--primary-color) !important;
+}
+/*页脚下载盒子*/
+.cms-footer-download-box {
+  display: flex;
+}
+.cms-ios-download-box,
+.cms-apk-download-box {
+  width: 192px;
+  height: 192px;
+  padding: 16px;
+  background-color: #ffffff;
+  border-radius: 10px;
+}
+/*客服输入框*/
+#serviceInput {
+  background-color: #fff;
+}
+.gen-movie-meta-holder li {
+  color: #fff !important;
+}
+/*底部轮播限制影片描述信息*/
+.gen-movie-info p {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 10 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+/*list页面筛选框伪类清除*/
+.breadcrumb-item::before {
+  content: none !important;
+}
+.breadcrumb-item {
+  padding: 10px !important;
+}
+/*list页面轮播筛选样式*/
+.cms-seo33-swiper-slide {
+  width: auto !important;
+}
+.cms-seo33-swiper-wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+/*隐藏侧边栏app*/
+.cms_util_li.cms_app_hover {
+  display: none;
+}
+#jh_content {
+  min-height: 250px !important;
+}
+.cms_util_text {
+  display: none !important;
+}
+.msg_code {
+  width: 100% !important;
+  padding-top: 20px !important;
+}
+.reply_box.clearfix {
+  padding: 0px;
+}
+#close_jh .icon {
+  margin-top: -8px;
+}
+#leaveInput,
+.captcha_Input {
+  background-color: transparent;
+  color: black;
+}
+.captcha_Input {
+  width: 35px;
+  height: 35px;
+}
+.cms-seo033-player-lineid {
+  padding: 10px 20px;
+  color: #fff;
+  background-color: #221f1f;
+  min-width: 108px;
+  text-align: center;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+/* 播放页面选集容器 */
+.cms-seo033-playLine-container {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 100%;
+  justify-content: start;
+  max-height: 250px !important;
+  overflow: auto;
+}
+.cms-play-active {
+  background-color: #e50916;
+}
+.cms-nav-link {
+  text-align: center;
+}
+.cms-text-hotText-rank-a,
+.tim-page {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 1 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+.cms-seo033-player-lineid.cms-play-active:hover {
+  color: #fff;
+}
+.tim-prev,
+.tim-next {
+  max-width: 30%;
+}
+.cms-text-pre {
+  color: #8a8a8a;
+}
+.cms-text-pre:hover {
+  color: #e50916;
+}
+.cms-seo033-app-h5-container {
+  border: 1px solid #969696;
+  border-radius: 5px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-height: 36px;
+  color: #fff;
+  margin-right: 20px;
+  font-size: 18px;
+}
+.cms-seo033-header-text-a:hover {
+  cursor: pointer;
+}
+#tem_log_res_tit {
+  padding-left: 0px;
+}
+.cmstem_login_noacc {
+  color: #999 !important;
+  font-size: 14px !important;
+}
+#serviceForm .service-welcome {
+  color: #333 !important;
+}
+#serviceForm .service-label {
+  color: #666 !important;
+}
+#serviceForm button {
+  padding: 12px 0px !important;
+}
+.cms-nav-link {
+  width: auto !important;
+  white-space: nowrap !important;
+}
+.line-go-left .ion-ios-arrow-back,
+.line-go-right .ion-ios-arrow-forward {
+  font-size: 32px !important;
+  color: #fff !important;
+}
+.line-go-right,
+.line-go-left {
+  cursor: pointer;
+}
+.line-go-left {
+  padding-right: 10px !important;
+  margin-left: -20px !important;
+  max-height: 56px;
+}
+.line-go-right {
+  padding-left: 10px !important;
+  margin-right: -20px !important;
+  max-height: 56px;
+}
+.cms_notice_Up_content_box_main p {
+  color: #333 !important;
+}
+.cms_charging_mode_div_vip,
+.cms_charging_mode_div_gold {
+  padding: 0px 8px !important;
+  max-height: 20px;
+  line-height: 20px;
+}
+
+#cms_notice_up_header p {
+  margin: 0px !important;
+}
+
+/*手机端样式*/
+@media screen and (max-width: 768px) {
+  .line-go-left,
+  .line-go-right {
+    display: none !important;
+  }
+  .img-fluid.logo {
+    max-width: 100px !important;
+  }
+  .cms-h5-banenr-box {
+    height: 100vh;
+  }
+  .cms-pc-app-download-box {
+    display: none;
+  }
+  .gen-movie-img {
+    max-height: 224px !important;
+  }
+  .cms-seo033-banner-Introduce {
+    display: -webkit-box !important;
+    -webkit-line-clamp: 5 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    min-height: 160px;
+  }
+  .cms-seo033-h5header {
+    display: block !important;
+  }
+  .gen-breadcrumb {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+  }
+  #J_prismPlayer,
+  .aliplayer,
+  .aliplayer-box {
+    max-height: 425px !important;
+  }
+  .cms-nav-link {
+    padding-left: 25px !important;
+    padding-right: 25px !important;
+    width: auto !important;
+    text-align: center !important;
+  }
+  .cms-seo033-player-lineid {
+    padding: 5px 5px;
+    color: #fff;
+    background-color: #221f1f;
+    text-align: center;
+  }
+  .cms-play-active {
+    background-color: #e50916;
+  }
+  .cms-seo033-player-lineid {
+    margin-right: 5px;
+  }
+  .gen-account-holder {
+    max-height: 75px;
+    display: flex;
+    align-items: center;
+  }
+  .gen-search-form.gen-form-show {
+    left: 50%;
+    transform: translateX(-55%);
+  }
+  .cms-nav-link {
+    width: auto !important;
+    white-space: nowrap;
+  }
+  .cms-play-w-img {
+    width: 100% !important;
+  }
+}
+/* pc端样式 */
+@media screen and (min-width: 769px) {
+  .movie-info {
+  }
+  .gen-movie-img {
+    max-height: 190px !important;
+  }
+  /*pc端图片样式处理*/
+  .cms-seo033-list-img,
+  .cms-seo033-player-img {
+    max-width: 400px !important;
+    height: 190px !important;
+  }
+  .cms-seo033-player-img {
+    max-width: 400px !important;
+    max-height: 224px !important;
+  }
+  .cms-seo033-player-img img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+  }
+  /*导航栏轮播项宽度限制*/
+  .cms-nav-swiper-slide {
+    width: auto !important;
+  }
+  /*首页轮播最小高度处理*/
+  .cms-seo033-home-banner-null-minHight {
+    min-height: 100px;
+  }
+  .cms-seo033-pcheader {
+    display: block !important;
+  }
+  .cms-h5-app-download-box {
+    display: none;
+  }
+  #J_prismPlayer,
+  .aliplayer,
+  .aliplayer-box {
+    max-height: 680px;
+  }
+  .gen-single-movie-info {
+    margin-top: 200px;
+  }
+  .gen-nav-img {
+    min-height: 205px !important;
+  }
+}
+/*首页轮播试看样式*/
+@media screen and (max-width: 900px) {
+  #J_prismPlayer,
+  .aliplayer,
+  .aliplayer-box {
+    max-height: 500px;
+  }
+  .showvod_html5_api {
+    height: 100% !important;
+  }
+}
+
+.meme_pc {
+}
+
+.meme_h5 {
+  display: none !important;
+}
+
+@media (max-width: 780px) {
+  .meme_pc {
+    display: none !important;
+  }
+
+  .meme_h5 {
+    display: block !important;
+  }
+}

@@ -1,0 +1,186 @@
+<import file="/public/header.html" data="'index'" />
+
+<main id="index-main" class="wrapper">
+     <div class="content">
+          <style>
+               .box-1 {
+                    width: auto;
+                    height: 300px;
+
+               }
+
+               @media screen and (max-width: 1000px) {
+
+                    .box-1 {
+
+                         display: none;
+                    }
+
+               }
+
+               .img-box {
+                    width: 100%;
+                    position: relative;
+                    z-index: 1;
+               }
+
+               .img-box img {
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    width: 100%;
+                    height: auto;
+                    z-index: -1;
+                    zoom: 1;
+               }
+
+               @media screen and (max-width: 1000px) {
+
+                    .img-box img {
+
+                         display: none;
+                    }
+
+               }
+               .cms_notice_swiper{
+                    color: #000;
+
+               }
+               .cms_notice_ordinary_icon{
+                    padding-top: 5px;
+               }
+          </style>
+          <import file="../libs/web/notice/index.html"/>
+
+          <div class="section-box " style="margin-bottom: 10px;">
+               <import file="../libs/web/ads/index.html" data="topBanner" />
+          </div>
+          <!-- 轮播 -->
+          <import file="/public/banner.html" />
+
+          <script>
+               var swiper = new Swiper('.swiper-container', {
+                    direction: 'horizontal',
+                    loop: true,
+                    autoplay: true,
+                    autoplay: {
+                         delay: 3000,
+                         stopOnLastSlide: false,
+                         disableOnInteraction: false,
+                    },
+                    pagination: {
+                         el: '.swiper-pagination',
+                         clickable: true,
+                    },
+                    navigation: {
+                         nextEl: '.swiper-button-next',
+                         prevEl: '.swiper-button-prev',
+                    },
+                    scrollbar: {
+                         el: '.swiper-scrollbar',
+                    },
+               })        
+          </script>
+
+
+          <!-- 热门推荐 -->
+
+          <getVideosList name="$List3" page="1" limit="$.G.Nums.VodHotNum" random="true" hots="1">
+               <egtIf data="$List3.Count 1">
+                    <div class="module">
+                         <div class="module-heading">
+                              <h5 class="module-title"><i class="icon-hot" style="color:#FFffff"></i> <b style="color: #FFffff;">热门推荐</b></h5>
+                         </div>
+                         <div class="module-list module-lines-list">
+                              <gtIf data="$List3.Count 0">
+                                   <div class="module-items">
+                                        <import file="/public/vodlist.html" data="$List3" />
+                                   </div>
+                              </gtIf>
+                         </div>
+                    </div>
+               </egtIf>
+
+
+          </getVideosList>
+
+          <!-- 主体 -->
+          <getVideoGroupList name="$List" limit="$.G.Nums.HomeNUm">
+               <foreach name="$item" index="$index" data="$List.List">
+                    <gtIf data="$item.VideoList.Total 0">
+                         <div class="module module-wrapper">
+                              <div class="module-main">
+                                   <div class="preloader">
+                                        <div class="module-heading">
+                                             <h2 class="module-title" style="color: #FFffff;">
+                                                  {{$item.CateInfo.Name}}</h2>
+                                             <goLink class="more" href="/vod/index.html" args="{type_id:$item.CateInfo.ID}"
+                                                  title="更多{{$item.CateInfo.Name}}">
+                                                  更多{{$item.CateInfo.Name}}<i class="icon-arrow-right-o"></i>
+                                             </goLink>
+                                        </div>
+                                   </div>
+                                   <div class="preloader">
+                                        <div class="module-list module-lines-list">
+                                             <div class="module-items">
+                                                            <div class="module-items">
+                                                                 <import file="/public/vodlist.html" data="$item.VideoList" />
+                                                            </div>
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+                              <div class="module-side">
+                                   <div class="module-heading">
+                                        <h2 class="module-title" style="color: #FFffff;">{{$item.CateInfo.Name}}<span>•</span>排行榜</h2>
+                                   </div>
+                                   <div class="module-side-list module-bg">
+                                        <div class="scroll-box">
+                                             <div class="module-textlist scroll-content">
+                                                  <getVideosList name="$List4" page="1" limit="$.G.Nums.VodCateCmdNum"
+                                                       random="true" categoryPid="$item.CateInfo.ID">
+                                                       <import file="/public/rank.html" data="$List4" />
+                                                  </getVideosList>
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                    </gtIf>
+               </foreach>
+          </getVideoGroupList>
+          <div class="section-box " style="margin-bottom: 10px;">
+               <import file="../libs/web/ads/index.html" data="bottomBanner" />
+          </div>
+     </div>
+</main>
+
+<script type="text/javascript">
+
+     $("#clothes").on('click', function () {
+          $(this).children(".iconfont").toggleClass("icon-a-yejian2");
+          $(this).children(".iconfont").toggleClass("icon-rijianmoshi")
+     });
+</script>
+<script type="text/javascript">
+     document.onkeydown = function () {
+
+          var e = window.event || arguments[0];
+
+     }
+</script>
+<!-- 首页弹出广告 -->
+<import file="../libs/web/ads/index.html" data="homePop" />
+<div class="shortcuts-mobile-overlay"></div>
+<script src="/static/js/mxui013.js"></script>
+
+
+<style>
+     .rank_note {
+          height: 19px;
+     }
+</style>
+
+<import file="/public/footer.html" data="'home'" />

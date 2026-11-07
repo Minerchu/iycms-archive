@@ -1,0 +1,105 @@
+/* 侧边栏（app下载） */
+.stui-extra {
+  position: fixed;
+  bottom: 10%;
+  right: 2%;
+  z-index: 9999;
+}
+
+.cms_util_li {
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+  background-color: var(--cms--util--bgColor) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  border-radius: 5px;
+  z-index: 9999;
+}
+
+.cms_util_li a {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.cms_util_li p {
+  margin-top: 5px;
+  color: #999;
+  display: block;
+  width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .cms_util_li {
+    width: 45px;
+    height: 45px;
+  }
+
+  .cms_util_li p {
+    font-size: 12px;
+  }
+}
+
+.stui-extra li {
+  padding: 0 !important;
+}
+
+.cms_sideslip {
+  box-sizing: border-box;
+  background-color: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  width: 180px;
+  height: 180px;
+  padding: 10px;
+  position: absolute;
+  right: 60px;
+  bottom: 0px;
+  display: none;
+  z-index: 9999999;
+}
+
+.cms_util_text {
+  margin: 0 !important;
+  padding: 0 !important;
+  max-height: 16px;
+  margin: 0 !important;
+  /* margin-bottom: 10px !important; */
+}
+
+.cms_util_icon {
+  margin: 0 !important;
+  padding: 0 !important;
+  padding-bottom: 5px !important;
+  margin-top: 5px !important;
+}
+
+/*客服留言*/
+.leave-container {
+  z-index: 9999;
+}
+
+.service-container {
+  z-index: 10000;
+}
+
+@media screen and (max-width: 768px) {
+  #leaveContainer {
+    max-width: 320px;
+  }
+}
+.cms_notice_Up_content_box_main a {
+  color: #551a8b !important;
+}
+
+/* 侧边栏icon颜色 */
+#cms_app_downloads .tem_side_svg {
+  width: 18px;
+  height: 18px;
+  fill: #999999;
+  margin-bottom: 5px;
+}

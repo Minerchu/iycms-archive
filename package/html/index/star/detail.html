@@ -1,0 +1,140 @@
+
+<import file="/public/header.html" data="'stardetail'" />
+<link rel="stylesheet" href="/static/css/details001.css">
+<style>
+	@media screen and (max-width: 767px) {
+		.cmsStarInfoImg {
+			max-width: 120px;
+			object-fit: cover;
+			height: auto;
+			max-height: 190px;
+		}
+
+		.info {
+			display: flex;
+		}
+	}
+
+	.cmsStarInfoImg {
+		height: 100%;
+		object-fit: cover;
+	}
+</style>
+<getCelebrityDetail name="$info" id="$.U.Id">
+	<div class="cu_h5_header">
+		<span class="goBack">
+			<goLink href="/star/index.html">
+				<img src="/static/image/icons/fanhui.svg" />
+			</goLink>
+		</span>
+		<span class="title">{{esp $info.Info.ChineseName }}</span>
+	</div>
+	<getCelebrityVod name="$List" page="$.U.Page" limit="$.G.Nums.VodStarNum" star="$info.Info.ChineseName">
+
+		<section class="content mrgt72">
+
+			<article class="details">
+				<div class="info">
+					<div class="avator">
+
+						<img data-original="{{$info.Info.HeadImg}}" class="lazyload cmsStarInfoImg" />
+					</div>
+					<div class="desc">
+						<if data="$info.Info.ChineseName">
+							<div class="title">{{esp $info.Info.ChineseName }}</div>
+							<else />
+							<div class="title">{{esp $info.Info.EnglishName }}</div>
+						</if>
+						<label
+							style="overflow: hidden;-webkit-line-clamp: 5;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;white-space: inherit;">{{esp
+							"性别："}}<span>
+								<eqIf data="$info.Info.Sex 1">
+									男
+									<else />
+									<eqIf data="$info.Info.Sex 2">
+										女
+										<else />
+										未知
+									</eqIf>
+								</eqIf>
+							</span></label>
+						<label
+							style="overflow: hidden;-webkit-line-clamp: 5;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;white-space: inherit;">{{esp
+							"生日："}}<span>
+								<eqIf data="$info.Info.Birthday 0">
+									-
+									<else />
+									<showDateTime time="$info.Info.Birthday" data="yy年mm月dd日" />
+								</eqIf>
+							</span></label>
+						<label
+							style="overflow: hidden;-webkit-line-clamp: 5;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;white-space: inherit;">{{esp
+							"身高："}}<span>
+								<eqIf data="$info.Info.Height 0">
+									-
+									<else />
+									{{$info.Info.Height}} cm
+								</eqIf>
+							</span></label>
+						<label
+							style="overflow: hidden;-webkit-line-clamp: 5;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;white-space: inherit;">{{esp
+							"体重："}}<span>
+								<eqIf data="$info.Info.Weight 0">
+									-
+									<else />
+									{{$info.Info.Weight}} kg
+								</eqIf>
+							</span></label>
+					</div>
+				</div>
+				<div style="margin-top: 10px;">
+					<label
+						style="overflow: hidden;-webkit-line-clamp: 5;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;white-space: inherit;">{{esp
+						"简介："}}<span>{{esp $info.Info.Introduce }}</span></label>
+				</div>
+			</article>
+
+			<gtIf data="$List.Total 0">
+				<div class="section-box">
+					<div class="titleH3">{{esp "全部作品"}}({{$List.Total}})</div>
+					<import file="/public/vodlist.html" data="$List" />
+				</div>
+			</gtIf>
+		</section>
+
+
+		<!-- 作品分页 -->
+		<gtIf data="$List.Total 0">
+			<div id="pagination" class="my-pagination">
+				<showPage name="$item" page="$.U.Page" total="$List.Total" limit="$.G.Nums.VodStarNum" count="5"
+					url="$.U.Path">
+					<div class="layui-box layui-laypage layui-laypage-molv">
+						<goLink class="layui-laypage-prev" href="{{$item.First.Href}}">首页</goLink>
+						<goLink class="layui-laypage-prev" href="{{$item.Prev.Href}}">上一页</goLink>
+						<foreach name="$vo" index="$idx" data="$item.List">
+							<eqIf data="$vo.Num $.U.Page">
+								<span class="layui-laypage-curr">
+									<em class="layui-laypage-em" style="background-color:#ff6f4b;"></em>
+									<em>{{$vo.Num}}</em>
+								</span>
+								<else />
+								<goLink href="{{$vo.Href}}">{{$vo.Num}}</goLink>
+							</eqIf>
+						</foreach>
+						<goLink class="layui-laypage-next" href="{{$item.Next.Href}}">下一页</goLink>
+						<goLink class="layui-laypage-last" href="{{$item.Last.Href}}">尾页</goLink>
+					</div>
+				</showPage>
+			</div>
+		</gtIf>
+	</getCelebrityVod>
+</getCelebrityDetail>
+<script>
+
+	const ua = navigator.userAgent;
+	if (ua.indexOf('Android') > -1 || ua.indexOf('iPhone') > -1 || ua.indexOf('iPad') > -1) {
+		$('.header-h5').hide()
+	}
+</script>
+
+<import file="/public/footer.html" data="'noHome'" />

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="140px" height="140px" viewBox="0 0 140 140" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>提成</title>
+    <defs>
+        <filter x="-129.2%" y="-129.2%" width="358.3%" height="358.3%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="8" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="12" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.0588235294   0 0 0 0 0.792156863   0 0 0 0 0.803921569  0 0 0 0.4 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="会员" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="个人中心-代理模式" transform="translate(-546.000000, -640.000000)">
+            <g id="提成" transform="translate(568.000000, 662.000000)">
+                <rect id="矩形" stroke="#FFFFFF" stroke-width="2" fill-opacity="0.6" fill="#FFFFFF" x="1" y="1" width="94" height="94" rx="40"></rect>
+                <g id="编组" transform="translate(24.000000, 24.000000)">
+                    <polygon id="路径" points="0 0 48 0 48 48 0 48"></polygon>
+                    <path d="M14,12 L14,6 C14,4.8954305 14.8954305,4 16,4 L40,4 C41.1045695,4 42,4.8954305 42,6 L42,34 C42,35.1045695 41.1045695,36 40,36 L34,36 L34,42 C34,43.104 33.1,44.000036 31.986,44.000036 L8.014,44.000036 C7.48130692,44.0031933 6.96930639,43.7939541 6.59131726,43.4185925 C6.21332813,43.0432309 6.0005226,42.5327024 6,42 L6.006,14 C6.006,12.896 6.906,12 8.02,12 L14,12 Z M18,12 L34,12 L34,32 L38,32 L38,8 L18,8 L18,12 Z M14,22 L14,26 L26,26 L26,22 L14,22 Z M14,30 L14,34 L26,34 L26,30 L14,30 Z" id="形状" fill="#0FCACD" fill-rule="nonzero"></path>
+                </g>
+                <g id="编组" filter="url(#filter-1)" transform="translate(24.000000, 24.000000)">
+                    <polygon id="路径" points="0 0 48 0 48 48 0 48"></polygon>
+                    <path d="M14,12 L14,6 C14,4.8954305 14.8954305,4 16,4 L40,4 C41.1045695,4 42,4.8954305 42,6 L42,34 C42,35.1045695 41.1045695,36 40,36 L34,36 L34,42 C34,43.104 33.1,44.000036 31.986,44.000036 L8.014,44.000036 C7.48130692,44.0031933 6.96930639,43.7939541 6.59131726,43.4185925 C6.21332813,43.0432309 6.0005226,42.5327024 6,42 L6.006,14 C6.006,12.896 6.906,12 8.02,12 L14,12 Z M18,12 L34,12 L34,32 L38,32 L38,8 L18,8 L18,12 Z M14,22 L14,26 L26,26 L26,22 L14,22 Z M14,30 L14,34 L26,34 L26,30 L14,30 Z" id="形状" fill="#0FCACD" fill-rule="nonzero"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

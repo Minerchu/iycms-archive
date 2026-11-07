@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="500px" height="502px" viewBox="0 0 500 502" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>形状结合</title>
+    <defs>
+        <path d="M468,0 C474.627417,-1.21743675e-15 480,5.372583 480,12 L480,211 L480,211 C463.431458,211 450,224.431458 450,241 C450,257.568542 463.431458,271 480,271 L480,470 C480,476.627417 474.627417,482 468,482 L12,482 C5.372583,482 1.32461224e-14,476.627417 0,470 L0,271 L0,271 C16.5685425,271 30,257.568542 30,241 C30,224.431458 16.5685425,211 0,211 L0,12 C-8.11624501e-16,5.372583 5.372583,1.36519346e-14 12,0 L468,0 Z" id="path-1"></path>
+        <filter x="-3.5%" y="-2.7%" width="107.1%" height="107.1%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="4" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.305882353   0 0 0 0 0.305882353   0 0 0 0 0.305882353  0 0 0 0.1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="会员中心" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="卡密激活" transform="translate(-710.000000, -526.000000)">
+            <g id="形状结合" transform="translate(720.000000, 532.000000)">
+                <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+            </g>
+        </g>
+    </g>
+</svg>

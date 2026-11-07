@@ -1,0 +1,274 @@
+<import file="/public/header.html" data="'vodplayer'" />
+<!--========== Header ==============-->
+
+<!-- Single movie Start -->
+<script src="/static/js/jquery.js"></script>
+<script>
+    var cmsLineIndex = 0
+</script>
+<section class="gen-section-padding-3 gen-single-movie">
+    <!-- cms_ad -->
+    <div class="container" style="margin-top: 10px;">
+        <import file="../libs/web/ads/index.html" data="topBanner" />
+    </div>
+    <div class="container" style="margin-bottom: 10px;">
+        <import file="../libs/web/ads/index.html" data="playerUp" />
+    </div>
+    <div class="container">
+        <div class="row no-gutters">
+            <div class="col-lg-12">
+                <div class="gen-single-movie-wrapper style-1">
+                    <div class="row">
+                        <getVideoDetail name="$info" id="$.U.Id">
+                            <div class="col-lg-12">
+                                <div class="gen-video-holder">
+                                    <div style="width: 100%; height: 500px;">
+                                        <showPlayer vid="$.U.Id" lineId="$.U.LineId" />
+                                    </div>
+
+                                </div>
+
+                                <div class="gen-single-movie-info">
+                                    <div class="container" style="margin-bottom: 10px;">
+                                        <import file="../libs/web/ads/index.html" data="playerDown" />
+                                    </div>
+                                    <h2 class="gen-title">{{$info.Info.Name}}</h2>
+                                    <div class="gen-single-meta-holder">
+                                        <ul>
+                                            <li class="gen-sen-rating" style="border: 0;">
+                                                {{$info.Info.Category.Name}}
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-eye">
+                                                </i>
+                                                <span>{{$info.Info.Watch}}次观看</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <p style="max-height: 220px; overflow: auto;">
+                                        {{$info.Info.Introduce}}
+                                    </p>
+                                    <div class="gen-after-excerpt">
+                                        <div class="gen-extra-data">
+                                            <ul>
+                                                <li>
+                                                    <span>语言 :</span>
+                                                    <span>
+                                                        <foreach data="$info.Info.Languages" name="$item"
+                                                            index="$index">
+                                                            {{$item.Name}} &nbsp;
+                                                        </foreach>
+                                                    </span>
+                                                </li>
+                                                <li>
+                                                    <span>地区 :</span>
+                                                    <span>
+                                                        <foreach data="$info.Info.Areas" name="$item" index="$index">
+                                                            {{$item.Name}} &nbsp;
+                                                        </foreach>
+                                                    </span>
+                                                </li>
+                                                <li>
+                                                    <span>题材 :</span>
+                                                    <span>
+                                                        <foreach data="$info.Info.Tag" name="$item" index="$index">
+                                                            {{$item.Name}} &nbsp;
+                                                        </foreach>
+                                                    </span>
+                                                </li>
+                                                <li><span>类型 :</span>
+                                                    <span>
+                                                        <goLink href="/vod/list.html"
+                                                            args="{type_id:$.U.TypeId,cate_id:$info.Info.CategoryChild.ID}">
+                                                            {{$info.Info.CategoryChild.Name}}
+                                                        </goLink>
+                                                    </span>
+                                                </li>
+                                                <li><span>时长 :</span>
+                                                    <span>
+                                                        <Number expression="$info.Info.Duration / 60" /> mins
+                                                    </span>
+                                                </li>
+                                                <li>
+                                                    <span>上映日期 :</span>
+                                                    <span>
+                                                        <showDateTime time="$info.Info.ReleaseDate" data="yy-mm-dd" />
+                                                    </span>
+                                                </li>
+                                                <if data="$info.Info.Info.Note">
+                                                    <li>
+                                                        <span>更新状态 :</span>
+                                                        <span>
+                                                            {{$info.Info.Info.Note}}
+                                                        </span>
+                                                    </li>
+                                                </if>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="gen-season-holder tem_ref_dom" style="margin-top: 20px;">
+                                        <div style="display: flex;" class="cms-play-line-width">
+                                            <div class="line-go-left" onclick="goLeft()"><i class="ion-ios-arrow-back"></i></div>
+                                            <ul class="nav cms-nav-play-line" style="overflow: auto; display: flex; flex-wrap: nowrap;">
+                                                <foreach name="$cx" index="$i" data="$info.Info.PlayLines">
+                                                    <li class="nav-item" style="width: auto !important;">
+                                                        <a class="nav-link show cms-nav-link" data-toggle="tab"
+                                                            href="#season_{{$i}}">{{$cx.Name}}</a>
+                                                    </li>
+                                                </foreach>
+                                            </ul>
+                                            <div class="line-go-right" onclick="goRight()"><i class="ion-ios-arrow-forward"></i></div>
+                                        </div>
+                                        <div class="tab-content">
+                                            <foreach name="$cx" index="$i" data="$info.Info.PlayLines">
+                                                <div id="season_{{$i}}" class="tab-pane show ">
+                                                    <div class="cms-seo033-playLine-container">
+                                                        <foreach data="$cx.Addr" name="$item" index="$index">
+                                                            <eqIf data="$item.ID $.U.LineId">
+                                                                <goLink href="$.U.Path"
+                                                                    class="cms-seo033-player-lineid cms-play-active"
+                                                                    style="position: relative;"
+                                                                    args="{line_id:$item.ID}" id="cms-active-playId">
+                                                                    {{$item.Name}}
+                                                                    <eqIf data="$info.Info.Info.BuyMode 2">
+                                                                        <eqIf data="$info.Info.Info.ChargingMode 2">
+                                                                            <div class="cms_charging_lin_div_vip">
+                                                                                VIP
+                                                                            </div>
+                                                                        </eqIf>
+                                                                        <eqIf data="$info.Info.Info.ChargingMode 3">
+                                                                            <div class="cms_charging_lin_div_gold">
+                                                                                金币
+                                                                            </div>
+                                                                        </eqIf>
+                                                                    </eqIf>
+                                                                </goLink>
+                                                                <script>
+                                                                     cmsLineIndex = Number('{{$i}}');
+                                                                </script>
+                                                                <else />
+                                                                <goLink href="$.U.Path"
+                                                                    class="cms-seo033-player-lineid "
+                                                                    style="position: relative;"
+                                                                    args="{line_id:$item.ID}">{{$item.Name}}
+                                                                    <eqIf data="$info.Info.Info.BuyMode 2">
+                                                                        <eqIf data="$info.Info.Info.ChargingMode 2">
+                                                                            <div class="cms_charging_lin_div_vip">
+                                                                                VIP
+                                                                            </div>
+                                                                        </eqIf>
+                                                                        <eqIf data="$info.Info.Info.ChargingMode 3">
+                                                                            <div class="cms_charging_lin_div_gold">
+                                                                                金币
+                                                                            </div>
+                                                                        </eqIf>
+                                                                    </eqIf>
+                                                                </goLink>
+                                                            </eqIf>
+                                                        </foreach>
+                                                    </div>
+                                                </div>
+                                            </foreach>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </getVideoDetail>
+                        <getVideosList name="$List3" page="1" random="true" limit="$.G.Nums.VodGuessNum"
+                            categoryPid="$.U.TypeId">
+                            <gtIf data="$List3.Count 0">
+                                <div class="col-lg-12">
+                                    <div class="pm-inner">
+                                        <div class="gen-more-like">
+                                            <h5 class="gen-more-title">猜你喜欢</h5>
+                                            <div class="row">
+                                                <foreach name="$item" index="$index" data=".List">
+                                                    <div class="col-xl-3 col-lg-4 col-md-6">
+                                                        <div class="gen-carousel-movies-style-3 movie-grid style-3">
+                                                            <div class="gen-movie-contain">
+                                                                <div class="gen-movie-img cms-seo033-player-img">
+                                                                    <img src="{{$item.SurfacePlot}}"
+                                                                        alt="streamlab-image"
+                                                                        class="cmslazyload cms-play-w-img">
+                                                                    <div class="gen-movie-action">
+                                                                        <goLink href="/vod/player.html"
+                                                                            class="gen-button"
+                                                                            args="{id:$item.ID,type_id:$item.CategoryPid,cate_id:$item.CategoryChildId}">
+                                                                            <i class="fa fa-play"></i>
+                                                                        </goLink>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="gen-info-contain">
+                                                                    <div class="gen-movie-info">
+                                                                        <h3>
+                                                                            <goLink href="/vod/player.html"
+                                                                                args="{id:$item.ID,type_id:$item.CategoryPid,cate_id:$item.CategoryChildId}">
+                                                                                {{$item.Name}}
+                                                                            </goLink>
+                                                                        </h3>
+                                                                    </div>
+                                                                    <div class="gen-movie-meta-holder">
+                                                                        <ul>
+                                                                            <li>
+                                                                                <Number
+                                                                                    expression="$item.Duration / 60" />
+                                                                                mins
+                                                                            </li>
+                                                                            <li>
+                                                                                <foreach data="$item.Category"
+                                                                                    name="$item1" index="$index1">
+                                                                                    <eqIf data="$item1.ID $.U.TypeId">
+                                                                                        <else />
+                                                                                        <goLink href="/vod/list.html"
+                                                                                            args="{type_id:$.U.TypeId,cate_id:$item1.ID}">
+                                                                                            {{$item1.Name}}
+                                                                                        </goLink>
+                                                                                    </eqIf>
+                                                                                </foreach>
+                                                                                <!-- <print data="$item" mode="json" /> -->
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </foreach>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </gtIf>
+                        </getVideosList>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- cms_ad -->
+    <div class="container" style="margin-top: 10px;">
+        <import file="../libs/web/ads/index.html" data="bottomBanner" />
+    </div>
+</section>
+<!-- Single movie End -->
+<!-- 空线路id处理 -->
+
+<!-- footer start -->
+<import file="/public/footer.html" data="nohome" />
+<div class="tem_ref_dom">
+    <script>
+        //播放页选中线路标签卡
+        $(document).ready(function () {
+            $(".cms-nav-link").eq(cmsLineIndex).click()
+            positioningScroll()
+            hideGoButon()
+        })
+        
+    </script>
+</div>
+<eqIf data="$.U.LineId 0">
+    <script>
+        nullLineID()
+    </script>
+</eqIf>

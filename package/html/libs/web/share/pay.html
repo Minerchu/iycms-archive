@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/libs/share/js/qrcode.min.js"></script>
+    <style>
+        .code-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            position: absolute;
+            width: 100%;
+        }
+
+        #ecodema img {
+            padding: 15px;
+            background-color: #e4e4e4;
+            width: 30vw;
+        }
+
+        body {
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="code-box">
+        <div id="ecodema"></div>
+    </div>
+    <script type="text/javascript">
+        function getUrlParams(url) {
+            let urlStr = url.split('?')[1]
+            const urlSearchParams = new URLSearchParams(urlStr)
+            const result = Object.fromEntries(urlSearchParams.entries())
+            return result
+        }
+        var url = document.location.toString();
+        var obj = getUrlParams(url)
+
+        var decode = decodeURIComponent(obj.url)
+        new QRCode("ecodema", {
+            render: "canvas", //也可以替换为table
+            width: 150,
+            height: 150,
+            text: decode
+        }).makeImage()
+    </script>
+</body>
+
+</html>

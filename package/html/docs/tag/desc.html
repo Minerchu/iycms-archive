@@ -1,0 +1,59 @@
+<div class="body-right">
+
+    <div class="content">
+        
+        <p class="index-title" id="req-content">{{.Name}}</p>
+        <div class="index-update">
+            <p>更新时间：<showDateTime time="todayTimestamp" data="yy-mm-dd" /></p>
+        </div>
+
+		<div class="tabs-1 include-info" id="tabs">
+             <ol>
+                <if data=".Request.Tpl.Usage">
+                    <li class="step" id="req-url">用法示例</li>
+    				<div class="apiUse rel">
+                        <div class="copy" title="点击可复制" data-clipboard-text="{{.Request.Tpl.Usage}}">点此复制</div>
+    			        <pre class="label-exampile">{{.Request.Tpl.Usage}}</pre>
+    			    </div>
+                </if>
+				
+				<!-- req_body -->
+				<import file="/tag/args/req_body.html" data=".Request"></import>
+				
+				<!-- rep -->
+				<import file="/tag/args/rep.html" data=".Response"></import>
+				
+             </ol>
+		</div>
+        
+    </div>
+
+    <!-- 锚点 -->
+    <div class="introduce" style="margin-top: 30px;">
+        <p style="font-size:18px;color:#333333">{{.Name}}</p>
+        <div class="tag-box table-hidden aside-active" id="joggle">
+            <p style="padding-left:9px;margin-top:19px;" class="active">
+                <a href="#req-content">参数说明</a>
+            </p>
+            <ol>
+                <if data=".Request.Tpl.Usage">
+                    <li><a href="#req-url">用法示例</a></li>
+                </if>
+                <if data=".Request.Tpl.Request">
+                    <li><a href="#req-body">标签参数</a></li>
+                </if>
+                <if data=".Response">
+                    <li><a href="#req-response">响应结果</a></li>
+                    <foreach name="$Respitemdata" index="$Respindex" data=".Response">
+                        <p>
+                            <a href="#code{{$Respitemdata.Code}}">
+                                {{$Respitemdata.Code}} {{$Respitemdata.Name}}
+                            </a>
+                        </p>
+                    </foreach>
+                </if>
+            </ol>
+        </div>
+    </div>
+
+</div>

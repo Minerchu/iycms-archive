@@ -1,0 +1,171 @@
+<import file="/public/header.html" data="'voddetail'" />
+<link rel="stylesheet" href="/static/css/details001.css">
+
+<getVideoDetail name="$info" id="$.U.Id">
+	<div class="cu_h5_header">
+		<span class="goBack">
+			<goLink href="/vod/index.html" args="{cate_id:$.U.CateId,type_id:$.U.TypeId}">
+				<img src="/static/image/icons/fanhui.svg" />
+			</goLink>
+		</span>
+		<span class="title">{{esp $info.Info.Name }}</span>
+	</div>
+	<section class="content mrgt72" style="padding-bottom: 0px; padding-top: 0px;">
+		<div class="section-box" style="padding-top: 0px; padding-bottom: 0px;">
+			<import file="../libs/web/ads/index.html" data="topBanner" />
+
+		</div>
+
+		<article class="details">
+			<div class="path">
+				<span>
+					<goLink href="/index.html">
+						{{esp "首页"}}
+					</goLink>
+				</span>
+				<if data="$info.Info.Category">
+					<span>
+						<goLink href="/vod/index.html" args="{type_id:$info.Info.Info.CategoryPid}">
+							{{esp $info.Info.Category.Name}}
+						</goLink>
+					</span>
+				</if>
+				<span>{{esp $info.Info.Name }}</span>
+			</div>
+
+			<div class="info">
+				<div style="position: relative;">
+					<img data-original="{{ $info.Info.SurfacePlot }}" class="desc-img lazyload" style="height: 100%;" />
+					<eqIf data="$info.Info.Info.BuyMode 1">
+						<eqIf data="$info.Info.Info.ChargingMode 2">
+							<div class="cms_charging_mode_div_vip">
+								VIP
+							</div>
+						</eqIf>
+						<eqIf data="$info.Info.Info.ChargingMode 3">
+							<div class="cms_charging_mode_div_gold">
+								金币点播
+							</div>
+						</eqIf>
+					</eqIf>
+				</div>
+
+
+				<div class="desc">
+					<div class="title">{{esp $info.Info.Name }}</div>
+					<div class="other">
+						<label>{{esp "导演："}}
+							<foreach name="$director" index="$index" data="$info.Info.Directors">
+								<egtIf data="$index 1"> , </egtIf>
+								<goLink href="/search/index.html" args="{keyword:$director.Name}">
+									<span>{{esp $director.Name}}</span>
+								</goLink>
+							</foreach>
+						</label>
+						<if data="$info.Info.Info.Label">
+							<label>{{esp "类型："}}<span>{{esp $info.Info.Info.Label }}</span></label>
+						</if>
+						<label>{{esp "豆瓣评分："}}<span style="color: #ff6a2a">{{$info.Info.Info.ScoreFormat
+								}}</span></label>
+						<label>{{esp "片长："}}<span class="duration">
+								<showDateTime time="$info.Info.Duration" data="hh时ii分" />
+							</span></label>
+						<label>{{esp "上映日期："}}
+							<if data="$info.Info.ReleaseDate">
+								<showDateTime time="$info.Info.ReleaseDate" data="'yy年mm月dd日'"></showDateTime>
+								<else />
+								-
+							</if>
+						</label>
+					</div>
+					<div class="other">
+						<label>{{esp "演员："}}
+							<foreach name="$actor" index="$index" data="$info.Info.Actors">
+								<egtIf data="$index 1"> , </egtIf>
+								<goLink href="/search/index.html" args="{keyword:$actor.Name}">
+									<span>{{esp $actor.Name}}</span>
+								</goLink>
+							</foreach>
+						</label>
+					</div>
+					<label>{{esp "简介："}}<span>{{esp $info.Info.Introduce }}</span></label>
+					<goLink href="/vod/player.html" args="{type_id:$.U.TypeId,cate_id:$.U.CateId,id:$.U.Id}">
+						<button class="playbtn">{{esp "立即播放"}}</button>
+					</goLink>
+				</div>
+			</div>
+
+			<if data="$info.Info.PlayLines">
+				<h2 style="margin-top: 2reml;font-weight: 100;">{{esp "播放路线"}}</h2>
+				<div class="layui-tab layui-tab-card">
+					<ul class="layui-tab-title playline-tabs-title">
+						<foreach name="$item" index="$index" data="$info.Info.PlayLines">
+							<li data-play="{{$item.Id}}">{{esp $item.Name }}</li>
+						</foreach>
+					</ul>
+					<div class="layui-tab-content">
+						<foreach name="$t1" index="$i1" data="$info.Info.PlayLines">
+							<div class="layui-tab-item playline-tab-item" data-play="{{$t1.Id}}">
+								<foreach name="$t2" index="$i2" data="$t1.Addr">
+									<goLink href="/vod/player.html"
+										args="{type_id:$.U.TypeId,cate_id:$.U.CateId,id:$.U.Id,line_id:$t2.ID}">
+										<li class="playBtns" style="position: relative; width: auto !important;">
+											{{esp $t2.Name }}
+											<eqIf data="$info.Info.Info.BuyMode 2">
+												<eqIf data="$t2.ChargingMode 2">
+													<div class="cms_charging_lin_div_vip">
+														VIP
+													</div>
+												</eqIf>
+												<eqIf data="$t2.ChargingMode 3">
+													<div class="cms_charging_lin_div_gold">
+														金币
+													</div>
+												</eqIf>
+											</eqIf>
+										</li>
+									</goLink>
+								</foreach>
+							</div>
+						</foreach>
+					</div>
+				</div>
+			</if>
+		</article>
+
+
+		<getVideosList name="$List" page="1" limit="$.G.Nums.VodGuessNum" random="1" categoryPid="$.U.TypeId"
+			categoryId="$.U.CateId">
+			<gtIf data="$List.Count 0">
+				<div class="section-box">
+					<div class="titleH3">{{esp "猜你喜欢"}}</div>
+					<import file="/public/vodlist.html" data="$List" />
+				</div>
+			</gtIf>
+		</getVideosList>
+		<import file="../libs/web/ads/index.html" data="bottomBanner" />
+	</section>
+</getVideoDetail>
+<style>
+	.cms-arrow-down {
+		border-top: #000 1px solid !important;
+		border-right: #000 1px solid !important;
+	}
+	@media (max-width: 980px) {
+		.layui-tab-card{
+			width: 88vw;
+		}
+		.layui-this{
+			color: #ff6f4b !important;
+		}
+	}
+</style>
+<script>
+	$(document).ready(function () {
+		//tab默认
+		$(`.playline-tabs-title li`).eq(0).addClass('layui-this')
+		$(`.playline-tab-item`).eq(0).addClass('layui-show')
+	})
+</script>
+
+<import file="/public/footer.html" data="'noHome'" />

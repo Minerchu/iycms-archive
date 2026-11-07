@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <script src="./js/vue.min.js"></script>
+  <!-- import CSS -->
+  <link rel="stylesheet" href="./css/elment.min.css">
+  <!-- import JavaScript -->
+  <script src="./js/elment.min.js"></script>
+  <title>欢迎</title>
+</head>
+<script src="./js/axiso.js"></script>
+<link rel="stylesheet" href="./css/index.css">
+
+<style>
+  .header {
+    width: 100%;
+    height: 100%;
+    background: url(./img/bg.png) 100% 100% !important;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+  }
+
+  .headertop {
+    width: 100%;
+    display: flex;
+    padding: 0px 20px;
+    justify-content: flex-start !important;
+  }
+
+  .header .title,
+  .rightnav {
+    font-family: PingFangSC-Medium;
+    font-size: 16px;
+    color: #ffffff;
+    letter-spacing: 1px;
+    font-weight: 500;
+    margin-left: 20px;
+  }
+</style>
+
+<body>
+  <div id="app">
+    <div class="container">
+      <div class="header">
+        <div class="headertop">
+          <div class="titleimg">
+            <img src="./img/logo.svg" alt="">
+          </div>
+          <div class="title">
+            内容管理系统
+          </div>
+          <div class="rightnav">
+
+          </div>
+        </div>
+        <div class="headermain">
+          <h5>欢迎使用</h5>
+          <p>一键自动化安装，智能内容管理系统，支持高并发，快渲染</p>
+        </div>
+      </div>
+      <div class="main">
+        <el-button size="large" class="go white" @click="go" :loading="btnloading">开始使用</el-button>
+        <div class="path" v-loading="loading">站点目录：...</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+<script>
+  var url = window.location.href;
+  // var url = 'http://192.168.2.125:21007';
+  var arr = url.split('/');
+  var url = arr[0] + '//' + arr[2];
+  const App = {
+    data() {
+      let loading = true
+      let btnloading = false
+      const go = () => {
+        btnloading = true
+        window.location.href = "/install/select_database.html"
+        btnloading = false
+      }
+
+      axios({
+        method: 'get',
+        url: `${url}/install/pwd`,
+      }).then((res) => {
+        loading = false
+        document.querySelector('.path').innerHTML = '安装目录：' + res.data
+      }).catch((err) => {
+        loading = false
+        alert(err.response.data.message)
+      })
+      return {
+        go,
+        loading,
+        btnloading,
+      };
+    },
+  };
+  const app = Vue.createApp(App);
+  app.use(ElementPlus);
+  app.mount("#app");
+</script>
+
+</html>

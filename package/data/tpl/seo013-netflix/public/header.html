@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <import file="../libs/web/tpl/seo.html" data="." />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="language" content="zh_CN">
+    <meta property="og:type" content="website">
+
+
+
+    <link rel="stylesheet" type="text/css" href="/static/css/style013.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/aliicon013.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/black013.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/netflix.css">
+
+    <script src="/static/js/jquery013.js"></script>
+    <script src="/static/js/jquery.cookie013.js"></script>
+    <script src="/static/js/jquery.nicescroll013.js"></script>
+    <script src="/static/js/jquery.autocomplete013.js"></script>
+    <script src="/static/js/jquery.nicescroll.min013.js"></script>
+    <script src="/static/js/home013.js"></script>
+    <script src="/static/js/script013.js"></script>
+    <script src="/static/js/layer013.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.lazyload013.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.clipboard013.js"></script>
+
+
+
+
+</head>
+<style>
+    .cmsSpan::after {
+        content: none !important;
+    }
+
+    .lazy::after,
+    .lazy {
+        background-image: url(/static/image/loadingpic.jpg) !important;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
+</style>
+<style>
+    .page-number {
+        padding: 0 20px !important;
+        background-color: #25252b !important;
+        border-radius: 50px !important;
+        color: hsla(0, 0%, 100%, .6) !important;
+    }
+
+    .page-current {
+        background-color: red !important;
+    }
+</style>
+
+<body class="homepage">
+
+    <header id="header" class="wrapper">
+        <div class="header-content ">
+            <style>
+                .abc {
+                    color: #16161a
+                }
+
+                @media screen and (max-width: 1000px) {
+
+                    .abc {
+
+                        display: none;
+                    }
+
+                }
+            </style>
+
+            <!-- Logo -->
+            <div class="abc">
+
+                <goLink href="/index.html">
+                    <if data="$.G.Logo">
+                        <img src="{{$.G.Logo}}" style="position:absolute;left: 75px; top:10px; width: 130px;height: 55px;"
+                        width="auto" height="55">
+                    <else />
+                    <div style="font-size: 20px;font-weight: 600;">{{$.G.Name}}</div>
+                    </if>
+                    
+                </goLink>
+            </div>
+            <div class="nav-search" > 
+                <div class="abc">
+                    <goForm action="/search/index.html" style="position:absolute; left:230px; top:15px;" class="search-dh">
+                    </goForm>
+                </div>
+            </div>
+            <div class="nav cms-seo013-pc-header">
+                <ul class="nav-menu-items tem_head_meun">
+                    <eqIf data=". 'index'">
+                        <li class="nav-menu-item  selected">
+                             <goLink href="/index.html" title="首页">
+                                  <span>首页</span>
+                             </goLink>
+                        </li>
+                        <else />
+                        <li class="nav-menu-item  ">
+                             <goLink href="/index.html" title="首页">
+                                  <span>首页</span>
+                             </goLink>
+                        </li>
+                   </eqIf>
+
+                    <getVideoCategoryList name="$CateList">
+
+                        <foreach name="$item" data="$CateList.List">
+                            <eltIf data="$index 6">
+                                <eqIf data="$.U.TypeId $item.ID">
+                                    <li class="nav-menu-item  selected">
+                                        <goLink href="/vod/index.html" args="{type_id:$item.ID}" title="{{$item.Name}}">
+                                            <span>{{$item.Name}}</span>
+                                        </goLink>
+
+
+                                    </li>
+                                    <else />
+                                    <li class="nav-menu-item">
+                                        <goLink href="/vod/index.html" args="{type_id:$item.ID}" title="{{$item.Name}}">
+                                            <span>{{$item.Name}}</span>
+                                        </goLink>
+                                    </li>
+                                </eqIf>
+                                <else />
+                                <eqIf data="$index 7">
+                                    <li class="nav-menu-item">
+                                        <a>
+                                            <span class="cms-nav-move" id="cms_mor_pat_hov">更多</span>
+                                            <i class="cms-arrow-down"></i>
+
+                                        </a>
+                                    </li>
+                                </eqIf>
+                            </eltIf>
+                        </foreach>
+
+                        <li class="nav-menu-item ">
+                            <goLink href="/text/index.html" title="{{$.G.Name}}资讯">
+                                <span>资讯</span>
+                            </goLink>
+                        </li>
+
+                        <div id="cms-nav-more-box">
+                            <i class="more_triangle_box"></i>
+                            <div class="cms-nav-more-container">
+                                <foreach name="$item" index="$index" data="$CateList.List">
+                                    <egtIf data="$index 7">
+                                        <eqIf data="$.U.TypeId $item.ID">
+                                            <li class="nav-menu-item  selected">
+                                                <goLink href="/vod/index.html" args="{type_id:$item.ID}"
+                                                    title="{{$item.Name}}" class="tem_is_child_menu">
+                                                    <span>{{$item.Name}}</span>
+                                                </goLink>
+
+
+                                            </li>
+                                            <else />
+                                            <li class="nav-menu-item">
+                                                <goLink href="/vod/index.html" args="{type_id:$item.ID}"
+                                                    title="{{$item.Name}}" class="tem_is_child_menu">
+                                                    <span>{{$item.Name}}</span>
+                                                </goLink>
+                                            </li>
+                                        </eqIf>
+                                    </egtIf>
+                                </foreach>
+                            </div>
+                        </div>
+                        <getLinkList name="$List" page="1" limit="10" order="'id asc'" type="header">
+                            <gtIf data="$List.Total 0">
+                                <li class="nav-menu-item">
+
+                                    <foreach name="$item" index="$index" data="$List.List">
+                                        <a style="margin-right: 10px; color: #646cff;" target="_blank"
+                                            href="{{$item.Link}}" index="{{$index}}">{{$item.Name}}</a>
+                                    </foreach>
+                                </li>
+                            </gtIf>
+                        </getLinkList>
+                        
+                    </getVideoCategoryList>
+                </ul>
+            </div>
+            <!-- h5header -->
+            <div class="nav cms-seo013-h5-header">
+                <ul class="nav-menu-items">
+                    <eqIf data=". 'index'">
+                        <li class="nav-menu-item  selected">
+                             <goLink href="/index.html" title="首页">
+                                  <span>首页</span>
+                             </goLink>
+                        </li>
+                        <else />
+                        <li class="nav-menu-item  ">
+                             <goLink href="/index.html" title="首页">
+                                  <span>首页</span>
+                             </goLink>
+                        </li>
+                   </eqIf>
+
+                    <getVideoCategoryList name="$CateList">
+
+                        <foreach name="$item" data="$CateList.List">
+                            <eqIf data="$.U.TypeId $item.ID">
+                                <li class="nav-menu-item  selected">
+                                    <goLink href="/vod/index.html" args="{type_id:$item.ID}" title="{{$item.Name}}">
+                                        <span>{{$item.Name}}</span>
+                                    </goLink>
+
+
+                                </li>
+                                <else />
+                                <li class="nav-menu-item">
+                                    <goLink href="/vod/index.html" args="{type_id:$item.ID}" title="{{$item.Name}}">
+                                        <span>{{$item.Name}}</span>
+                                    </goLink>
+                                </li>
+                            </eqIf>
+                        </foreach>
+                    </getVideoCategoryList>
+
+                    <li class="nav-menu-item ">
+                        <goLink href="/text/index.html" title="{{$.G.Name}}资讯">
+                            <span>资讯</span>
+                        </goLink>
+                    </li>
+
+                    <getLinkList name="$List" page="1" limit="10" order="'id asc'" type="header">
+                        <gtIf data="$List.Total 0">
+                            <li class="nav-menu-item">
+
+                                <foreach name="$item" index="$index" data="$List.List">
+                                    <a style="margin-right: 10px; color: #646cff;" target="_blank"
+                                        href="{{$item.Link}}" index="{{$index}}">{{$item.Name}}</a>
+                                </foreach>
+                            </li>
+                        </gtIf>
+                    </getLinkList>
+                </ul>
+            </div>
+            <div class="header-module" style="display: flex;align-items: center;">
+                <ul class="nav-menu-items">
+                    <li class="nav-menu-item nav-menu-search"><i class="icon-search"></i></li>
+                    <li class="space-line-bold" style="display: none;"></li>
+                    <li class="nav-menu-item drop"><span class="nav-menu-icon"><i class="icon-watch-history"
+                                style="color: #fff;"></i></span>
+                        <div class="drop-content drop-history">
+                            <div class="drop-content-box">
+                                <ul class="drop-content-items" id="history">
+                                    <li class="list-item list-item-title"><a href="javascript:;"
+                                            class="playlist historyclean"><i class="icon-clear"
+                                                onclick="removeLocal();"></i></a><strong>我的观影记录</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="shortcuts-mobile-overlay"></div>
+                    </li>
+                </ul>
+                <import file="/public/auto/avatar1.html" />
+
+                
+            </div>
+        </div>
+        <div id="search-content">
+
+            <goForm action="/search/index.html" class="cmsMyForm">
+                <div class="search-main">
+                    <div class="search-box">
+                        <input class="search-input ac_wd txtKeywords" type="text" name="keyword" autocomplete="off"
+                            placeholder="搜索电影、电视剧、综艺、动漫、等影视剧名称。" value="{{$.U.Keyword}}"
+                            style="color: #fff !important;">
+
+                        <div class="search-drop">
+                            <div class="drop-content-items ac_hot none">
+                                <div class="list-item list-item-title"><strong>大家都在搜这些影片</strong></div>
+                                <div class="search-tag">
+
+                                    <getVideoHotKeyword name="$List3" >
+                                        <foreach data="$List3.List" name="$item" $index="$i">
+                                            <eltIf data="$i 3">
+                                                <goLink href="/search/index.html" args="{keyword:$item}" class="hot ">
+                                                    <i class="icon-hot"></i>{{$item}}
+
+                                                </goLink>
+                                                <else />
+                                                <goLink href="/search/index.html" args="{keyword:$item}">
+                                                    <i class="icon-hot"></i>{{$item}}
+
+                                                </goLink>
+                                            </eltIf>
+                                        </foreach>
+                                    </getVideoHotKeyword>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <button class="search-btn search-go" type="submit"><i class="icon-search"></i></button>
+                        <button class="cancel-btn " style="color: #fff;" type="button">取消</button>
+                    </div>
+                </div>
+            </goForm>
+        </div>
+    </header>
+
+    <script>
+        $(".nav-menu-search").click(function () {
+            $(".nav-search").addClass("block");
+        });
+        $(document).scroll(function () {
+            var H = $(document).scrollTop();
+            if (H > 20) {
+                $(".header-content").addClass("header-bg");
+            } else {
+                $(".header-content").removeClass("header-bg");
+            }
+            if (H > 140) {
+                $(".header-content").addClass("header-bg");
+                $(".search-dh").append($(".search-box"));
+                $(".nav-menu-search").click(function () {
+                    $(".nav-search").addClass("block");
+                });
+            } else {
+                $(".header-content").removeClass("header-bg");
+                $(".search-main").append($(".search-box"));
+
+            }
+        });
+
+        // 浏览记录 
+        setTimeout(() => {
+            if (localStorage.getItem('visit')) {
+                const hlHistory = document.querySelector('#history');
+                const arr = JSON.parse(localStorage.getItem('visit'));
+                let strDom = `<li class="list-item list-item-title"><a href="javascript:;" class="playlist historyclean" ><i class="icon-clear" onclick="removeLocal();"></i></a><strong>我的观影记录</strong></li>`;
+
+                arr.forEach(item => {
+                    strDom = strDom + ` <li class="list-item">
+                    <a title="${item.name}" href="${item.url}" class="list-item-link"><i class="icon-play"></i><span class="cmsSpan">${item.tag}</span>${item.name}</a>
+                </li>`
+                });
+                hlHistory.innerHTML = strDom;
+            }
+
+        }, 1000)
+        //清理浏览记录
+        function removeLocal() {
+            localStorage.clear('visit');
+            const hlHistory = document.querySelector('#history');
+            hlHistory.innerHTML = '<li class="list-item list-item-title"><a href="javascript:;" class="playlist historyclean" ><i class="icon-clear" onclick="removeLocal();"></i></a><strong>我的观影记录</strong></li>';
+        }
+    </script>
+    <style>
+        .meme_pc {}
+
+        .meme_h5 {
+            display: none !important;
+        }
+
+        @media (max-width: 979px) {
+            .meme_pc {
+                display: none !important;
+            }
+
+            .meme_h5 {
+                display: block !important;
+            }
+        }
+
+        @media screen and (max-width: 767px) {
+            .cms-seo013-pc-header {
+                display: none !important;
+            }
+        }
+
+        @media screen and (min-width: 768px) {
+            .cms-seo013-h5-header {
+                display: none !important;
+            }
+        }
+
+        .cms-nav-move {
+            position: relative;
+        }
+
+        .cms-arrow-down {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-top: #fff 1px solid;
+            border-right: #fff 1px solid;
+            transform: rotate(135deg);
+            margin-left: 5px;
+            margin-bottom: 5px;
+        }
+
+        #cms-nav-more-box {
+            display: none;
+            padding-top: 10px;
+            top: 45px;
+            position: absolute;
+            z-index: 999;
+            width: 230px;
+        }
+
+        #cms-nav-more-box .more_triangle_box {
+            border: 10px solid transparent;
+            border-bottom-color: #31313a;
+            position: absolute;
+            left: 50%;
+            top: -10px;
+            margin-left: -5px;
+        }
+
+        .cms-nav-more-container {
+            border-radius: 20px;
+            background-color: #2e2e3a;
+            padding: 12px;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            display: flex;
+        }
+
+        .cms-swiper-slide {
+            height: 50px !important;
+        }
+
+        .cms-nav-more-item {
+            padding: 3px 10px;
+            position: relative;
+            margin-right: 10px;
+            line-height: 30px;
+        }
+    </style>
+
+    <script>
+        // var openMore = false
+        $(document).ready(function () {
+            const cmsMorePreEleLeft = $('#cms_mor_pat_hov').position()?.left;
+            const cmsMoreBtnEle = $('#cms-nav-more-box');
+            const cmsLogoWidth = $('.navTopLogo').width() || 0
+            const cmsNavLefMar = '-' + ($('#cms-nav-more-box').width() / 2 - 10) + 'px';
+            cmsMoreBtnEle.css({ 'left': cmsMorePreEleLeft, 'margin-left': cmsNavLefMar })
+            $('.cms-nav-move,#cms-nav-more-box').on('mouseenter', function () {
+                $('#cms-nav-more-box').show()
+                $('.cms-arrow-down').eq(0).css("transform", 'rotate(-45deg)')
+                $('.cms-arrow-down').eq(0).css("margin-bottom", '0px')
+                // if (!openMore) {
+
+                // 	openMore = !openMore
+                // } else {
+                // 	$('#cms-nav-more-box').eq(0).css("display", 'none')
+                // 	$('.cms-arrow-down').eq(0).css("transform", 'rotate(135deg)')
+                // 	$('.cms-arrow-down').eq(0).css("margin-top", '-5px')
+                // 	openMore = !openMore
+                // }
+
+            })
+            $('.cms-nav-move,#cms-nav-more-box').on('mouseleave', function () {
+                $('#cms-nav-more-box').hide()
+                $('.cms-arrow-down').eq(0).css("transform", 'rotate(135deg)')
+                $('.cms-arrow-down').eq(0).css("margin-bottom", '5px')
+            });
+            // // 头部菜单
+            // $('#cms_head_meun li a').each(function () {
+            // 	const text = $(this).text();
+            // 	const href = $(this).attr('href')
+            // 	console.log()
+            // })
+            // console.log()
+        })
+    </script>

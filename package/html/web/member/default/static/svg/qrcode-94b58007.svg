@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>二维码</title>
+    <g id="会员中心" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="邀请好友" transform="translate(-1088.000000, -381.000000)" fill="#FFFFFF" fill-rule="nonzero">
+            <g id="编组-49" transform="translate(600.000000, 229.000000)">
+                <g id="编组-47" transform="translate(476.000000, 144.000000)">
+                    <g id="二维码" transform="translate(12.000000, 8.000000)">
+                        <path d="M10.6666667,0 L16,0 L16,5.33333333 L10.6666667,5.33333333 L10.6666667,0 Z M5.33333333,0 L5.33333333,5.33333333 L0,5.33333333 L0,0 L5.33333333,0 Z M10.6666667,16 L10.6666667,10.6666667 L16,10.6666667 L16,16 L10.6666667,16 Z M5.33333333,16 L0,16 L0,10.6666667 L5.33333333,10.6666667 L5.33333333,16 Z M0,7.11111111 L16,7.11111111 L16,8.88888889 L0,8.88888889 L0,7.11111111 Z" id="形状"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

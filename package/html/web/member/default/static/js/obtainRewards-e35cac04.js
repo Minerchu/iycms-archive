@@ -1,0 +1,1 @@
+const s="/memberUser/static/svg/InviteFriends-81dd7078.svg",e="/memberUser/static/svg/friendRegistration-f269c028.svg",t="/memberUser/static/svg/obtainRewards-ffcfbc4b.svg";export{s as _,e as a,t as b};

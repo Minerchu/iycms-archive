@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ios下载</title>
+    <style>
+        * {
+            margin: 0px;
+        }
+
+        .tem_ios_downhtml {
+            width: 100vw !important;
+            border-radius: 0px;
+            margin-top: 10px;
+        }
+
+        .tem_ios_downhtml .layuicms-layer-content {
+            height: calc(100vh - 50px) !important;
+            box-sizing: border-box;
+            padding-top: 20px;
+            overflow-y: auto;
+        }
+
+        .tem_ios_downhtml .cms_downloads_button {
+            background-color: skyblue;
+            padding: 5px 10px;
+            border: 0;
+            font-size: 12px;
+            color: #fff;
+            border-radius: 5px;
+        }
+
+        .tem_ios_downhtml .layuicms-layer-title {
+            text-align: center;
+            padding: 0px;
+        }
+
+        .cms-downloads-header {
+            width: 100vw;
+            height: 50px;
+            border: 0px;
+            position: sticky;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="cms-downloads-header">
+        <div style="margin-left: 12px; font-size: 0px;">
+            <a class="cms-downloads-back" href="/" style="
+            box-sizing: border-box;">
+                <img src="/libs/ios/image/back.png" alt="" style="width: 22px;height: 22px;">
+            </a>
+        </div>
+
+        <div class="cms-downloads-title" style="font-size: 16px; color: #333333;">
+            IOS下载
+        </div>
+        <div class="cms-download-fenxiang" style="width: 18px;height: 18px; margin-right: 12px;">
+        </div>
+    </div>
+    <div class="tem_ios_downhtml">
+        <div class="desc" style="display: flex;margin-left: 20px;margin-bottom: 20px;">
+            <div style="width: 64px; height: 64px; box-shadow: 0 0 2px rgba(0, 0, 0, 0.3); border-radius: 5px;">
+                <img src="{{$.G.App.Ios.Icon}}" alt="" class="cms_ios_app_icon"
+                    style="width: 64px;height: 64px; border-radius: 8px;">
+            </div>
+
+
+            <div style="padding:0  20px;display: flex;flex-direction: column; justify-content: space-between;">
+                <p style="color: #333333;" style="text-align: center;">{{$.G.App.Ios.Name}}</p>
+                <a id="ios_down" download="app.mobileconfig">
+                    <button class="cms_downloads_button" type="primary">下载</button>
+                </a>
+            </div>
+        </div>
+        <div style="max-width: 100%; position: relative;font-size: 0px;">
+            <img style="width:100%;" src="/libs/ios/image/download.png" alt="">
+            <img src="$.G.App.Ios.Icon" alt="" class="cms_ios_app_icon"
+                style="width: 13vw;height: 13vw;position: absolute; z-index: 99999; left:17.5%;top:93.4%;border-radius: 10px;">
+        </div>
+    </div>
+
+</body>
+<script>
+    var iosDownIcon = "{{$.G.App.Ios.Icon}}";
+    var iosNameDown = "{{ $.G.App.Ios.Name }}";
+    var iosDownUrl = "{{ $.G.App.Ios.Url }}";
+
+    var iosDownIconDom = document.getElementsByClassName("cms_ios_app_icon");
+    iosDownIconDom[0].setAttribute("src", iosDownIcon);
+    iosDownIconDom[1].setAttribute("src", iosDownIcon);
+    
+    document.getElementById('ios_down').setAttribute('href',iosDownUrl)
+</script>
+
+</html>

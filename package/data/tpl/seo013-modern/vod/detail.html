@@ -1,0 +1,464 @@
+<import file="/public/headerVod.html" data="'voddetail'" />
+
+
+<script>
+  $(".nav-menu-search").click(function () {
+    $(".nav-search").addClass("block");
+  });
+  $(document).scroll(function () {
+    var H = $(document).scrollTop();
+    if (H > 20) {
+      $(".header-content").addClass("header-bg");
+    } else {
+      $(".header-content").removeClass("header-bg");
+    }
+    if (H > 140) {
+      $(".header-content").addClass("header-bg");
+      $(".search-dh").append($(".search-box"));
+      $(".nav-menu-search").click(function () {
+        $(".nav-search").addClass("block");
+      });
+    } else {
+      $(".header-content").removeClass("header-bg");
+      $(".search-main").append($(".search-box"));
+
+    }
+  });
+</script>
+<style>
+  .module-tab-item{
+    background-color: #32323c !important;
+  }
+  .module-tab-item.tab-item.selected {
+    background-color: #ff2a14 !important;
+    color: #fff;
+}
+@media (max-width: 559px){
+  .h5-none{
+    display: none;
+  }
+}
+</style>
+
+<getVideoDetail name="$info" id="$.U.Id">
+  <main id="main" class="wrapper">
+    <div class="content">
+      <div class="section-box h5-none" style="margin-bottom: 10px;">
+        <import file="../libs/web/ads/index.html" data="topBanner" />
+      </div>
+      <div class="box view-heading">
+        <!-- 简介 -->
+        <div class="mobile-play">
+          <div class="module-item-cover">
+            <div class="module-item-pic" style="position: relative;">
+              <img class="lazyload" data-src="{{$info.Info.VerticalPoster}}" src="{{$info.Info.VerticalPoster}}">
+
+            </div>
+          </div>
+        </div>
+
+        <div class="video-cover">
+          <div class="module-item-cover">
+            <div class="module-item-pic">
+              <!-- <img class="lazyload" data-src="{{$info.Info.VerticalPoster}}" src="{{$info.Info.VerticalPoster}}"> -->
+              <eqIf data="$info.Info.Info.BuyMode 1">
+                <eqIf data="$info.Info.Info.ChargingMode 2">
+                  <div class="cms_charging_mode_div_vip">
+                    VIP
+                  </div>
+                </eqIf>
+                <eqIf data="$info.Info.Info.ChargingMode 3">
+                  <div class="cms_charging_mode_div_gold">
+                    金币点播
+                  </div>
+                </eqIf>
+              </eqIf>
+              <foreach name="$cx" index="$i" data="$info.Info.PlayLines">
+                <eqIf data="$i 0">
+                  <foreach data=".Addr" name="$item" index="$index">
+
+                    <eqIf data="$index 0">
+                      <goLink href="/vod/player.html"
+                        args="{id:$info.Info.ID,type_id:$info.Info.Category.ID,cate_id:$info.Info.CategoryChild.ID,line_id:$item.ID}">
+                      </goLink>
+                    </eqIf>
+                  </foreach>
+                </eqIf>
+              </foreach>
+
+
+
+
+              <if data="$info.Info.SurfacePlot">
+              <img class="lazyload" data-src="{{$info.Info.SurfacePlot}}" src="{{$info.Info.VerticalPoster}}"
+                alt="{{$info.Info.Name}}" />
+                <else />
+                <img src="/static/image/alt05_back.png" style="object-fit: cover;"/>
+              </if>
+              <div class="loading"></div>
+            </div>
+          </div>
+        </div>
+        <div class="video-info">
+          <div class="video-info-header">
+            <h1 class="page-title">{{$info.Info.Name}}</h1>
+            <div class="scroll-box">
+              <div class="video-info-aux scroll-content">
+                <goLink href="/vod/index.html" args="{type_id:$info.Info.Category.ID}"
+                  title="{{$info.Info.Category.Name}}" class="tag-link">
+                  <span class="video-tag-icon">
+                    <i class="icon-cate-dy"></i>
+                    {{$info.Info.Category.Name}}</span>
+                </goLink>
+                <foreach data="$info.Info.Tag" name="$item">
+                <div class="tag-link">
+                  <span class="slash">/</span>
+                  <!-- 子分类 -->
+                    <span>
+                      <a>
+                      {{$item.Name}}</a><span class="slash">/</span>
+                    </span>
+                  </div>
+                </foreach>
+                <span class="tag-link">
+                  <showDateTime time="$info.Info.ReleaseDate" data="yy" />
+                </span>
+
+                <foreach data="$info.Info.Areas" name="$item">
+                  <span class="tag-link">
+                    {{$item.Name}}
+                  </span>
+                </foreach>
+              </div>
+            </div>
+
+            <foreach name="$cx" index="$i" data="$info.Info.PlayLines">
+              <eqIf data="$i 0">
+                <foreach data=".Addr" name="$item" index="$index">
+
+                  <eqIf data="$index 0">
+                    <goLink class="btn-important btn-large shadow-drop video-info-play" title="" href="/vod/player.html"
+                      args="{id:$info.Info.ID,type_id:$info.Info.Category.ID,cate_id:$info.Info.CategoryChild.ID,line_id:$item.ID,play_id:}">
+                      <i class="icon-play"></i><strong>立即播放</strong></a>
+                    </goLink>
+                  </eqIf>
+                </foreach>
+              </eqIf>
+            </foreach>
+
+
+
+          </div>
+          <div class="video-info-main">
+            <div class="video-info-items"><span class="video-info-itemtitle">导演：</span>
+              <!-- 导演 -->
+              <div class="video-info-item video-info-actor"><span class="slash">/</span>
+                <foreach name="$cx" index="$i" data=".Info.Directors">
+                  <goLink href="/search/index.html" args="{keyword:$cx.Name}">
+                    {{$cx.Name}}
+                  </goLink>
+
+                </foreach>
+              </div>
+            </div>
+            <!-- 主演 -->
+            <div class="video-info-items"><span class="video-info-itemtitle">主演：</span>
+              <div class="video-info-item video-info-actor"><span class="slash">/</span>
+                <foreach name="$cx" index="$i" data=".Info.Actors">
+                  <goLink href="/search/index.html" args="{keyword:$cx.Name}">
+                    {{$cx.Name}}
+                  </goLink>
+                  <span class="slash">/</span>
+                </foreach>
+              </div>
+            </div>
+            <!-- 上映时间 -->
+            <div class="video-info-items"><span class="video-info-itemtitle">上映：</span>
+              <div class="video-info-item" style="color: #FFffff;">
+                <showDateTime time="$info.Info.ReleaseDate" data="yy" />年
+              </div>
+            </div>
+            <!-- 备注 -->
+            <div class="video-info-items"><span class="video-info-itemtitle"> 备注：</span>
+              <div class="video-info-item" style="color: #FFffff;">
+                <foreach data="$info.Info.Tag" name="$item">
+                  <span>{{$item.Name}}</span>
+                </foreach>
+              </div>
+            </div>
+            <!-- 剧情 -->
+            <div class="video-info-items"><span class="video-info-itemtitle">剧情：</span>
+              <div class="video-info-item video-info-content vod_content">
+                <a>{{$info.Info.Introduce}}</a>
+              </div>
+            </div>
+          </div>
+          <!-- 分享 -->
+          <div class="video-info-footer display">
+
+            <foreach name="$cx" index="$i" data="$info.Info.PlayLines">
+              <eqIf data="$i 0">
+                <foreach data=".Addr" name="$item" index="$index">
+
+                  <eqIf data="$index 0">
+                    <goLink href="/vod/player.html"
+                      args="{id:$info.Info.ID,type_id:$info.Info.Category.ID,cate_id:$info.Info.CategoryChild.ID,line_id:$item.ID,play_id:}"
+                      class="btn-important btn-large shadow-drop" title="{{$info.Info.Name}}在线观看">
+                      <i class="icon-play"></i>
+                      <strong>立即播放</strong>
+                    </goLink>
+                  </eqIf>
+                </foreach>
+              </eqIf>
+            </foreach>
+
+
+
+          </div>
+
+        </div>
+      </div>
+      <script>
+        var vod_content = document.getElementsByClassName("vod_content")[0];
+        var str = vod_content.innerHTML;
+        var shrink = document.querySelector('.shrink')
+        if (str.length >= 150) {
+          // vod_content.innerHTML = str.substring(0, 150) + "..." + '<a href="javaScript:;" class="morecontent">展开</a>';
+          var btn = document.getElementsByClassName("morecontent")[0];
+          var isOn = false;
+          btn.onclick = openClick
+        } else {
+          shrink.style.display = 'none'
+        }
+        function openClick() {
+          isOn = !isOn;
+          if (isOn == true) {
+            vod_content.innerHTML = str;
+            var shrink = document.querySelector('.shrink')
+            shrink.onclick = shrinkClick
+          } else {
+            vod_content.innerHTML = str.substring(0, 150) + "..." + "";
+          }
+        }
+        function shrinkClick() {
+          isOn = !isOn;
+          if (isOn == true) {
+            vod_content.innerHTML = str;
+          } else {
+            vod_content.innerHTML = str.substring(0, 150) + "..." + '<a href="javaScript:;" class="morecontent">展开</a>';
+            btn = document.getElementsByClassName("morecontent")[0];
+            btn.onclick = openClick
+          }
+        }
+        $('.gotodownloadlist').click(function () { $('html,body').animate({ scrollTop: $('#download-list').offset().top }, 800); });   
+      </script>
+
+
+      <!-- 影片选集 -->
+      <div class="module">
+        <div class="module-heading">
+          <h2 class="module-title" title="{{$info.Info.Name}}" style="color: #FFffff;">{{$info.Info.Name}}在线观看</h2>
+          倒序
+          <div class="module-tab module-player-tab">
+            <input type="hidden" name="tab" id="tab" class="module-tab-input">
+            <label class="module-tab-name"><span class="module-tab-value">切换节点</span><i
+                class="icon-arrow-bottom-o"></i></label>
+            <div class="module-tab-items">
+              <!-- 播放源选取 -->
+
+              <div class="module-tab-content">
+
+                <foreach data="$info.Info.PlayLines" name="$item">
+                  <div class="module-tab-item tab-item" data-dropdown-value="{{$item.Name}}">
+                    <span>{{$item.Name}}</span><small></small>
+                  </div>
+                </foreach>
+
+
+              </div>
+            </div>
+          </div>
+          <div class="shortcuts-mobile-overlay"></div>
+        </div>
+        <foreach name="$cx" index="$i" data="$info.Info.PlayLines">
+          <div class="module-list module-player-list tab-list sort-list" id="glist-2">
+            <div class="module-tab module-sorttab">
+              <input type="hidden" name="tab-sort" id="tab-sort" class="module-tab-input">
+              <label class="module-tab-name"><i class="icon-sort"></i></label>
+              <div class="module-tab-items">
+                <div class="module-tab-title">选集<span class="close-drop"><i class="icon-close-o"></i></span>
+                  <a class="desc sort-button" href="javascript:void(0);" to="#sort-item-2" onclick="reverseSortItem()">
+                    <i class="icon-sort"></i>排序</a>
+
+                </div>
+                <div class="module-tab-content">
+                  <div class="module-blocklist">
+                    <div class="sort-item" id="sort-item-1">
+                      <!-- 手机 -->
+                      <foreach name="$item" index="$i" data="$cx.Addr">
+                        {{$item.Sort}}
+                        <goLink href="/vod/player.html" args="{id:$info.Info.ID,line_id:$item.ID}">
+                          {{$item.Name}}
+                        </goLink>
+                        {{$cx.Name}}
+                      </foreach>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- pc -->
+            <div class="shortcuts-mobile-overlay"></div>
+            <div class="module-blocklist scroll-box scroll-box-y">
+              <div class="scroll-content">
+                <foreach name="$item" index="$i" data="$cx.Addr">
+                  <goLink href="/vod/player.html"
+                    args="{id:$info.Info.ID,type_id:$info.Info.Category.ID,cate_id:$info.Info.CategoryChild.ID,line_id:$item.ID}"
+                    title="播放{{$info.Info.Name}}{{$item.Name}}-{{$cx.Name}}">
+                    {{$item.Name}}
+                    <eqIf data="$info.Info.Info.BuyMode 2">
+                      <eqIf data="$item.ChargingMode 2">
+                        <div class="cms_charging_lin_div_vip">
+                          VIP
+                        </div>
+                      </eqIf>
+                      <eqIf data="$item.ChargingMode 3">
+                        <div class="cms_charging_lin_div_gold">
+                          金币
+                        </div>
+                      </eqIf>
+                    </eqIf>
+                  </goLink>
+
+
+
+                </foreach>
+              </div>
+            </div>
+          </div>
+        </foreach>
+        <!-- {{$info.Info.PlayLines}} -->
+      </div>
+      <script type="text/javascript">$(".tab-item:first,.module-list:first").addClass("selected");</script>
+
+
+
+
+
+      <!-- 正在热播 -->
+      <getVideosList name="$List3" page="1" limit="$.G.Nums.VodGuessNum" random="true"  categoryPid="$.U.TypeId"
+			categoryId="$.U.CateId">
+        <div class="module">
+          <div class="module-heading">
+            <h5 class="module-title"><i class="icon-hot" style="color:#FFffff"></i> <b style="color: #FFffff;"> 猜你喜欢</b></h5>
+          </div>
+          <div class="module-list module-lines-list">
+            <gtIf data="$List3.Count 0">
+              <div class="module-items">
+                <import file="/public/vodlist.html" data="$List3" />
+              </div>
+            </gtIf>
+          </div>
+        </div>
+      </getVideosList>
+
+      <div class="section-box " style="margin-bottom: 10px;">
+        <import file="../libs/web/ads/index.html" data="bottomBanner" />
+      </div>
+    </div>
+    <style>
+      /* FAQ 卡片样式 */
+      .faq-card {
+        background-color: #25252b;
+        color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+
+        margin: 30px 20px;
+      }
+
+      .question {
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .answer {
+        margin-bottom: 20px;
+      }
+
+      .vod_content {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-height: 72px;
+      }
+
+      @media screen and (max-width: 768px) {
+        .vod_content {
+          display: -webkit-box;
+          -webkit-line-clamp: 6;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-height: 143px;
+        }
+      }
+    </style>
+    <title>FAQ 卡片</title>
+
+  </main>
+</getVideoDetail>
+
+<import file="/public/footer.html" data="'noHome'" />
+
+<script type="text/javascript">
+
+  $("#clothes").on('click', function () {
+    $(this).children(".iconfont").toggleClass("icon-a-yejian2");
+    $(this).children(".iconfont").toggleClass("icon-rijianmoshi")
+  });
+</script>
+<script type="text/javascript">
+  document.onkeydown = function () {
+
+    var e = window.event || arguments[0];
+
+  }
+</script>
+<div class="shortcuts-mobile-overlay"></div>
+<script src="/static/js/mxui013.js"></script>
+
+
+<div class="shortcuts-box">
+  <div id="shortcuts-info"></div>
+</div>
+
+
+<script>
+
+  //倒序
+  function reverseSortItem(index) {
+    const sortItem = document.querySelectorAll('.sort-item');
+    sortItem.forEach((item, index) => {
+      if (item) {
+        const firstChild = item.firstElementChild;
+        const children = Array.from(item.children);
+
+        for (let i = children.length - 1; i > 0; i--) {
+          item.appendChild(children[i]);
+        }
+
+        if (firstChild) {
+          item.appendChild(firstChild);
+        }
+      }
+    })
+
+  }
+</script>
+
+</body>
+
+</html>

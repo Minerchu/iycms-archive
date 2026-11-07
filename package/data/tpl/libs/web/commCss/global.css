@@ -1,0 +1,11 @@
+@charset "UTF-8";
+/* 全局颜色变量 */
+:root {
+  /*会员*/
+  --tem--base--color: #16baaa;
+  --tem--base--conf--color: #16b777;
+  /*侧边栏*/
+  --cms--util--bgColor: #fff;
+  /*公告按钮*/
+  --cms--notice--button: #ff9875;
+}

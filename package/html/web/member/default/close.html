@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <style>
+    .error {
+      width: calc(100vw - 16px);
+      height: calc(100vh - 16px);
+      position: relative;
+    }
+  
+    .error-header {
+      width: 720px;
+      min-height: 300px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-family: sans-serif;
+      box-shadow: 4px 4px 20px 0px rgba(202, 202, 202, 0.3);
+      border-radius: 16px;
+    }
+  
+    .error-header-box {
+      width: 720px;
+      height: 214px;
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+      background-image: linear-gradient(0deg, #FB9F8D 0%, #FF6E6E 100%);
+      border-radius: 16px 16px 0px 0px;
+    }
+  
+    .error-header-box span:nth-child(1) {
+      font-size: 60px;
+      color: #FFFFFF;
+      letter-spacing: 9px;
+      font-weight: 700;
+    }
+  
+    .error-header-box span:nth-child(2) {
+      text-align: center;
+      font-size: 20px;
+      color: #FFFFFF;
+      letter-spacing: 3px;
+      font-weight: 700;
+    }
+  
+    .error-info {
+      padding: 24px 10px;
+      font-size: 16px;
+    }
+  
+    .error-info p {
+      margin: 0 22px;
+    }
+  
+    .error-info ul {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+  
+    .error-info ul li {
+      color: #D8D8D8;
+    }
+  
+    .error-info ul li span {
+      color: #333333;
+    }
+  
+    @media (max-width: 980px) {
+      .error-header {
+        width: 90% !important;
+      }
+  
+      .error-header-box {
+        width: 100% !important;
+        height: 150px !important;
+      }
+  
+      .error-header-box span:nth-child(1) {
+        font-size: 30px !important;
+      }
+  
+      .error-header-box span:nth-child(2) {
+        font-size: 14px !important;
+      }
+  
+      .error-info {
+        font-size: 14px;
+        padding: 24px 0px !important;
+      }
+    }
+  </style>
+  <div class="error">
+    <div class="error-header">
+      <div class="error-header-box">
+        <span>NOTICE</span>
+        <span>网站关闭提示</span>
+      </div>
+      <div class="error-info">
+        {{.close_reason}}
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<div class="body-right">
+
+    <div class="content">
+            <p class="index-title" id="req-content">{{.Name}}</p>
+            <div class="index-update">
+                <p>更新时间：<showDateTime time="todayTimestamp" data="yy-mm-dd" /></p>
+            </div>
+			<div class="tabs-1 include-info" id="tabs">
+				<div class="apiUrl rel">
+                    <div class="copy" title="点击可复制" data-clipboard-text="{{.Request.Url.Host}}">点此复制</div>
+					<div style="display: flex;align-items: center;">
+						<p class="api-method {{.Request.Type}}">{{.Request.Type}}</p>
+						<p class="api-name">{{.Request.Url.Host}}</p>
+					</div>
+				</div>
+				<p class="tag-title" id="param-include">参数说明</p>
+                <ol>
+    				<!-- url -->
+    				<import file="/api/args/url.html" data=".Request.Url"></import>
+    				
+                    <eqIf data=".Request.Type 'GET'">
+                    <else />
+        				<!-- req_body -->
+        				<import file="/api/args/req_body.html" data=".Request"></import>
+                    </eqIf>
+    				
+                    <if data=".Response">
+        				<!-- rep -->
+        				<import file="/api/args/rep.html" data=".Response"></import>
+                    </if>
+                </ol>
+			</div>
+        
+    </div>
+
+    <!-- 锚点 -->
+    <div class="introduce" style="margin-top: 30px;">
+        <p style="font-size:18px;color:#333333">{{.Name}}</p>
+        <div class="tag-box table-hidden aside-active" id="joggle">
+            <p style="padding-left:9px;margin-top:19px;" class="active">
+                <a href="#req-content">参数说明</a>
+            </p>
+            <ol>
+                <if data=".Request.Url.Variable">
+                    <li> <a href="#req-url">请求URL</a></li>
+                <else />
+                    <if data=".Request.Url.Query">
+                        <li> <a href="#req-url">请求URL</a></li>
+                    </if>
+                </if>
+
+                <eqIf data=".Request.Type 'GET'">
+                <else />
+                    <li><a href="#req-body">请求Body</a></li>
+                </eqIf>
+
+                <if data=".Response">
+                    <li><a href="#req-response">响应结果</a></li>
+                    <foreach name="$Respitemdata" index="$Respindex" data=".Response">
+                        <p>
+                            <a href="#code{{$Respitemdata.Code}}">
+                                {{$Respitemdata.Code}} {{$Respitemdata.Name}}
+                            </a>
+                        </p>
+                    </foreach>
+                </if>
+            </ol>
+        </div>
+    </div>
+
+</div>

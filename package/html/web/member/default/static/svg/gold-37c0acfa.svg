@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>金币</title>
+    <defs>
+        <linearGradient x1="16.1967703%" y1="12.2500879%" x2="82.614912%" y2="89.443071%" id="linearGradient-1">
+            <stop stop-color="#FFF0D6" offset="0%"></stop>
+            <stop stop-color="#FFB654" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="16.1967703%" y1="12.2500879%" x2="82.614912%" y2="89.443071%" id="linearGradient-2">
+            <stop stop-color="#FFF7EA" offset="0%"></stop>
+            <stop stop-color="#FF9D38" offset="100%"></stop>
+        </linearGradient>
+        <circle id="path-3" cx="20" cy="20" r="15"></circle>
+        <filter x="-5.0%" y="-5.0%" width="110.0%" height="110.0%" filterUnits="objectBoundingBox" id="filter-4">
+            <feGaussianBlur stdDeviation="1" in="SourceAlpha" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="1" dy="1" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.9898476   0 0 0 0 0.673226774   0 0 0 0 0.349975169  0 0 0 1 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+        <filter x="-16.0%" y="-19.8%" width="132.1%" height="139.6%" filterUnits="objectBoundingBox" id="filter-5">
+            <feGaussianBlur stdDeviation="1" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <linearGradient x1="16.5289443%" y1="19.6115103%" x2="67.9533699%" y2="63.7182225%" id="linearGradient-6">
+            <stop stop-color="#FFFAF5" offset="0%"></stop>
+            <stop stop-color="#FFDBBA" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="会员" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="购买金币" transform="translate(-316.000000, -491.000000)">
+            <g id="编组-4" transform="translate(268.000000, 415.000000)">
+                <g id="金币" transform="translate(48.000000, 76.000000)">
+                    <circle id="椭圆形" fill="url(#linearGradient-1)" cx="20" cy="20" r="20"></circle>
+                    <g id="椭圆形">
+                        <use fill="url(#linearGradient-2)" fill-rule="evenodd" xlink:href="#path-3"></use>
+                        <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                    </g>
+                    <g id="编组" transform="translate(10.526316, 10.763889)">
+                        <polygon id="路径" points="0 0 18.9473684 0 18.9473684 19.375 0 19.375"></polygon>
+                        <path d="M5.20626478,3.22916667 L16.4594227,3.22916667 C16.712102,3.22916667 16.9495315,3.35277562 17.0981069,3.56177084 L20.1162648,7.80489584 C20.2269027,7.96057512 20.2146759,8.17447321 20.0870543,8.31591147 L11.1225806,18.2464063 C11.0478689,18.3289743 10.9428514,18.3759162 10.8328437,18.3759162 C10.722836,18.3759162 10.6178186,18.3289743 10.5431069,18.2464063 L1.5786332,8.31671876 C1.45058531,8.1751493 1.43834838,7.96073533 1.54942267,7.80489584 L4.56758057,3.56177084 C4.716156,3.35277562 4.95358547,3.22916667 5.20626478,3.22916667 Z" id="路径" fill="#EC8621" fill-rule="nonzero" filter="url(#filter-5)"></path>
+                        <path d="M3.98822635,2.5 L16.0121171,2.5 C16.2821025,2.5 16.5357936,2.63207498 16.694545,2.85538435 L19.9194176,7.3891225 C20.0376331,7.55546431 20.0245689,7.78401236 19.8882064,7.93513777 L10.3097527,18.5457757 C10.229924,18.6339989 10.1177139,18.6841559 10.0001717,18.6841559 C9.88262953,18.6841559 9.77041938,18.6339989 9.69059068,18.5457757 L0.112136981,7.93600035 C-0.0246809499,7.78473476 -0.0377559994,7.5556355 0.0809258156,7.3891225 L3.30579842,2.85538435 C3.46454984,2.63207498 3.71824095,2.5 3.98822635,2.5 Z" id="路径" fill="url(#linearGradient-6)" fill-rule="nonzero"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
