@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>运维手册 · IYCMS 2.3.4 Archive</title>
+<link rel="stylesheet" href="./assets/style.css">
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <div class="brand"><span class="dot"></span> IYCMS Archive</div>
+  <nav class="top">
+    <a href="./index.html">首页</a>
+    <a href="./install.html">安装教程</a>
+    <a class="on" href="./ops.html">运维手册</a>
+  </nav>
+</div></header>
+
+<main><div class="wrap">
+<h1 style="font-size:32px;margin:34px 0 8px">运维手册</h1>
+<p class="muted" style="margin-top:0">目录结构、端口、备份恢复、升级与常见故障处理。</p>
+
+<section>
+<h2>运行架构</h2>
+<svg class="arch" viewBox="0 0 900 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="IYCMS 架构图">
+  <defs>
+    <marker id="a" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#8494b8"/></marker>
+  </defs>
+  <rect x="30" y="95" width="150" height="70" rx="12" fill="#eef4ff" stroke="#c9d8ff"/>
+  <text x="105" y="125" text-anchor="middle" font-size="14" fill="#1d2433">浏览器 / App</text>
+  <text x="105" y="146" text-anchor="middle" font-size="12" fill="#5b667a">访客与管理员</text>
+
+  <rect x="250" y="40" width="170" height="70" rx="12" fill="#ffffff" stroke="#d7deea"/>
+  <text x="335" y="70" text-anchor="middle" font-size="14" fill="#1d2433">nginx :80 / :443</text>
+  <text x="335" y="91" text-anchor="middle" font-size="12" fill="#5b667a">TLS / 反向代理 / 限流</text>
+
+  <rect x="250" y="160" width="170" height="70" rx="12" fill="#ffffff" stroke="#d7deea"/>
+  <text x="335" y="190" text-anchor="middle" font-size="14" fill="#1d2433">管理后台 :21007</text>
+  <text x="335" y="211" text-anchor="middle" font-size="12" fill="#5b667a">建议绑定独立域名 / IP 白名单</text>
+
+  <rect x="500" y="95" width="160" height="80" rx="12" fill="#eaf7f0" stroke="#bfe6d0"/>
+  <text x="580" y="127" text-anchor="middle" font-size="14" fill="#1d2433">cms 主程序</text>
+  <text x="580" y="148" text-anchor="middle" font-size="12" fill="#5b667a">前台 :51200</text>
+
+  <rect x="720" y="95" width="150" height="80" rx="12" fill="#fff7e6" stroke="#f1d9a8"/>
+  <text x="795" y="127" text-anchor="middle" font-size="14" fill="#1d2433">MySQL</text>
+  <text x="795" y="148" text-anchor="middle" font-size="12" fill="#5b667a">:3306</text>
+
+  <line x1="180" y1="120" x2="246" y2="85" stroke="#8494b8" stroke-width="1.6" marker-end="url(#a)"/>
+  <line x1="180" y1="140" x2="246" y2="185" stroke="#8494b8" stroke-width="1.6" marker-end="url(#a)"/>
+  <line x1="420" y1="85" x2="496" y2="120" stroke="#8494b8" stroke-width="1.6" marker-end="url(#a)"/>
+  <line x1="420" y1="185" x2="496" y2="150" stroke="#8494b8" stroke-width="1.6" marker-end="url(#a)"/>
+  <line x1="660" y1="135" x2="716" y2="135" stroke="#8494b8" stroke-width="1.6" marker-end="url(#a)"/>
+</svg>
+<p class="small muted">程序自身就是 HTTP 服务器；nginx 只做入口代理。后台端口不要直接暴露公网。</p>
+</section>
+
+<section>
+<h2>目录结构</h2>
+<table>
+  <tr><th style="width:240px">路径</th><th>作用</th><th>是否可删</th></tr>
+  <tr><td><code>cms</code></td><td>Go 主程序，单文件</td><td>否</td></tr>
+  <tr><td><code>html/</code></td><td>前台、后台、安装向导、API 文档静态资源</td><td>否</td></tr>
+  <tr><td><code>data/tpl/</code></td><td>站点模板与主题</td><td>否（会丢模板）</td></tr>
+  <tr><td><code>data/cache/</code></td><td>页面/数据缓存</td><td>可清空</td></tr>
+  <tr><td><code>data/uploadFile/</code></td><td>用户上传文件</td><td>可迁移，勿随意删</td></tr>
+  <tr><td><code>data/app/</code></td><td>安卓 / iOS 安装包等附件</td><td>可迁移</td></tr>
+  <tr><td><code>data/key/</code>、<code>data/token/</code></td><td>实例授权与令牌数据</td><td>否（迁移时保留）</td></tr>
+  <tr><td><code>config.conf</code></td><td>数据库与端口配置，含明文密码</td><td>否（权限 600）</td></tr>
+  <tr><td><code>install.lock</code></td><td>安装锁定与完整性校验</td><td>否（重装除外）</td></tr>
+  <tr><td><code>stdout.log</code></td><td>服务标准输出</td><td>可轮转</td></tr>
+</table>
+</section>
+
+<section>
+<h2>备份与恢复</h2>
+<h3>热备份</h3>
+<pre><code>APP=/www/wwwroot/iycms
+DATE=$(date +%F_%H%M)
+
+# 程序与数据（排除缓存与日志）
+tar czf /backup/iycms_$DATE.tar.gz \
+  -C $APP cms html data config.conf \
+  --exclude='data/cache/*' --exclude='stdout.log'
+
+# 数据库
+mysqldump --single-transaction --routines --triggers \
+  -uiycms -p iycms &gt; /backup/iycms_db_$DATE.sql
+
+sha256sum /backup/iycms_$DATE.tar.gz /backup/iycms_db_$DATE.sql</code></pre>
+
+<h3>恢复</h3>
+<pre><code>systemctl stop iycms
+cp -a /www/wwwroot/iycms /www/wwwroot/iycms.bak.$(date +%s)
+tar xzf /backup/iycms_2026-11-07_1200.tar.gz -C /www/wwwroot/iycms
+mysql -uiycms -p iycms &lt; /backup/iycms_db_2026-11-07_1200.sql
+chown -R www:www /www/wwwroot/iycms   # 若服务以 www 运行
+systemctl start iycms
+curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:51200/</code></pre>
+<div class="callout">
+  <p>迁移到新机器时，<code>config.conf</code>、<code>data/key/</code>、<code>data/token/</code>、<code>install.lock</code> 必须一起带走，否则可能出现授权或安装状态异常。</p>
+</div>
+</section>
+
+<section>
+<h2>升级</h2>
+<ol>
+  <li>先做完整备份（程序 + 数据库 + <code>data/</code>）。</li>
+  <li><code>systemctl stop iycms</code>。</li>
+  <li>替换 <code>cms</code> 与 <code>html/</code>，保留 <code>data/</code>、<code>config.conf</code>、<code>install.lock</code>。</li>
+  <li><code>chmod +x cms</code>，启动并检查日志。</li>
+  <li>验证前台 200、后台可登录、模板与上传文件正常。</li>
+</ol>
+<div class="callout warn">
+  <p>官方已停止更新，2.3.4 之后不会再有安全补丁。长期运行建议放在内网或加 WAF / 访问控制，并定期检查 <code>html/</code> 是否被植入 webshell。</p>
+</div>
+</section>
+
+<section>
+<h2>日志与监控</h2>
+<pre><code># 实时日志
+journalctl -u iycms -f
+tail -f /www/wwwroot/iycms/stdout.log
+
+# 建议的 logrotate 配置：/etc/logrotate.d/iycms
+/www/wwwroot/iycms/stdout.log {
+    daily
+    rotate 7
+    missingok
+    notifempty
+    copytruncate
+    compress
+}</code></pre>
+<pre><code># 最简单的存活检查
+*/2 * * * * curl -fsS -o /dev/null http://127.0.0.1:51200/ || systemctl restart iycms</code></pre>
+</section>
+
+<section>
+<h2>安全加固清单</h2>
+<table>
+  <tr><th style="width:220px">项目</th><th>建议</th></tr>
+  <tr><td>运行用户</td><td>不要用 root；创建 <code>www</code> 用户并 chown 程序目录</td></tr>
+  <tr><td>后台暴露面</td><td>21007 只监听内网或仅允许固定 IP；nginx 后台域名加 Basic Auth / IP 白名单</td></tr>
+  <tr><td>配置文件</td><td><code>chmod 600 config.conf</code>，不要把真实密码提交到 Git</td></tr>
+  <tr><td>安装目录</td><td><code>install.lock</code> 只读；定期比对哈希，防止被替换</td></tr>
+  <tr><td>上传目录</td><td><code>data/uploadFile/</code> 禁止执行脚本；nginx 对上传目录关闭 PHP/ CGI</td></tr>
+  <tr><td>备份</td><td>数据库与 <code>data/</code> 异地备份，备份文件加密</td></tr>
+  <tr><td>依赖</td><td>MySQL、nginx、OpenSSL 保持最新；程序本身无补丁来源</td></tr>
+</table>
+</section>
+
+<section>
+<h2>常见故障速查</h2>
+<table>
+  <tr><th style="width:280px">症状</th><th>排查顺序</th></tr>
+  <tr><td>服务起不来</td><td><code>systemctl status iycms</code> → <code>journalctl -u iycms -n 50</code> → 手动执行 <code>./cms</code> 看报错</td></tr>
+  <tr><td>端口未监听</td><td>检查 <code>config.conf</code> 的 <code>httpPort</code>/<code>backendPort</code> 是否被占用（<code>ss -tlnp</code>）</td></tr>
+  <tr><td>502 / 504</td><td>nginx 代理地址是否指向 <code>127.0.0.1:51200</code>；程序是否存活</td></tr>
+  <tr><td>页面样式丢失</td><td><code>html/</code> 是否与 <code>cms</code> 同级、权限是否可读</td></tr>
+  <tr><td>数据库报错</td><td><code>mysql -h127.0.0.1 -uiycms -p iycms -e 'select 1'</code></td></tr>
+  <tr><td>后台登录 404</td><td>确认访问的是 <code>:21007/backend/</code>，而不是前台端口</td></tr>
+  <tr><td>安装锁定被篡改</td><td>恢复原 <code>install.lock</code>；检查目录权限与异常登录</td></tr>
+</table>
+</section>
+
+</div></main>
+
+<footer class="site"><div class="wrap">
+  <span>IYCMS 2.3.4 Archive · 运维手册</span>
+  <span><a href="./install.html">← 返回安装教程</a></span>
+</div></footer>
+</body>
+</html>

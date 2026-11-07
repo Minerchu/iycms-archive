@@ -1,0 +1,253 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>安装教程 · IYCMS 2.3.4 Archive</title>
+<link rel="stylesheet" href="./assets/style.css">
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <div class="brand"><span class="dot"></span> IYCMS Archive</div>
+  <nav class="top">
+    <a href="./index.html">首页</a>
+    <a class="on" href="./install.html">安装教程</a>
+    <a href="./ops.html">运维手册</a>
+  </nav>
+</div></header>
+
+<main><div class="wrap">
+<h1 style="font-size:32px;margin:34px 0 8px">图文安装教程</h1>
+<p class="muted" style="margin-top:0">以 Debian / Ubuntu + MySQL 8.0 + systemd 为例，路径统一使用 <code>/www/wwwroot/iycms</code>。CentOS 只需把包管理命令换成 <code>yum</code>。</p>
+
+<div class="toc">
+  <b>本页目录</b>
+  <ol>
+    <li><a href="#prepare">环境要求</a></li>
+    <li><a href="#upload">上传与解压</a></li>
+    <li><a href="#database">创建数据库</a></li>
+    <li><a href="#config">写入配置</a></li>
+    <li><a href="#service">systemd 启动</a></li>
+    <li><a href="#wizard">安装向导</a></li>
+    <li><a href="#nginx">nginx 反向代理</a></li>
+    <li><a href="#login">登录后台</a></li>
+    <li><a href="#verify">验收与排错</a></li>
+  </ol>
+</div>
+
+<section id="prepare">
+<h2>1. 环境要求</h2>
+<table>
+  <tr><th style="width:200px">项目</th><th>要求</th></tr>
+  <tr><td>操作系统</td><td>Linux x86-64（实测 Debian 12 / Ubuntu 22.04），需 systemd</td></tr>
+  <tr><td>依赖库</td><td>glibc 2.28+（程序为动态链接 ELF）</td></tr>
+  <tr><td>数据库</td><td>MySQL 5.7 / 8.0（安装向导也支持 PostgreSQL 11+）</td></tr>
+  <tr><td>端口</td><td><code>51200</code> 前台 HTTP、<code>21007</code> 后台 HTTP；对外只需放行 80/443（经 nginx）</td></tr>
+  <tr><td>磁盘</td><td>建议 ≥ 2 GB 可用空间（含模板与后续上传）</td></tr>
+</table>
+<div class="callout">
+  <p>端口不是写死的：<code>config.conf</code> 里的 <code>httpPort</code> / <code>backendPort</code> 可以改，改完重启服务即可。</p>
+</div>
+</section>
+
+<section id="upload">
+<h2>2. 上传与解压</h2>
+<p>把仓库里的 <code>package/</code> 整个目录上传到服务器，或上传归档包后解压：</p>
+<pre><code>mkdir -p /www/wwwroot/iycms
+cd /www/wwwroot/iycms
+
+# 方式 A：直接上传 package/ 目录内容后，确认结构如下
+ls -la
+# cms  html/  data/  config.example.json  iycms.service
+
+# 方式 B：上传 iycms-backup-2026-11-07.tar.gz 后解压
+# tar xzf iycms-backup-2026-11-07.tar.gz --strip-components=1
+# ls -la
+
+chmod +x cms</code></pre>
+<div class="callout warn">
+  <p><code>html/</code> 必须与 <code>cms</code> 位于同一目录，程序按相对路径读取静态资源；<code>data/</code> 需要可写。</p>
+</div>
+</section>
+
+<section id="database">
+<h2>3. 创建数据库</h2>
+<pre><code>mysql -uroot -p &lt;&lt;'SQL'
+CREATE DATABASE iycms DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'iycms'@'127.0.0.1' IDENTIFIED BY 'ChangeMe_StrongPassw0rd';
+GRANT ALL PRIVILEGES ON iycms.* TO 'iycms'@'127.0.0.1';
+FLUSH PRIVILEGES;
+SQL</code></pre>
+<p class="small muted">如果数据库与程序不在同一台机器，把 <code>127.0.0.1</code> 换成程序所在服务器 IP，并确认 MySQL 监听与防火墙。</p>
+</section>
+
+<section id="config">
+<h2>4. 写入配置</h2>
+<p>复制模板并填写真实数据库信息。<code>dbType: 2</code> 对应 MySQL（从现有实例观测得到；PostgreSQL 使用向导安装时会自动写入对应值）。</p>
+<pre><code>cp config.example.json config.conf
+vi config.conf</code></pre>
+<pre><code>{
+  "dbType": 2,
+  "dbHost": "127.0.0.1",
+  "dbName": "iycms",
+  "dbUser": "iycms",
+  "dbPassword": "ChangeMe_StrongPassw0rd",
+  "dbPort": 3306,
+  "backendPort": 21007,
+  "openHttp": true,
+  "httpPort": 51200,
+  "openHttps": false,
+  "httpsPort": 443,
+  "env": ""
+}</code></pre>
+<table>
+  <tr><th style="width:180px">字段</th><th>说明</th></tr>
+  <tr><td><code>httpPort</code></td><td>前台 HTTP 监听端口，默认 51200</td></tr>
+  <tr><td><code>backendPort</code></td><td>后台监听端口，默认 21007</td></tr>
+  <tr><td><code>openHttps</code></td><td>是否由程序自身监听 HTTPS；套 nginx 时保持 <code>false</code></td></tr>
+  <tr><td><code>env</code></td><td>环境标识，留空即可</td></tr>
+</table>
+</section>
+
+<section id="service">
+<h2>5. 用 systemd 启动</h2>
+<pre><code>cat &gt; /etc/systemd/system/iycms.service &lt;&lt;'EOF'
+[Unit]
+Description=iycms service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/www/wwwroot/iycms
+ExecStart=/www/wwwroot/iycms/cms
+Restart=always
+RestartSec=5
+StandardOutput=append:/www/wwwroot/iycms/stdout.log
+StandardError=append:/www/wwwroot/iycms/stdout.log
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reload
+systemctl enable --now iycms
+systemctl status iycms --no-pager
+ss -tlnp | grep -E '51200|21007'</code></pre>
+<div class="callout bad">
+  <p><b>安全提醒：</b>原实例以 <code>root</code> 运行。生产环境建议新建低权限用户（如 <code>www</code>），把程序目录 chown 给该用户，再把 <code>User=</code> 改成它。</p>
+</div>
+</section>
+
+<section id="wizard">
+<h2>6. 安装向导</h2>
+<p>服务启动后，浏览器访问 <code>http://服务器IP:51200/install</code>。首次安装会依次出现以下页面（截图取自实际程序资源）：</p>
+
+<div class="step"><div class="n">1</div><div>
+  <h3>欢迎页</h3>
+  <p>确认安装目录识别正确，点击「开始使用」。</p>
+  <figure><img src="./assets/img/install-01-welcome.png" alt="IYCMS 安装欢迎页"><figcaption>安装向导 · 欢迎页</figcaption></figure>
+</div></div>
+
+<div class="step"><div class="n">2</div><div>
+  <h3>选择数据库</h3>
+  <p>选择本地或远程数据库，以及 MySQL / PostgreSQL。大多数场景选「本地 + MySQL」。</p>
+  <figure><img src="./assets/img/install-02-select-db.png" alt="选择数据库类型"><figcaption>安装向导 · 选择数据库</figcaption></figure>
+</div></div>
+
+<div class="step"><div class="n">3</div><div>
+  <h3>填写数据库连接</h3>
+  <p>填写第 3 步创建的库名、账号、密码。地址填 <code>127.0.0.1</code>，端口 <code>3306</code>。</p>
+  <figure><img src="./assets/img/install-03-db-config.png" alt="填写数据库信息"><figcaption>安装向导 · 安装数据库</figcaption></figure>
+</div></div>
+
+<div class="step"><div class="n">4</div><div>
+  <h3>站点信息 / 系统守护</h3>
+  <p>设置站点名称与管理员账号。页面下方会给出 supervisor 守护配置示例；如果已经用 systemd 托管，可以忽略。</p>
+  <figure><img src="./assets/img/install-04-guardian.png" alt="站点信息与系统守护"><figcaption>安装向导 · 站点信息 / 系统守护说明</figcaption></figure>
+</div></div>
+
+<div class="callout">
+  <p>安装完成后目录下会生成 <code>install.lock</code>（安装锁定文件）。再次访问 <code>/install</code> 会返回 404 或被拦截，这是正常现象。</p>
+</div>
+</section>
+
+<section id="nginx">
+<h2>7. nginx 反向代理（推荐）</h2>
+<p>让程序只监听本机，由 nginx 对外提供 80/443：</p>
+<pre><code>server {
+    listen 80;
+    server_name cms.example.com;
+
+    client_max_body_size 100m;
+
+    location / {
+        proxy_pass http://127.0.0.1:51200;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}
+
+# 后台单独一个域名，或用 allow/deny 限制来源 IP
+server {
+    listen 80;
+    server_name admin.example.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:21007;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}</code></pre>
+<pre><code>nginx -t &amp;&amp; systemctl reload nginx
+# 防火墙只放行 80/443，不要直接暴露 51200/21007
+ufw allow 80,443/tcp</code></pre>
+</section>
+
+<section id="login">
+<h2>8. 登录后台</h2>
+<p>后台入口：<code>http://服务器IP:21007/backend/</code>（或你绑定的后台域名）。初始账号在登录页有提示，通常是 <code>admin</code> / <code>123456</code>，登录后立即修改。</p>
+<figure><img src="./assets/img/backend-login.png" alt="CMS 后台登录页"><figcaption>后台登录页 · 欢迎登录 CMS 管理后台</figcaption></figure>
+</section>
+
+<section id="verify">
+<h2>9. 验收与排错</h2>
+<pre><code># 前台
+curl -s -o /dev/null -w 'front %{http_code}\n' http://127.0.0.1:51200/
+# 后台
+curl -s -o /dev/null -w 'admin %{http_code}\n' http://127.0.0.1:21007/backend/
+# 服务日志
+journalctl -u iycms -n 100 --no-pager
+tail -n 100 /www/wwwroot/iycms/stdout.log</code></pre>
+
+<table>
+  <tr><th style="width:260px">现象</th><th>处理</th></tr>
+  <tr><td>502 Bad Gateway</td><td>程序没起来或端口不对：<code>systemctl status iycms</code>、<code>ss -tlnp</code>、看 <code>stdout.log</code></td></tr>
+  <tr><td><code>/install</code> 404</td><td>已经安装过（存在 <code>install.lock</code>）。重装需删除 <code>install.lock</code> 并备份数据库</td></tr>
+  <tr><td>数据库连接失败</td><td>核对 <code>config.conf</code>，确认 MySQL 允许 <code>127.0.0.1</code> 登录与库权限</td></tr>
+  <tr><td>后台打不开</td><td>确认 21007 监听；若走 nginx，检查后台 server 块与防火墙</td></tr>
+  <tr><td>提示「安装锁定文件被篡改」</td><td>见下图。恢复原 <code>install.lock</code>；确认不是目录权限泄露导致被改写</td></tr>
+  <tr><td><code>stdout.log</code> 过大</td><td>配置 logrotate，或改用 journald；不要把 800MB 级日志留在仓库里</td></tr>
+</table>
+
+<figure><img src="./assets/img/install-05-exception.png" alt="安装锁定文件被篡改警告"><figcaption>install.lock 被修改时程序给出的危险警告页</figcaption></figure>
+</section>
+
+</div></main>
+
+<footer class="site"><div class="wrap">
+  <span>IYCMS 2.3.4 Archive · 安装教程</span>
+  <span><a href="./ops.html">下一页：运维手册 →</a></span>
+</div></footer>
+</body>
+</html>
